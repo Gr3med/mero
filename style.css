@@ -966,7 +966,7 @@ body.dark-mode .toast-notification.error { background-color: var(--color-error);
             padding: var(--spacing-sm);
         }
         .menu-item-card img {
-            width: 100px;  /* عرض معقول للصورة في هذا التخطيط */
+            width: 200px;  /* عرض معقول للصورة في هذا التخطيط */
             height: 100px; /* ارتفاع متناسق */
             border-radius: var(--border-radius-sm);
             flex-shrink: 0; /* منع الصورة من التقلص */
