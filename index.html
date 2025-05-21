@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قائمة طعام الفندق</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- يمكنك إضافة أيقونات FontAwesome أو غيرها إذا كنت تستخدمها للأيقونات -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> -->
+</head>
+<body>
+
+    <div class="hotspot-container">
+        <header class="hotspot-header">
+            <div class="logo-container">
+                <!-- <img src="images/logo.png" alt="شعار الفندق" class="logo"> -->
+                <h1 id="hotel-title">قائمة طعام الفندق</h1>
+            </div>
+            <div class="header-controls">
+                <div class="cart-icon-container">
+                    <button id="cart-toggle-button" aria-label="فتح/إغلاق سلة التسوق">
+                        🛒 <!-- أو أيقونة من مكتبة أيقونات -->
+                        <span id="cart-item-count">0</span>
+                    </button>
+                </div>
+                <button id="theme-switcher" class="theme-switcher" aria-label="تبديل الوضع">🌙</button>
+            </div>
+            <p id="welcome-text" class="welcome-message">مرحباً بكم!</p>
+        </header>
+
+        <nav class="category-tabs">
+            <!-- أزرار الأقسام سيتم إضافتها هنا بواسطة JavaScript -->
+        </nav>
+
+        <main id="menu-items-grid" class="menu-section">
+            <!-- كروت أصناف الطعام سيتم إضافتها هنا بواسطة JavaScript -->
+        </main>
+
+        <footer class="hotspot-footer">
+            <p>© <span id="current-year">2025</span> <span id="footer-hotel-name">ماريوت</span>. جميع الحقوق محفوظة.</p>
+        </footer>
+    </div>
+
+    <!-- Modal تفاصيل الصنف -->
+    <div id="item-details-modal" class="modal item-details-modal">
+        <div class="modal-content item-details-modal-content">
+            <button class="close-button item-modal-close" aria-label="إغلاق">×</button>
+            <!-- أزرار التنقل يمكن إضافتها هنا إذا لزم الأمر -->
+            <!-- <button class="modal-nav-button prev-item" aria-label="الصنف السابق">❮</button> -->
+            <!-- <button class="modal-nav-button next-item" aria-label="الصنف التالي">❯</button> -->
+            <img id="modal-img" src="images/placeholder.png" alt="صورة الصنف" class="modal-item-image">
+            <h2 id="modal-name" class="modal-item-name">اسم الصنف</h2>
+            <p id="modal-description" class="modal-item-description">وصف الصنف هنا...</p>
+            <p id="modal-price" class="modal-item-price">00.00 ريال</p>
+            <!-- يمكن إضافة زر "أضف للسلة" هنا أيضاً أو معلومات إضافية -->
+        </div>
+    </div>
+
+    <!-- الشريط الجانبي للسلة -->
+    <aside id="cart-sidebar" class="cart-sidebar">
+        <div class="cart-header">
+            <h2>سلة الطلبات</h2>
+            <button id="close-cart-button" class="close-button-cart" aria-label="إغلاق السلة">×</button>
+        </div>
+        <div id="cart-items-list" class="cart-items">
+            <!-- عناصر السلة سيتم إضافتها هنا بواسطة JavaScript -->
+            <!-- <p class="empty-cart-message">سلتك فارغة حالياً.</p> -->
+        </div>
+        <div class="cart-summary">
+            <p>الإجمالي: <span id="cart-total-price">0.00</span> ريال</p>
+            <button id="checkout-button" class="action-button" disabled>إتمام الطلب</button>
+        </div>
+    </aside>
+
+    <!-- Modal إنهاء الطلب -->
+    <div id="checkout-modal" class="modal checkout-modal">
+        <div class="modal-content checkout-modal-content">
+            <button class="close-button checkout-modal-close" aria-label="إغلاق">×</button>
+            <h2>إنهاء الطلب</h2>
+            <div id="checkout-summary-items">
+                <!-- ملخص أصناف الطلب سيتم إضافته هنا بواسطة JavaScript -->
+            </div>
+            <p class="checkout-total">الإجمالي النهائي: <span id="checkout-grand-total">0.00</span> ريال</p>
+            <div class="room-input-group">
+                <label for="room-number-input">رقم الغرفة:</label>
+                <input type="text" id="room-number-input" placeholder="مثال: 101" required>
+            </div>
+            <button id="confirm-order-button" class="action-button">تأكيد الطلب</button>
+        </div>
+    </div>
+
+    <!-- Modal الفاتورة -->
+    <div id="receipt-modal" class="modal receipt-modal">
+        <div class="modal-content receipt-modal-content">
+            <button class="close-button receipt-modal-close" aria-label="إغلاق">×</button>
+            <h2>فاتورة الطلب</h2>
+            <div id="printable-receipt-area">
+                <div class="receipt-header">
+                    <img src="images/mar.jpg" alt="شعار الفندق" class="receipt-logo"> <!-- شعار مختلف للطباعة إذا أردت -->
+                    <h2>فاتورة طلب طعام</h2>
+                </div>
+                <div class="receipt-info">
+                    <p><strong>الفندق:</strong> <span id="receipt-hotel-name">فندق ماريوت</span></p> <!-- يمكن تعبئته من JS -->
+                    <p><strong>رقم الغرفة:</strong> <span id="receipt-room-number"></span></p>
+                    <p><strong>التاريخ والوقت:</strong> <span id="receipt-date"></span></p>
+                </div>
+                <table class="receipt-table">
+                    <thead>
+                        <tr>
+                            <th>الصنف</th>
+                            <th>الكمية</th>
+                            <th>سعر الوحدة</th>
+                            <th>الإجمالي الفرعي</th>
+                        </tr>
+                    </thead>
+                    <tbody id="receipt-items-tbody">
+                        <!-- صفوف الأصناف سيتم إضافتها هنا بواسطة JavaScript -->
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3" style="text-align:left; font-weight:bold;"><strong>الإجمالي الكلي:</strong></td>
+                            <td style="font-weight:bold;"><span id="receipt-grand-total-value">0.00</span> ريال</td>
+                        </tr>
+                        <!-- يمكنك إضافة صف للضريبة إذا كانت محسوبة بشكل منفصل -->
+                    </tfoot>
+                </table>
+                <p class="receipt-thankyou">شكراً لطلبكم! نتمنى لكم إقامة ممتعة.</p>
+            </div>
+            <button id="print-receipt-button" class="action-button">طباعة الفاتورة</button>
+            <button id="new-order-button" class="action-button secondary-action">طلب جديد</button>
+        </div>
+    </div>
+
+    <!-- إشعار Toast -->
+    <div id="toast-notification" class="toast-notification">
+        <!-- رسالة الإشعار هنا -->
+    </div>
+
+    <script src="menu-data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
