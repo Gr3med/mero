@@ -1,1 +1,1248 @@
+/* --- style.css - تصميم أنيق واحترافي ومتجاوب (مع تحسينات شاملة للهواتف) --- */
 
+/* --- 1. متغيرات CSS أساسية وتصميم عام --- */
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=Marhey:wght@400;600;700&display=swap');
+
+:root {
+    --font-body: 'Tajawal', sans-serif;
+    --font-display: 'Marhey', sans-serif;
+
+    --color-primary: #D4AF37;
+    --color-primary-dark: #B8860B;
+    --color-primary-rgb: 212, 175, 55;
+
+    --color-secondary: #2C3E50;
+    --color-secondary-light: #34495E;
+    --color-secondary-rgb: 44, 62, 80;
+
+    --color-accent: #E74C3C;
+    --color-accent-rgb: 231, 76, 60;
+
+    --color-text: #333333;
+    --color-text-muted: #7f8c8d;
+    --color-background: #FDFEFE;
+    --color-surface: #FFFFFF;
+    --color-border: #ECF0F1;
+    --color-success: #2ECC71;
+    --color-error: var(--color-accent);
+    --color-error-rgb: 231, 76, 60;
+
+    --shadow-sm: 0 2px 4px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+    --shadow-lg: 0 10px 25px rgba(0,0,0,0.1);
+
+    --border-radius-sm: 6px;
+    --border-radius-md: 10px;
+    --border-radius-lg: 16px;
+
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+
+    --transition-fast: 0.2s ease-out;
+    --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* منحنى تسارع محسن */
+}
+
+body.dark-mode {
+    --color-primary: #F1C40F;
+    --color-primary-dark: #D4AC0D;
+    --color-primary-rgb: 241, 196, 15;
+
+    --color-secondary: #ECF0F1;
+    --color-secondary-light: #BDC3C7;
+    --color-secondary-rgb: 236, 240, 241;
+
+    --color-text: #F5F5F5;
+    --color-text-muted: #95A5A6;
+    --color-background: #1C2833;
+    --color-surface: #283747;
+    --color-border: #34495E;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-body);
+    background-color: var(--color-background);
+    color: var(--color-text);
+    line-height: 1.7;
+    font-size: 16px;
+    transition: background-color var(--transition-normal), color var(--transition-normal);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden; /* منع التمرير الأفقي غير المرغوب فيه */
+}
+
+.hotspot-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--spacing-lg);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--color-secondary);
+    margin-bottom: var(--spacing-md);
+}
+body.dark-mode h1, body.dark-mode h2, body.dark-mode h3, body.dark-mode h4, body.dark-mode h5, body.dark-mode h6 {
+    color: var(--color-primary);
+}
+
+/* --- 2. الهيدر --- */
+.hotspot-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+    border-bottom: 1px solid var(--color-border);
+    position: relative;
+}
+
+.header-main-content #hotel-title {
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
+    color: var(--color-primary);
+    margin-bottom: var(--spacing-xs);
+}
+body.dark-mode .header-main-content #hotel-title {
+    color: var(--color-primary);
+}
+.welcome-message {
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
+    color: var(--color-text-muted);
+}
+
+.header-controls {
+    position: static;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.cart-icon-container button, .theme-switcher {
+    background: transparent;
+    border: none;
+    color: var(--color-secondary);
+    font-size: 1.7rem;
+    cursor: pointer;
+    padding: var(--spacing-sm);
+    border-radius: 50%;
+    transition: background-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+body.dark-mode .cart-icon-container button, body.dark-mode .theme-switcher {
+    color: var(--color-primary);
+}
+
+.cart-icon-container button:hover, .theme-switcher:hover {
+    background-color: rgba(var(--color-primary-rgb), 0.1);
+    transform: scale(1.1);
+}
+body.dark-mode .cart-icon-container button:hover, body.dark-mode .theme-switcher:hover {
+    background-color: rgba(var(--color-primary-rgb), 0.15);
+}
+
+#cart-item-count {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    background-color: var(--color-accent);
+    color: white;
+    border-radius: 50%;
+    padding: 2px 5px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    line-height: 1;
+    min-width: 16px;
+    text-align: center;
+    border: 1px solid var(--color-surface);
+}
+.cart-icon-container {
+    position: relative;
+}
+
+/* --- 3. أزرار الأقسام (Tabs) --- */
+.category-tabs {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-xl);
+    overflow-x: auto;
+    padding-bottom: var(--spacing-sm);
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+.category-tabs::-webkit-scrollbar {
+    display: none;
+}
+
+.tab-button {
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border: 1px solid var(--color-border);
+    background-color: var(--color-surface);
+    color: var(--color-text-muted);
+    border-radius: var(--border-radius-lg);
+    cursor: pointer;
+    font-weight: 500;
+    white-space: nowrap;
+    transition: all var(--transition-normal); /* استخدام منحنى التسارع المحسن */
+    box-shadow: var(--shadow-sm);
+}
+.tab-button:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+.tab-button.active {
+    background-color: var(--color-primary);
+    color: white;
+    border-color: var(--color-primary);
+    font-weight: 700;
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px); /* تأثير طفيف للزر النشط */
+}
+body.dark-mode .tab-button {
+    background-color: var(--color-surface);
+    border-color: var(--color-border);
+    color: var(--color-text-muted);
+}
+body.dark-mode .tab-button:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+}
+body.dark-mode .tab-button.active {
+    background-color: var(--color-primary);
+    color: var(--color-secondary);
+    border-color: var(--color-primary);
+}
+
+/* --- 4. شبكة أصناف الطعام (Menu Grid) --- */
+#menu-items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--spacing-lg);
+}
+@media (min-width: 768px) {
+    #menu-items-grid {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+}
+@media (min-width: 1024px) {
+    #menu-items-grid {
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    }
+}
+
+.menu-item-card {
+    background-color: var(--color-surface);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+    cursor: pointer;
+}
+.menu-item-card:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: var(--shadow-lg);
+}
+
+.menu-item-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease-in-out;
+}
+.menu-item-card:hover img {
+    transform: scale(1.05);
+}
+
+.item-info {
+    padding: var(--spacing-md);
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    text-align: right;
+}
+.item-info h3 {
+    font-size: 1.2rem;
+    margin-bottom: var(--spacing-sm);
+    color: var(--color-secondary);
+    font-weight: 700;
+    letter-spacing: 0.3px; /* تباعد خفيف للأحرف */
+}
+body.dark-mode .item-info h3 {
+    color: var(--color-primary);
+}
+.item-info .description {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    margin-bottom: var(--spacing-md);
+    flex-grow: 1;
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-height: calc(0.85rem * 1.6 * 2);
+}
+
+.item-info > div:last-child {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+}
+.item-info .price {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--color-primary);
+}
+body.dark-mode .item-info .price {
+    color: var(--color-primary);
+}
+
+/* --- 5. زر إضافة للسلة داخل الكرت --- */
+.add-to-cart-button {
+    background-color: var(--color-primary);
+    color: white;
+    border: none;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius-md);
+    font-weight: 500;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+.add-to-cart-button:hover {
+    background-color: var(--color-primary-dark);
+    transform: scale(1.05);
+}
+body.dark-mode .add-to-cart-button {
+    background-color: var(--color-primary);
+    color: var(--color-secondary);
+}
+body.dark-mode .add-to-cart-button:hover {
+    background-color: var(--color-primary-dark);
+}
+
+/* --- 6. الشريط الجانبي للسلة (Cart Sidebar) --- */
+.cart-sidebar {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    max-width: 380px;
+    height: 100%;
+    background-color: var(--color-surface);
+    box-shadow: var(--shadow-lg);
+    z-index: 1005;
+    display: flex;
+    flex-direction: column;
+    transition: left 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55), right 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55), background-color var(--transition-normal);
+}
+html[dir="ltr"] .cart-sidebar { left: auto; right: -100%; }
+.cart-sidebar.visible { left: 0; }
+html[dir="ltr"] .cart-sidebar.visible { right: 0; }
+
+.cart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-md) var(--spacing-lg);
+    background-color: var(--color-secondary);
+    color: white;
+    border-bottom: 3px solid var(--color-primary);
+}
+.cart-header h2 {
+    font-size: 1.4rem;
+    color: white;
+    margin: 0;
+}
+.close-button-cart {
+    background: none;
+    border: none;
+    color: inherit;
+    font-size: 1.8rem;
+    cursor: pointer;
+    padding: var(--spacing-xs);
+    line-height: 1;
+    transition: transform var(--transition-fast);
+}
+.close-button-cart:hover {
+    transform: scale(1.1);
+}
+
+.cart-items {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: var(--spacing-lg);
+}
+.empty-cart-message {
+    text-align: center;
+    padding: var(--spacing-xl) var(--spacing-md);
+    color: var(--color-text-muted);
+    font-size: 1.1rem;
+}
+.cart-item-entry {
+    display: flex;
+    align-items: center;
+    margin-bottom: var(--spacing-lg);
+    padding-bottom: var(--spacing-lg);
+    border-bottom: 1px solid var(--color-border);
+    gap: var(--spacing-md);
+}
+.cart-item-entry:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+.cart-item-entry img {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: var(--border-radius-sm);
+    border: 1px solid var(--color-border);
+}
+.cart-item-details { flex-grow: 1; }
+.cart-item-details span:first-child {
+    font-weight: 600;
+    font-size: 1rem;
+    display: block;
+    margin-bottom: var(--spacing-xs);
+    color: var(--color-secondary);
+}
+body.dark-mode .cart-item-details span:first-child {
+    color: var(--color-primary);
+}
+.cart-item-details .item-quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    margin: var(--spacing-xs) 0;
+}
+.cart-item-details .quantity-change-btn {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    color: var(--color-text);
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+}
+.cart-item-details .quantity-change-btn:hover {
+    background-color: var(--color-primary);
+    color: white;
+    border-color: var(--color-primary);
+    transform: scale(1.1);
+}
+body.dark-mode .cart-item-details .quantity-change-btn {
+    background-color: var(--color-secondary-light);
+    border-color: var(--color-border);
+    color: var(--color-text);
+}
+body.dark-mode .cart-item-details .quantity-change-btn:hover {
+    background-color: var(--color-primary);
+    color: var(--color-secondary);
+}
+
+.cart-item-details .quantity-display {
+    font-weight: 500;
+    min-width: 20px;
+    text-align: center;
+}
+.cart-item-details .item-subtotal-price {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    display: block;
+    margin-top: var(--spacing-xs);
+}
+
+.cart-item-actions .remove-from-cart-btn {
+    background: none;
+    border: none;
+    color: var(--color-error);
+    font-size: 1.3rem;
+    cursor: pointer;
+    padding: var(--spacing-xs);
+    transition: color var(--transition-fast), transform var(--transition-fast);
+}
+.cart-item-actions .remove-from-cart-btn:hover {
+    color: darkred;
+    transform: scale(1.1);
+}
+
+.cart-summary {
+    padding: var(--spacing-lg);
+    border-top: 1px solid var(--color-border);
+    background-color: var(--color-background);
+    text-align: center;
+}
+.cart-summary p {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: var(--spacing-md);
+    color: var(--color-secondary);
+}
+body.dark-mode .cart-summary p {
+    color: var(--color-primary);
+}
+
+/* --- 7. أزرار الإجراءات العامة --- */
+.action-button {
+    background-color: var(--color-primary);
+    color: white;
+    border: none;
+    padding: var(--spacing-md) var(--spacing-xl);
+    border-radius: var(--border-radius-lg);
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    box-shadow: var(--shadow-md);
+    width: 100%;
+    display: block;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: center;
+}
+.action-button:hover:not(:disabled) {
+    background-color: var(--color-primary-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+.action-button:disabled {
+    background-color: #bdc3c7;
+    color: #7f8c8d;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+body.dark-mode .action-button {
+    background-color: var(--color-primary);
+    color: var(--color-secondary);
+}
+body.dark-mode .action-button:hover:not(:disabled) {
+    background-color: var(--color-primary-dark);
+}
+
+.secondary-action {
+    background-color: transparent;
+    color: var(--color-primary);
+    border: 2px solid var(--color-primary);
+    margin-top: var(--spacing-md);
+}
+.secondary-action:hover:not(:disabled) {
+    background-color: var(--color-primary);
+    color: white;
+}
+body.dark-mode .secondary-action {
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+}
+body.dark-mode .secondary-action:hover:not(:disabled) {
+    background-color: var(--color-primary);
+    color: var(--color-secondary);
+}
+
+/* --- 8. النوافذ المنبثقة (Modals) --- */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    background-color: rgba(0,0,0,0.7);
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    padding: var(--spacing-md);
+    transition: opacity var(--transition-normal), backdrop-filter var(--transition-normal);
+}
+.modal.visible {
+    display: flex;
+    opacity: 1;
+    /* backdrop-filter: blur(5px); */
+}
+
+.modal-content {
+    background-color: var(--color-surface);
+    margin: auto;
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-lg);
+    width: 100%;
+    max-width: 500px;
+    position: relative;
+    transform: scale(0.9) translateY(30px);
+    opacity: 0;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease-out, background-color var(--transition-normal);
+    text-align: right;
+}
+.modal.visible .modal-content {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+}
+
+.close-button {
+    color: var(--color-text-muted);
+    position: absolute;
+    top: var(--spacing-sm);
+    left: var(--spacing-sm);
+    font-size: 2rem;
+    font-weight: 300;
+    line-height: 1;
+    cursor: pointer;
+    padding: var(--spacing-xs);
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color var(--transition-fast), background-color var(--transition-fast), transform var(--transition-fast);
+}
+.close-button:hover {
+    color: var(--color-error);
+    background-color: rgba(var(--color-error-rgb), 0.1);
+    transform: rotate(90deg) scale(1.1);
+}
+
+.item-details-modal-content .modal-item-image {
+    width: 100%;
+    height: auto;
+    max-height: 35vh;
+    object-fit: cover;
+    border-radius: var(--border-radius-md);
+    margin-bottom: var(--spacing-lg);
+    border: 1px solid var(--color-border);
+}
+.item-details-modal-content .modal-item-name {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    margin-bottom: var(--spacing-sm);
+    color: var(--color-primary);
+}
+.item-details-modal-content .modal-item-description {
+    font-size: 0.95rem;
+    line-height: 1.8;
+    margin-bottom: var(--spacing-lg);
+    color: var(--color-text-muted);
+    max-height: 25vh;
+    overflow-y: auto;
+    padding-right: var(--spacing-sm); /* لمراعاة شريط التمرير في RTL */
+}
+.item-details-modal-content .modal-item-price {
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 5vw, 2.2rem);
+    font-weight: 700;
+    color: var(--color-accent);
+    text-align: center;
+    margin-top: var(--spacing-sm);
+}
+body.dark-mode .item-details-modal-content .modal-item-price {
+    color: var(--color-primary);
+}
+
+/* --- 9. Modal إنهاء الطلب والفاتورة --- */
+.checkout-modal-content, .receipt-modal-content {
+    max-width: 650px;
+}
+.checkout-modal-content h2, .receipt-modal-content h2:not(.receipt-header h2) {
+    text-align: center;
+    margin-bottom: var(--spacing-lg);
+    font-size: clamp(1.6rem, 4.5vw, 2.2rem);
+    color: var(--color-secondary);
+}
+body.dark-mode .checkout-modal-content h2, body.dark-mode .receipt-modal-content h2:not(.receipt-header h2) {
+    color: var(--color-primary);
+}
+
+
+#checkout-summary-items {
+    margin-bottom: var(--spacing-lg);
+    padding-bottom: var(--spacing-md);
+}
+#checkout-summary-items ul { list-style: none; }
+#checkout-summary-items li {
+    padding: var(--spacing-sm) 0;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.95rem;
+    border-bottom: 1px dashed var(--color-border);
+}
+#checkout-summary-items li:last-child { border-bottom: none; }
+#checkout-summary-items li span {
+    font-weight: 500;
+    color: var(--color-primary);
+}
+
+.checkout-total, .receipt-grand-total {
+    font-family: var(--font-display);
+    font-size: clamp(1.4rem, 4vw, 1.8rem);
+    font-weight: 700;
+    margin-top: var(--spacing-lg);
+    text-align: center;
+    color: var(--color-accent);
+    padding: var(--spacing-sm) var(--spacing-md);
+    background-color: rgba(var(--color-accent-rgb), 0.05);
+    border-radius: var(--border-radius-sm);
+}
+body.dark-mode .checkout-total, body.dark-mode .receipt-grand-total {
+    color: var(--color-primary);
+    background-color: rgba(var(--color-primary-rgb), 0.1);
+}
+
+.room-input-group { margin: var(--spacing-lg) 0; }
+.room-input-group label {
+    display: block;
+    margin-bottom: var(--spacing-sm);
+    font-weight: 500;
+    font-size: 1rem;
+}
+.room-input-group input[type="text"] {
+    width: 100%;
+    padding: var(--spacing-md);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-md);
+    font-size: 1rem;
+    font-family: var(--font-body);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+.room-input-group input[type="text"]:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.2);
+}
+body.dark-mode .room-input-group input[type="text"] {
+    background-color: var(--color-secondary-light);
+    color: var(--color-text);
+    border-color: var(--color-border);
+}
+body.dark-mode .room-input-group input[type="text"]:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.25);
+}
+
+/* --- 10. أنماط الفاتورة (للعرض والطباعة بمقاس الكاشير) --- */
+#printable-receipt-area {
+    font-family: 'Courier New', Courier, monospace;
+    color: #000;
+    background-color: #fff;
+    padding: 15px;
+    margin: 0 auto var(--spacing-lg) auto;
+    max-width: 320px;
+    border: 1px dashed #888;
+    box-shadow: var(--shadow-md);
+    line-height: 1.4;
+    font-size: 10pt;
+}
+.receipt-header { text-align: center; margin-bottom: 10px; }
+.receipt-logo {
+    max-width: 80px;
+    margin-bottom: 5px;
+    filter: grayscale(100%);
+}
+.receipt-header h2 {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 12pt;
+    font-weight: bold;
+    margin: 0 0 5px 0;
+    text-transform: uppercase;
+    color: #000 !important;
+}
+#receipt-restaurant-name {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 11pt;
+    font-weight: bold;
+    margin: 5px 0;
+    text-transform: uppercase;
+    color: #000 !important;
+}
+.receipt-hotel-name, .receipt-address, .receipt-phone, .receipt-order-id, .receipt-cashier-name {
+    font-size: 9pt;
+    margin: 2px 0;
+    text-align: center;
+}
+.receipt-info {
+    border-top: 1px dashed #555;
+    border-bottom: 1px dashed #555;
+    padding: 5px 0;
+    margin-bottom: 10px;
+    text-align: right;
+}
+.receipt-info p { margin: 3px 0; font-size: 9pt; }
+.receipt-info p strong { font-weight: normal; }
+
+.receipt-table { width: 100%; border-collapse: collapse; margin-bottom: 10px; }
+.receipt-table th, .receipt-table td {
+    padding: 3px 2px;
+    text-align: right;
+    vertical-align: top;
+    font-size: 9.5pt;
+}
+.receipt-table th {
+    border-bottom: 1px solid #555;
+    font-weight: bold;
+    text-align: center;
+}
+.receipt-table .item-name-col { text-align: right; width: 50%; }
+.receipt-table .qty-col, .receipt-table .price-col { text-align: center; width: 15%;}
+.receipt-table .subtotal-col { text-align: left; width: 20%; }
+
+.receipt-table tfoot td {
+    border-top: 1px dashed #555;
+    padding-top: 5px;
+    font-weight: bold;
+}
+.receipt-table tfoot .label { text-align: right; }
+.receipt-table tfoot .value { text-align: left; }
+
+.receipt-payment-details {
+    font-size: 9pt;
+    text-align: right;
+    margin-top: 5px;
+    padding-top: 5px;
+    border-top: 1px dashed #555;
+}
+
+.receipt-barcode-container {
+    text-align: center;
+    margin: 10px 0;
+}
+.receipt-barcode-container img { max-width: 150px; }
+
+.receipt-thankyou, .receipt-footer-notes {
+    text-align: center;
+    font-size: 8.5pt;
+    margin-top: 10px;
+}
+.receipt-actions-toolbar {
+    display: flex;
+    gap: var(--spacing-md);
+    justify-content: center;
+    margin-top: var(--spacing-md);
+}
+.receipt-actions-toolbar .action-button,
+.receipt-actions-toolbar .secondary-action {
+    width: auto;
+    padding: var(--spacing-sm) var(--spacing-lg);
+    font-size: 0.9rem;
+}
+.receipt-actions-toolbar i {
+    margin-left: var(--spacing-xs);
+}
+
+
+/* --- 11. أنماط الإشعارات (Toast) --- */
+.toast-notification {
+    position: fixed;
+    bottom: var(--spacing-lg);
+    left: 50%;
+    transform: translateX(-50%) translateY(150%);
+    background-color: var(--color-secondary);
+    color: white;
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-lg);
+    z-index: 2000;
+    font-size: 0.95rem;
+    font-weight: 500;
+    opacity: 0;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease-out, background-color var(--transition-normal);
+}
+.toast-notification.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+body.dark-mode .toast-notification {
+    background-color: var(--color-primary);
+    color: var(--color-secondary);
+}
+.toast-notification.success { background-color: var(--color-success); color: white; }
+.toast-notification.error { background-color: var(--color-error); color: white; }
+body.dark-mode .toast-notification.success { background-color: var(--color-success); color: var(--color-secondary) }
+body.dark-mode .toast-notification.error { background-color: var(--color-error); color:white }
+
+
+/* --- 12. تحسينات خاصة بالهواتف (Mobile Optimizations) --- */
+@media (max-width: 767px) {
+    .hotspot-container {
+        padding: var(--spacing-sm); /* تقليل الحشو العام أكثر */
+    }
+
+    .hotspot-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-xs); /* تقليل المسافة أكثر */
+        padding-bottom: var(--spacing-md);
+        margin-bottom: var(--spacing-md);
+    }
+    .header-main-content {
+        width: 100%;
+    }
+    .header-main-content #hotel-title {
+        font-size: clamp(1.5rem, 5.5vw, 1.9rem); /* تصغير إضافي */
+    }
+    .welcome-message {
+        font-size: clamp(0.85rem, 2.8vw, 0.95rem);
+        margin-top: var(--spacing-xs);
+    }
+    .header-controls {
+        width: 100%;
+        justify-content: flex-end;
+        gap: var(--spacing-xs); /* تقليل المسافة بين الأيقونات أكثر */
+        padding-top: var(--spacing-xs);
+    }
+    .cart-icon-container button, .theme-switcher {
+        font-size: 1.4rem; /* تصغير الأيقونات أكثر */
+        padding: var(--spacing-xs);
+    }
+    #cart-item-count {
+        top: -3px; /* تعديل طفيف لموضع العداد */
+        right: -3px;
+        padding: 1px 3px; /* تصغير حشو العداد */
+        font-size: 0.55rem; /* تصغير خط العداد */
+        min-width: 12px; /* تصغير عرض العداد */
+    }
+
+    .category-tabs {
+        margin-bottom: var(--spacing-lg);
+        gap: 2px; /* تقليل المسافة بين الأزرار بشكل كبير */
+        padding-left: var(--spacing-xs); /* إضافة حشو بسيط لليمين واليسار إذا لزم الأمر */
+        padding-right: var(--spacing-xs);
+    }
+    .tab-button {
+        padding: 6px var(--spacing-sm); /* تقليل الحشو الداخلي أكثر */
+        font-size: 0.8rem; /* تصغير خط الأزرار أكثر */
+        border-radius: var(--border-radius-sm); /* حواف أقل دائرية */
+    }
+
+    #menu-items-grid {
+        gap: var(--spacing-sm); /* تقليل المسافة بين الكروت أكثر */
+    }
+    @media (max-width: 480px) {
+        #menu-items-grid {
+            grid-template-columns: 1fr;
+        }
+        .menu-item-card { /* تعديلات خاصة للعمود الواحد */
+            flex-direction: row; /* جعل الصورة بجانب النص */
+            align-items: center; /* توسيط العناصر عمودياً */
+            gap: var(--spacing-sm);
+            padding: var(--spacing-sm); /* حشو للكارت نفسه */
+        }
+        .menu-item-card img {
+            width: 80px; /* عرض ثابت للصورة بجانب النص */
+            height: 80px;
+            border-radius: var(--border-radius-sm);
+            flex-shrink: 0; /* منع الصورة من التقلص */
+        }
+        .menu-item-card .item-info {
+            padding: 0; /* إزالة الحشو الداخلي لـ item-info */
+            flex-grow: 1;
+        }
+         .item-info .description {
+            -webkit-line-clamp: 2;
+            min-height: calc(0.8rem * 1.5 * 2);
+        }
+    }
+
+
+    .menu-item-card {
+        border-radius: var(--border-radius-sm);
+        box-shadow: var(--shadow-sm);
+    }
+    .menu-item-card:hover {
+        transform: translateY(-3px) scale(1.01);
+        box-shadow: var(--shadow-md);
+    }
+
+    .menu-item-card img { /* هذا سينطبق إذا لم يكن الكرت عمود واحد */
+        height: 150px; /* تقليل ارتفاع الصورة أكثر */
+    }
+    .item-info { /* هذا سينطبق إذا لم يكن الكرت عمود واحد */
+        padding: calc(var(--spacing-sm) + 2px);
+    }
+    .item-info h3 {
+        font-size: 1.1rem; /* تعديل طفيف */
+        letter-spacing: 0.5px;
+        margin-bottom: 2px; /* تقليل المسافة السفلية لاسم الصنف */
+    }
+    .item-info .description {
+        font-size: 0.8rem; /* تعديل طفيف */
+        line-height: 1.5;
+        margin-bottom: var(--spacing-xs); /* تقليل المسافة السفلية للوصف */
+    }
+    .item-info > div:last-child {
+        margin-top: var(--spacing-xs); /* تقليل المسافة فوق السعر والزر */
+    }
+    .item-info .price {
+        font-size: 1.1rem; /* تصغير السعر قليلاً */
+    }
+    .add-to-cart-button {
+        padding: 6px var(--spacing-sm); /* تقليل الحشو أكثر */
+        font-size: 0.75rem; /* تصغير الخط أكثر */
+        border-radius: var(--border-radius-sm);
+    }
+
+    .cart-sidebar {
+        max-width: 300px;
+    }
+    .cart-header {
+        padding: var(--spacing-sm) var(--spacing-md);
+    }
+    .cart-header h2 {
+        font-size: 1.1rem; /* تصغير عنوان السلة أكثر */
+    }
+    .close-button-cart {
+        font-size: 1.5rem; /* تصغير زر إغلاق السلة */
+    }
+    .cart-items {
+        padding: var(--spacing-md);
+    }
+    .cart-item-entry {
+        margin-bottom: var(--spacing-md);
+        padding-bottom: var(--spacing-md);
+        gap: var(--spacing-sm);
+    }
+    .cart-item-entry img {
+        width: 50px; /* تصغير صورة الصنف في السلة أكثر */
+        height: 50px;
+    }
+    .cart-item-details span:first-child {
+        font-size: 0.85rem; /* تصغير اسم الصنف في السلة */
+    }
+    .cart-item-details .item-quantity-controls {
+        gap: 1px; /* تقليل المسافة بين أزرار الكمية */
+    }
+    .cart-item-details .quantity-change-btn {
+        width: 22px;
+        height: 22px;
+        font-size: 0.9rem;
+    }
+    .cart-item-details .quantity-display {
+        min-width: 16px;
+        font-size: 0.85rem;
+    }
+    .cart-item-details .item-subtotal-price {
+        font-size: 0.8rem;
+    }
+    .cart-item-actions .remove-from-cart-btn {
+        font-size: 1rem; /* تصغير زر الحذف أكثر */
+    }
+    .cart-summary {
+        padding: var(--spacing-sm) var(--spacing-md); /* تقليل الحشو */
+    }
+    .cart-summary p {
+        font-size: 1.15rem; /* تصغير الإجمالي في السلة */
+        margin-bottom: var(--spacing-xs);
+    }
+
+    .action-button {
+        padding: var(--spacing-sm) var(--spacing-md); /* تقليل حشو الأزرار الرئيسية */
+        font-size: 0.85rem;
+        border-radius: var(--border-radius-md);
+    }
+    .secondary-action {
+        border-width: 1px; /* حد أنحف للأزرار الثانوية */
+    }
+
+    .modal {
+        padding: var(--spacing-xs); /* تقليل الحشو حول الـ modal أكثر */
+    }
+    .modal-content {
+        padding: var(--spacing-sm); /* تقليل حشو محتوى الـ modal أكثر */
+        max-width: 96%; /* السماح بعرض أكبر للـ modal */
+        border-radius: var(--border-radius-md);
+    }
+    .item-details-modal-content .modal-item-image {
+        max-height: 28vh; /* تقليل ارتفاع الصورة أكثر */
+        margin-bottom: var(--spacing-sm);
+    }
+    .item-details-modal-content .modal-item-name {
+        font-size: clamp(1.1rem, 4vw, 1.5rem);
+    }
+    .item-details-modal-content .modal-item-description {
+        font-size: 0.85rem;
+        max-height: 18vh; /* تقليل ارتفاع الوصف أكثر */
+        margin-bottom: var(--spacing-sm);
+    }
+    .item-details-modal-content .modal-item-price {
+        font-size: clamp(1.2rem, 4.5vw, 1.7rem);
+    }
+    .close-button {
+        font-size: 1.6rem; /* تصغير زر الإغلاق أكثر */
+        width: 28px;
+        height: 28px;
+        top: 2px;
+        left: 2px;
+    }
+
+    .checkout-modal-content, .receipt-modal-content {
+        max-width: 96%;
+    }
+    .checkout-modal-content h2, .receipt-modal-content h2:not(.receipt-header h2) {
+        font-size: clamp(1.2rem, 4.5vw, 1.7rem);
+        margin-bottom: var(--spacing-sm);
+    }
+    #checkout-summary-items li {
+        font-size: 0.85rem;
+        padding: 2px 0;
+    }
+    .checkout-total, .receipt-grand-total {
+        font-size: clamp(1.1rem, 4vw, 1.5rem);
+        margin-top: var(--spacing-sm);
+    }
+    .room-input-group label {
+        font-size: 0.9rem;
+        margin-bottom: 2px;
+    }
+    .room-input-group input[type="text"] {
+        padding: calc(var(--spacing-sm) - 2px);
+        font-size: 0.9rem;
+    }
+
+    #printable-receipt-area {
+        padding: 8px;
+        font-size: 8.5pt;
+        max-width: 94%;
+    }
+    .receipt-header h2, #receipt-restaurant-name {
+        font-size: 9.5pt;
+    }
+    .receipt-hotel-name, .receipt-address, .receipt-phone, .receipt-order-id, .receipt-cashier-name, .receipt-info p {
+        font-size: 7.5pt;
+    }
+    .receipt-table th, .receipt-table td {
+        font-size: 8pt;
+        padding: 1px;
+    }
+    .receipt-actions-toolbar {
+        flex-direction: column;
+        gap: var(--spacing-xs);
+    }
+    .receipt-actions-toolbar .action-button,
+    .receipt-actions-toolbar .secondary-action {
+        width: 100%;
+        font-size: 0.8rem; /* تصغير خط أزرار الفاتورة أكثر */
+        padding: 6px var(--spacing-sm);
+    }
+
+    .toast-notification {
+        bottom: var(--spacing-sm); /* تقريب الإشعار أكثر */
+        padding: 6px var(--spacing-sm); /* تقليل حشو الإشعار */
+        font-size: 0.85rem;
+        max-width: 92%;
+        border-radius: var(--border-radius-sm);
+    }
+}
+
+
+/* --- 13. أنماط الطباعة (مهمة للفاتورة) --- */
+@media print {
+    /* ... (أنماط الطباعة تبقى كما هي) ... */
+    body {
+        background-color: #fff !important;
+        color: #000 !important;
+        font-family: 'Courier New', Courier, monospace !important;
+        font-size: 10pt !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: auto !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+    .hotspot-container, .hotspot-header, .category-tabs, #menu-items-grid, .hotspot-footer,
+    .modal:not(#receipt-modal), .cart-sidebar, .theme-switcher, .cart-icon-container,
+    .toast-notification, .receipt-actions-toolbar, .close-button,
+    #new-order-button,
+    #print-receipt-button,
+    #save-receipt-image-button,
+    .receipt-modal-close,
+    .no-print {
+        display: none !important;
+    }
+
+    #receipt-modal {
+        position: static !important;
+        display: block !important;
+        width: 100% !important;
+        height: auto !important;
+        overflow: visible !important;
+        background-color: transparent !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        box-shadow: none !important;
+    }
+    #receipt-modal .receipt-modal-content {
+        max-width: 100% !important;
+        width: 80mm !important;
+        margin: 5mm auto !important;
+        padding: 0 !important;
+        background-color: #fff !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        border: none !important;
+    }
+    #printable-receipt-area {
+        max-width: 100% !important;
+        padding: 5mm 3mm !important;
+        margin: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+        font-size: 9.5pt !important;
+    }
+    #printable-receipt-area * {
+        color: #000 !important;
+        background: transparent !important;
+        font-family: 'Courier New', Courier, monospace !important;
+    }
+    #printable-receipt-area .receipt-header h2,
+    #printable-receipt-area #receipt-restaurant-name {
+        font-size: 11pt !important;
+    }
+    .receipt-table, .receipt-info, .receipt-header, .receipt-payment-details, .receipt-thankyou {
+        page-break-inside: avoid;
+    }
+}
+
+/* فئات مساعدة */
+.text-center { text-align: center; }
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
