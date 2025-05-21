@@ -1,210 +1,587 @@
-/* --- style.css --- */
+/* --- style.css - تصميم أنيق واحترافي ومتجاوب (مع تركيز على الفاتورة للجوال) --- */
 
-/* ... (كل الكود من المتغيرات حتى بداية قسم @media (max-width: 767px) يبقى كما هو من الرد السابق الذي دمجت فيه كل شيء) ... */
-/* تأكد أن لديك متغيرات مثل --color-info في :root و body.dark-mode */
-/*
-:root { --color-info: #3498DB; --color-info-rgb: 52, 152, 219; }
-body.dark-mode { --color-info: #5DADE2; }
-*/
+/* --- 1. متغيرات CSS أساسية وتصميم عام --- */
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=Marhey:wght@400;600;700&display=swap');
+
+:root {
+    --font-body: 'Tajawal', sans-serif;
+    --font-display: 'Marhey', sans-serif;
+
+    --color-primary: #D4AF37; /* ذهبي فاخر */
+    --color-primary-dark: #B8860B;
+    --color-primary-rgb: 212, 175, 55;
+
+    --color-secondary: #2C3E50; /* أزرق داكن / رمادي */
+    --color-secondary-light: #34495E;
+    --color-secondary-rgb: 44, 62, 80;
+
+    --color-accent: #E74C3C; /* أحمر دافئ للتمييز */
+    --color-accent-rgb: 231, 76, 60;
+
+    --color-text: #333333;
+    --color-text-muted: #7f8c8d;
+    --color-background: #FDFEFE;
+    --color-surface: #FFFFFF;
+    --color-border: #ECF0F1;
+    --color-success: #2ECC71; /* أخضر للنجاح */
+    --color-success-rgb: 46, 204, 113;
+    --color-info: #3498DB; /* أزرق للمعلومات (يمكن استخدامه لزر حفظ الصورة) */
+    --color-info-rgb: 52, 152, 219;
+    --color-error: var(--color-accent);
+    --color-error-rgb: 231, 76, 60;
+
+
+    --shadow-sm: 0 2px 4px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+    --shadow-lg: 0 10px 25px rgba(0,0,0,0.1);
+
+    --border-radius-sm: 6px;
+    --border-radius-md: 10px;
+    --border-radius-lg: 16px;
+
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 12px; /* تقليل طفيف للقيم المتوسطة */
+    --spacing-lg: 18px; /* تقليل طفيف للقيم الكبيرة */
+    --spacing-xl: 24px; /* تقليل طفيف للقيم الأكبر */
+
+    --transition-fast: 0.2s ease-out;
+    --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body.dark-mode {
+    --color-primary: #F1C40F;
+    --color-primary-dark: #D4AC0D;
+    --color-primary-rgb: 241, 196, 15;
+
+    --color-secondary: #ECF0F1;
+    --color-secondary-light: #BDC3C7;
+    --color-secondary-rgb: 236, 240, 241;
+
+    --color-text: #F5F5F5;
+    --color-text-muted: #95A5A6;
+    --color-background: #1C2833;
+    --color-surface: #283747;
+    --color-border: #34495E;
+    --color-success: #27AE60; /* تعديل طفيف للنجاح في الوضع الليلي */
+    --color-info: #5DADE2; /* تعديل طفيف للمعلومات في الوضع الليلي */
+}
+
+/* ... (بقية الكود العام كما هو: *, body, .hotspot-container, h1-h6) ... */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { /* ... */ overflow-x: hidden; }
+.hotspot-container { /* ... */ }
+h1,h2,h3,h4,h5,h6 { /* ... */ }
+
+
+/* --- 2. الهيدر --- */
+.hotspot-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: var(--spacing-md); /* تعديل طفيف */
+    margin-bottom: var(--spacing-md);  /* تعديل طفيف */
+    border-bottom: 1px solid var(--color-border);
+    position: relative;
+}
+/* ... (بقية تنسيقات الهيدر العامة) ... */
+.header-main-content #hotel-title { font-size: clamp(1.6rem, 5vw, 2.2rem); /* تعديل */ }
+.welcome-message { font-size: clamp(0.85rem, 2.5vw, 0.95rem); /* تعديل */ }
+.header-controls { gap: var(--spacing-sm); /* تعديل */ }
+.cart-icon-container button, .theme-switcher { font-size: 1.5rem; /* تعديل */ }
+#cart-item-count { /* ... */ }
+.cart-icon-container { /* ... */ }
+
+
+/* --- 3. أزرار الأقسام (Tabs) --- */
+.category-tabs {
+    margin-bottom: var(--spacing-lg); /* تعديل */
+    gap: var(--spacing-xs); /* تعديل */
+}
+/* ... (بقية تنسيقات الأقسام العامة) ... */
+.tab-button { padding: var(--spacing-xs) var(--spacing-md); font-size: 0.85rem; /* تعديل */ }
+
+
+/* --- 4. شبكة أصناف الطعام (Menu Grid) --- */
+#menu-items-grid {
+    gap: var(--spacing-md); /* تعديل */
+}
+/* ... (بقية تنسيقات شبكة الأصناف العامة) ... */
+.menu-item-card img { height: 200px; /* زيادة ارتفاع الصورة قليلاً */ }
+.item-info { padding: var(--spacing-sm) var(--spacing-md); /* تعديل */ }
+.item-info h3 { font-size: 1.1rem; /* تعديل */ }
+.item-info .description { font-size: 0.82rem; /* تعديل */ }
+.item-info .price { font-size: 1.2rem; /* تعديل */ }
+
+
+/* --- 5. زر إضافة للسلة داخل الكرت --- */
+.add-to-cart-button { padding: var(--spacing-xs) var(--spacing-sm); font-size: 0.85rem; /* تعديل */ }
+/* ... (بقية تنسيقات زر الإضافة) ... */
+
+
+/* --- 6. الشريط الجانبي للسلة (Cart Sidebar) --- */
+.cart-sidebar { max-width: 350px; /* تعديل طفيف للعرض */ }
+/* ... (بقية تنسيقات السلة العامة) ... */
+.cart-header { padding: var(--spacing-sm) var(--spacing-md); }
+.cart-header h2 { font-size: 1.2rem; }
+.cart-items { padding: var(--spacing-md); }
+.cart-item-entry { gap: var(--spacing-sm); }
+.cart-item-entry img { width: 60px; height: 60px; /* تعديل */ }
+.cart-item-details span:first-child { font-size: 0.95rem; /* تعديل */ }
+.cart-item-details .quantity-change-btn { width: 26px; height: 26px; /* تعديل */ }
+.cart-summary { padding: var(--spacing-md); }
+.cart-summary p { font-size: 1.3rem; /* تعديل */ }
+
+
+/* --- 7. أزرار الإجراءات العامة --- */
+.action-button { padding: var(--spacing-sm) var(--spacing-lg); font-size: 0.95rem; /* تعديل */ }
+/* ... (بقية تنسيقات الأزرار العامة) ... */
+
+
+/* --- 8. النوافذ المنبثقة (Modals) --- */
+.modal { padding: var(--spacing-sm); /* تعديل */ }
+.modal-content { padding: var(--spacing-md); max-width: 520px; /* تعديل */ }
+/* ... (بقية تنسيقات الـ modal العامة) ... */
+.item-details-modal-content .modal-item-image { max-height: 32vh; /* تعديل */ }
+.item-details-modal-content .modal-item-name { font-size: clamp(1.3rem, 4vw, 1.8rem); /* تعديل */ }
+.item-details-modal-content .modal-item-description { font-size: 0.9rem; /* تعديل */ }
+.item-details-modal-content .modal-item-price { font-size: clamp(1.4rem, 5vw, 2rem); /* تعديل */ }
+
+
+/* --- 9. Modal إنهاء الطلب والفاتورة --- */
+.checkout-modal-content, .receipt-modal-content { max-width: 600px; /* تعديل */ }
+/* ... (بقية تنسيقات modal الطلب والفاتورة العامة) ... */
+.checkout-modal-content h2, .receipt-modal-content h2:not(.receipt-header h2) { font-size: clamp(1.4rem, 4.5vw, 2rem); /* تعديل */ }
+#checkout-summary-items li { font-size: 0.9rem; /* تعديل */ }
+.checkout-total, .receipt-grand-total { font-size: clamp(1.2rem, 4vw, 1.6rem); /* تعديل */ }
+.room-input-group input[type="text"] { padding: var(--spacing-sm); /* تعديل */ }
+
+
+/* --- 10. أنماط الفاتورة (للعرض والطباعة بمقاس الكاشير) --- */
+#printable-receipt-area {
+    font-family: 'Tajawal', sans-serif; /* تغيير الخط لعرض أوضح على الشاشة */
+    color: var(--color-text); /* استخدام ألوان السمة للعرض على الشاشة */
+    background-color: var(--color-surface);
+    padding: var(--spacing-md); /* حشو مناسب للعرض */
+    margin: 0 auto var(--spacing-md) auto;
+    max-width: 450px; /* عرض أكبر قليلاً للعرض على الشاشة */
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-md);
+    line-height: 1.6;
+    font-size: 0.9rem; /* حجم خط أساسي مقروء للعرض */
+}
+body.dark-mode #printable-receipt-area {
+    color: var(--color-text);
+    background-color: var(--color-surface);
+    border-color: var(--color-border);
+}
+#printable-receipt-area .receipt-header { text-align: center; margin-bottom: var(--spacing-sm); }
+#printable-receipt-area .receipt-logo {
+    max-width: 70px; /* شعار بحجم مناسب للعرض */
+    margin-bottom: var(--spacing-xs);
+    filter: none; /* إزالة فلتر grayscale للعرض على الشاشة */
+}
+#printable-receipt-area .receipt-header h2 { /* عنوان الفاتورة */
+    font-family: var(--font-display);
+    font-size: 1.3rem; /* حجم أكبر لعنوان الفاتورة */
+    margin: 0 0 var(--spacing-xs) 0;
+    color: var(--color-primary) !important; /* استخدام لون السمة */
+}
+#printable-receipt-area #receipt-restaurant-name {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: var(--spacing-xs) 0;
+    color: var(--color-secondary) !important;
+}
+#printable-receipt-area .receipt-hotel-name,
+#printable-receipt-area .receipt-address,
+#printable-receipt-area .receipt-phone,
+#printable-receipt-area .receipt-order-id,
+#printable-receipt-area .receipt-cashier-name {
+    font-size: 0.85rem;
+    margin: 2px 0;
+    text-align: center;
+    color: var(--color-text-muted) !important;
+}
+#printable-receipt-area .receipt-info {
+    border-top: 1px dashed var(--color-border);
+    border-bottom: 1px dashed var(--color-border);
+    padding: var(--spacing-xs) 0;
+    margin-bottom: var(--spacing-sm);
+    text-align: right;
+}
+#printable-receipt-area .receipt-info p { margin: 3px 0; font-size: 0.85rem; color: var(--color-text) !important;}
+
+#printable-receipt-area .receipt-table { width: 100%; border-collapse: collapse; margin-bottom: var(--spacing-sm); }
+#printable-receipt-area .receipt-table th,
+#printable-receipt-area .receipt-table td {
+    padding: var(--spacing-xs);
+    text-align: right;
+    vertical-align: middle; /* توسيط عمودي أفضل */
+    font-size: 0.85rem; /* حجم خط مقروء للجدول */
+    color: var(--color-text) !important;
+}
+#printable-receipt-area .receipt-table th {
+    border-bottom: 1px solid var(--color-border);
+    font-weight: 600;
+    text-align: center;
+    background-color: rgba(var(--color-secondary-rgb), 0.05) !important;
+}
+body.dark-mode #printable-receipt-area .receipt-table th {
+    background-color: rgba(var(--color-primary-rgb), 0.1) !important;
+}
+#printable-receipt-area .receipt-table .item-name-col { text-align: right; }
+#printable-receipt-area .receipt-table .qty-col,
+#printable-receipt-area .receipt-table .price-col { text-align: center; }
+#printable-receipt-area .receipt-table .subtotal-col { text-align: left; font-weight: 500; }
+
+#printable-receipt-area .receipt-table tfoot td {
+    border-top: 1px dashed var(--color-border);
+    padding-top: var(--spacing-xs);
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+#printable-receipt-area .receipt-table tfoot .label { text-align: right; }
+#printable-receipt-area .receipt-table tfoot .value { text-align: left; color: var(--color-primary) !important; }
+
+#printable-receipt-area .receipt-payment-details {
+    font-size: 0.8rem;
+    text-align: right;
+    margin-top: var(--spacing-xs);
+    padding-top: var(--spacing-xs);
+    border-top: 1px dashed var(--color-border);
+    color: var(--color-text-muted) !important;
+}
+
+#printable-receipt-area .receipt-thankyou,
+#printable-receipt-area .receipt-footer-notes {
+    text-align: center;
+    font-size: 0.8rem;
+    margin-top: var(--spacing-sm);
+    color: var(--color-text-muted) !important;
+}
+
+.receipt-actions-toolbar { /* تعديل عام لأزرار التحكم بالفاتورة */
+    display: flex;
+    flex-direction: column; /* أزرار تحت بعضها بشكل افتراضي */
+    gap: var(--spacing-sm);
+    justify-content: center;
+    margin-top: var(--spacing-md);
+    padding: 0 var(--spacing-sm); /* إضافة حشو جانبي للحاوية */
+}
+.receipt-actions-toolbar .action-button,
+.receipt-actions-toolbar .secondary-action {
+    width: 100%; /* الأزرار تشغل العرض الكامل */
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: 0.9rem;
+    display: flex; /* لتوسيط النص والأيقونة */
+    align-items: center;
+    justify-content: center;
+}
+.receipt-actions-toolbar i {
+    margin-right: var(--spacing-xs); /* أيقونة على يمين النص في RTL */
+    margin-left: 0;
+    font-size: 1em; /* حجم الأيقونة يتناسب مع الخط */
+}
+/* تخصيص زر حفظ الصورة */
+#save-receipt-image-button {
+    background-color: var(--color-info);
+    color: white;
+    border-color: var(--color-info);
+}
+#save-receipt-image-button:hover:not(:disabled) {
+    background-color: Erfolg(var(--color-info), -10%); /* تعتيم طفيف للون */
+}
+body.dark-mode #save-receipt-image-button {
+    background-color: var(--color-info);
+}
+body.dark-mode #save-receipt-image-button:hover:not(:disabled) {
+    background-color: Erfolg(var(--color-info), -10%);
+}
+
+
+/* --- 11. أنماط الإشعارات (Toast) --- */
+/* ... (تنسيقات الإشعارات العامة) ... */
+.toast-notification { padding: var(--spacing-sm) var(--spacing-md); font-size: 0.9rem; /* تعديل */ }
+
 
 /* --- 12. تحسينات خاصة بالهواتف (Mobile Optimizations) --- */
 @media (max-width: 767px) {
-    /* ... (كل التعديلات السابقة للهواتف تبقى كما هي) ... */
+    .hotspot-container {
+        padding: var(--spacing-xs); /* تقليل الحشو أكثر */
+    }
 
-    /* تعديل كرت الصنف لصور أكبر ونص متناسق */
+    .hotspot-header {
+        padding-bottom: var(--spacing-xs);
+        margin-bottom: var(--spacing-sm);
+        gap: var(--spacing-xs);
+    }
+    .header-main-content #hotel-title {
+        font-size: clamp(1.3rem, 4.5vw, 1.6rem);
+    }
+    .welcome-message {
+        font-size: clamp(0.75rem, 2.2vw, 0.85rem);
+    }
+    .cart-icon-container button, .theme-switcher {
+        font-size: 1.2rem; /* تصغير الأيقونات أكثر */
+    }
+    #cart-item-count {
+        font-size: 0.45rem;
+        min-width: 8px;
+        padding: 1px 2px;
+        top: -5px;
+        right: -5px;
+    }
+
+    .category-tabs {
+        margin-bottom: var(--spacing-sm);
+        gap: 0; /* إزالة المسافة لجعلها أكثر إحكامًا */
+        padding: 0 var(--spacing-xs); /* حشو جانبي لمنع الالتصاق بالحواف */
+    }
+    .tab-button {
+        padding: 4px var(--spacing-xs); /* حشو أقل */
+        font-size: 0.7rem; /* خط أصغر */
+        border-radius: 3px;
+        border-width: 1px; /* حد أنحف */
+        margin: 0 1px; /* مسافة صغيرة جدًا بين الأزرار */
+    }
+
     #menu-items-grid {
-        grid-template-columns: 1fr; /* عمود واحد دائمًا على الهواتف */
-        gap: var(--spacing-md); /* مسافة مناسبة بين الكروت */
+        gap: var(--spacing-xs);
     }
-    .menu-item-card {
-        flex-direction: column; /* الصورة فوق، النص تحت */
-        align-items: stretch;
-        border-radius: var(--border-radius-sm); /* حواف أقل دائرية قليلاً */
-        box-shadow: var(--shadow-sm); /* ظل أخف */
+    @media (max-width: 480px) { /* عرض كرت واحد في السطر */
+        #menu-items-grid { grid-template-columns: 1fr; }
+        .menu-item-card { flex-direction: column; align-items: stretch; padding: 0; gap: 0; }
+        .menu-item-card img { width: 100%; height: 180px; /* زيادة ارتفاع الصورة */ border-radius: var(--border-radius-sm) var(--border-radius-sm) 0 0; flex-shrink: 1; }
+        .menu-item-card .item-info { padding: var(--spacing-sm); }
     }
-    .menu-item-card img {
-        width: 100%;
-        height: 200px; /* زيادة ارتفاع الصورة بشكل ملحوظ */
-        object-fit: cover;
-        border-radius: var(--border-radius-sm) var(--border-radius-sm) 0 0; /* دائرية للحواف العلوية فقط */
+     /* للشاشات بين 481px و 767px، إذا كان هناك عمودان أو أكثر */
+    .menu-item-card img { /* الصورة العادية */
+        height: 170px; /* ارتفاع جيد للصور */
     }
-    .menu-item-card .item-info {
-        padding: var(--spacing-sm); /* حشو داخلي مناسب */
-        display: flex;
-        flex-direction: column;
-        flex-grow: 1;
-    }
+
     .item-info h3 {
-        font-size: 1.1rem; /* حجم مناسب لاسم الصنف */
-        margin-bottom: var(--spacing-xs);
+        font-size: 1rem; /* تعديل */
     }
     .item-info .description {
-        font-size: 0.8rem;
-        line-height: 1.5; /* تحسين تباعد الأسطر */
-        margin-bottom: var(--spacing-sm);
-        -webkit-line-clamp: 3; /* السماح بثلاثة أسطر للوصف إذا أمكن */
-        min-height: calc(0.8rem * 1.5 * 3); /* مساحة لثلاثة أسطر */
-    }
-    .item-info > div:last-child { /* حاوية السعر والزر */
-        margin-top: auto; /* دفعها لأسفل */
-        align-items: center; /* محاذاة رأسية للسعر والزر */
+        font-size: 0.75rem; /* تعديل */
+        -webkit-line-clamp: 2;
+        min-height: calc(0.75rem * 1.4 * 2);
     }
     .item-info .price {
-        font-size: 1.15rem; /* حجم جيد للسعر */
+        font-size: 1rem; /* تعديل */
     }
     .add-to-cart-button {
-        padding: 6px var(--spacing-sm); /* حشو مناسب للزر */
+        padding: 4px var(--spacing-xs); /* تعديل */
+        font-size: 0.65rem; /* تعديل */
+    }
+
+    /* الشريط الجانبي للسلة (قائمة الطلب) */
+    .cart-sidebar {
+        max-width: 260px; /* أصغر عرض ممكن مع الحفاظ على الوظيفة */
+        /* أو width: 80%; max-width: 260px; */
+    }
+    .cart-header h2 {
+        font-size: 0.9rem; /* تصغير إضافي */
+    }
+    .close-button-cart {
+        font-size: 1.3rem; /* تصغير إضافي */
+    }
+    .cart-items {
+        padding: var(--spacing-xs); /* تقليل الحشو بشكل كبير */
+    }
+    .cart-item-entry {
+        gap: 2px; /* تقليل المسافة بشكل كبير */
+        padding-bottom: var(--spacing-xs);
+        margin-bottom: var(--spacing-xs);
+    }
+    .cart-item-entry img {
+        width: 40px; /* تصغير الصورة بشكل كبير */
+        height: 40px;
+    }
+    .cart-item-details span:first-child {
+        font-size: 0.75rem; /* تصغير اسم الصنف */
+    }
+    .cart-item-details .item-quantity-controls {
+        margin: 1px 0;
+    }
+    .cart-item-details .quantity-change-btn {
+        width: 18px; /* تصغير أزرار +/- بشكل كبير */
+        height: 18px;
+        font-size: 0.7rem;
+    }
+    .cart-item-details .quantity-display {
+        min-width: 12px;
+        font-size: 0.75rem;
+    }
+    .cart-item-details .item-subtotal-price {
+        font-size: 0.7rem; /* تصغير الإجمالي الفرعي */
+    }
+    .cart-item-actions .remove-from-cart-btn {
+        font-size: 0.8rem; /* تصغير زر الحذف */
+    }
+    .cart-summary {
+        padding: var(--spacing-xs);
+    }
+    .cart-summary p {
+        font-size: 0.95rem; /* تصغير الإجمالي */
+    }
+    .cart-summary .action-button {
+        padding: 5px var(--spacing-xs);
+        font-size: 0.75rem;
+    }
+
+
+    /* النوافذ المنبثقة (Modals) */
+    .modal-content {
+        padding: var(--spacing-xs);
+        max-width: 94%;
+    }
+    .item-details-modal-content .modal-item-image {
+        max-height: 22vh; /* تقليل ارتفاع الصورة أكثر */
+    }
+    .item-details-modal-content .modal-item-name {
+        font-size: clamp(0.9rem, 3vw, 1.1rem); /* تصغير اسم الصنف */
+    }
+    .item-details-modal-content .modal-item-description {
+        font-size: 0.75rem; /* تصغير الوصف */
+        max-height: 12vh; /* تقليل ارتفاع الوصف */
+        line-height: 1.4;
+    }
+    .item-details-modal-content .modal-item-price {
+        font-size: clamp(1rem, 3.5vw, 1.3rem); /* تصغير السعر */
+    }
+    .close-button {
+        font-size: 1.4rem; /* تصغير زر الإغلاق */
+        width: 24px;
+        height: 24px;
+    }
+
+    /* Modal إنهاء الطلب والفاتورة */
+    .checkout-modal-content h2, .receipt-modal-content h2:not(.receipt-header h2) {
+        font-size: clamp(1rem, 3.8vw, 1.3rem); /* تصغير عناوين الـmodals */
+    }
+    #checkout-summary-items li {
+        font-size: 0.75rem; /* تصغير خط ملخص الطلب */
+    }
+    .checkout-total {
+        font-size: clamp(0.9rem, 3.5vw, 1.2rem); /* تصغير الإجمالي */
+    }
+    .room-input-group label {
+        font-size: 0.8rem; /* تصغير خط ملصق رقم الغرفة */
+    }
+    .room-input-group input[type="text"] {
+        padding: 5px; /* تقليل حشو حقل الإدخال */
         font-size: 0.8rem;
     }
+    .checkout-modal-content .action-button {
+        padding: 5px var(--spacing-xs);
+        font-size: 0.75rem;
+    }
 
-
-    /* الشريط الجانبي للسلة (قائمة الطلب) - تصغير معقول */
-    .cart-sidebar {
-        max-width: 300px; /* عرض مناسب على الجوال */
+    /* الفاتورة المعروضة على الشاشة (قبل الطباعة أو الحفظ) - تعديلات إضافية */
+    .receipt-modal-content {
+        padding: var(--spacing-xs) 2px; /* تقليل الحشو الجانبي أكثر */
     }
-    /* ... (بقية تصغيرات السلة تبقى كما في الرد السابق، مع مراجعة القيم لتكون متوازنة) ... */
-    .cart-item-entry img { width: 50px; height: 50px; }
-    .cart-item-details span:first-child { font-size: 0.9rem; }
-
-
-    /* الفاتورة المعروضة على الشاشة للجوال - تصميم محسن */
-    .receipt-modal-content { /* تعديل padding لمحتوى الـmodal الخاص بالفاتورة */
-        padding: var(--spacing-sm);
+    #printable-receipt-area {
+        padding: var(--spacing-sm) var(--spacing-xs); /* حشو داخلي مناسب للفاتورة المعروضة */
+        font-size: 0.8rem; /* حجم خط أساسي مقروء للفاتورة على الجوال */
+        max-width: 96%; /* جعلها أعرض قليلاً لتناسب المحتوى */
+        line-height: 1.5; /* تحسين قابلية القراءة */
+        border-radius: var(--border-radius-sm); /* توحيد دائرية الحواف */
     }
-    #printable-receipt-area { /* منطقة الفاتورة الفعلية للعرض على الشاشة */
-        font-family: var(--font-body); /* خط مقروء للشاشة */
-        color: var(--color-text);
-        background-color: var(--color-surface);
-        padding: var(--spacing-md); /* حشو داخلي مناسب */
-        margin: 0 auto var(--spacing-md) auto;
-        max-width: 95%; /* تشغل معظم عرض شاشة الجوال */
-        border: 1px solid var(--color-border);
-        border-radius: var(--border-radius-md); /* حواف أكثر دائرية */
-        box-shadow: var(--shadow-md);
-        line-height: 1.6; /* تباعد أسطر جيد */
-        font-size: 0.9rem; /* حجم خط أساسي جيد */
-    }
-    body.dark-mode #printable-receipt-area {
-        color: var(--color-text);
-        background-color: var(--color-surface);
-        border-color: var(--color-border);
-    }
-    /* تعديلات على عناصر الفاتورة الداخلية لتكون أوضح على الشاشة */
-    #printable-receipt-area .receipt-header {
-        margin-bottom: var(--spacing-sm);
-    }
-    #printable-receipt-area .receipt-logo {
-        max-width: 65px; /* شعار أكبر قليلاً */
-        filter: none;
-    }
-    #printable-receipt-area .receipt-header h2#receipt-header-title { /* العنوان الثابت للفاتورة */
-        font-family: var(--font-display);
-        font-size: 1.2rem; /* حجم جيد لعنوان الفاتورة */
-        color: var(--color-primary) !important;
-        margin-top: var(--spacing-xs);
+    #printable-receipt-area .receipt-header h2 { /* عنوان الفاتورة */
+        font-size: 1.1rem; /* حجم أكبر قليلاً لعنوان الفاتورة */
     }
     #printable-receipt-area #receipt-restaurant-name {
-        font-size: 1rem; /* اسم المطعم بحجم مقروء */
-        font-weight: 500;
-        color: var(--color-secondary) !important;
+        font-size: 0.95rem; /* حجم مناسب لاسم المطعم */
     }
+    #printable-receipt-area .receipt-hotel-name,
+    #printable-receipt-area .receipt-address,
+    #printable-receipt-area .receipt-phone,
+    #printable-receipt-area .receipt-order-id,
+    #printable-receipt-area .receipt-cashier-name,
     #printable-receipt-area .receipt-info p {
-        font-size: 0.85rem; /* معلومات الطلب */
-        margin: var(--spacing-xs) 0;
-    }
-    #printable-receipt-area .receipt-table {
-        margin-bottom: var(--spacing-md); /* مسافة أكبر بعد الجدول */
+        font-size: 0.75rem; /* حجم مقروء للمعلومات */
     }
     #printable-receipt-area .receipt-table th,
     #printable-receipt-area .receipt-table td {
-        font-size: 0.85rem; /* حجم خط مقروء للجدول */
-        padding: var(--spacing-xs) 2px; /* تعديل الحشو ليناسب المحتوى */
+        font-size: 0.78rem; /* حجم خط مقروء للجدول */
+        padding: 2px; /* حشو أقل قليلاً للخلايا */
     }
-    #printable-receipt-area .receipt-table th {
-        font-weight: 500; /* تخفيف حدة الخط قليلاً */
-    }
-    #printable-receipt-area .receipt-table tfoot td {
-        font-size: 0.9rem; /* الإجماليات بحجم واضح */
-        padding-top: var(--spacing-sm);
-    }
-    #printable-receipt-area .receipt-table tfoot .value {
-        font-weight: 700; /* جعل القيم الإجمالية سميكة */
+     #printable-receipt-area .receipt-table tfoot td {
+        font-size: 0.82rem; /* الإجماليات أكبر قليلاً */
     }
     #printable-receipt-area .receipt-payment-details,
     #printable-receipt-area .receipt-thankyou,
     #printable-receipt-area .receipt-footer-notes {
-        font-size: 0.8rem; /* نصوص سفلية مقروءة */
-        margin-top: var(--spacing-sm);
+        font-size: 0.75rem; /* حجم مناسب للنصوص السفلية */
     }
 
-    /* أزرار التحكم بالفاتورة على الجوال */
     .receipt-actions-toolbar {
-        display: grid; /* استخدام grid لتوزيع أفضل للأزرار */
-        grid-template-columns: 1fr; /* زر واحد في كل سطر بشكل افتراضي */
-        gap: var(--spacing-sm); /* مسافة جيدة بين الأزرار */
-        padding: var(--spacing-sm) 0; /* إزالة الحشو الجانبي */
-        margin-top: var(--spacing-md);
-    }
-    @media (min-width: 400px) { /* إذا كان عرض الشاشة يسمح، يمكن وضع زرين جنبًا إلى جنب */
-        .receipt-actions-toolbar {
-            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-        }
+        flex-direction: row; /* إعادة الأزرار لتكون أفقية */
+        flex-wrap: nowrap; /* منع الالتفاف، الاعتماد على التمرير إذا لزم الأمر */
+        overflow-x: auto; /* تمرير أفقي لأزرار الفاتورة إذا تجاوزت العرض */
+        padding: var(--spacing-xs) 0; /* إزالة الحشو الجانبي للسماح بالتمرير الكامل */
+        justify-content: flex-start; /* محاذاة لليمين في RTL */
+        gap: var(--spacing-xs);
     }
     .receipt-actions-toolbar .action-button,
     .receipt-actions-toolbar .secondary-action {
-        width: 100%; /* الزر يشغل عرض عمود Grid */
-        font-size: 0.85rem; /* حجم خط مناسب للأزرار */
-        padding: var(--spacing-sm) var(--spacing-xs); /* حشو متوازن */
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        width: auto; /* الأزرار تأخذ عرضها الطبيعي */
+        flex-grow: 0; /* منع الأزرار من التمدد */
+        flex-shrink: 0; /* منع الأزرار من التقلص */
+        font-size: 0.78rem; /* خط مناسب للأزرار */
+        padding: 5px var(--spacing-sm); /* حشو متوازن */
+        white-space: nowrap; /* منع كسر النص داخل الزر */
     }
-    .receipt-actions-toolbar i, .receipt-actions-toolbar svg { /* لتوسيط الأيقونة SVG */
-        margin-right: var(--spacing-xs); /* أيقونة على يمين النص في RTL */
-        margin-left: 0;
-        width: 1em; /* حجم الأيقونة يتناسب مع الخط */
-        height: 1em;
-        vertical-align: middle; /* محاذاة رأسية أفضل */
-    }
-    /* تخصيص زر حفظ الصورة ليكون بارزًا */
-    #save-receipt-image-button {
-        background-color: var(--color-info); /* لون أزرق مميز */
-        color: white;
-        border: 1px solid var(--color-info);
-    }
-    body.dark-mode #save-receipt-image-button {
-        background-color: var(--color-info);
-        color: var(--color-background); /* نص داكن على خلفية فاتحة */
-    }
-    #save-receipt-image-button:hover:not(:disabled) {
-        background-color: Erfolg(var(--color-info), -15%) !important; /* تعتيم طفيف للون عند الهوفر */
+     .receipt-actions-toolbar i {
+        display: inline-block; /* إعادة إظهار الأيقونات */
+        margin-right: 3px;
+        font-size: 0.9em; /* حجم الأيقونة يتناسب مع الخط */
     }
 
+
+    /* الإشعارات */
+    .toast-notification {
+        bottom: 2px; /* تقريب الإشعار أكثر */
+        padding: 4px var(--spacing-xs);
+        font-size: 0.75rem;
+        max-width: 88%;
+    }
 }
-/* نهاية @media (max-width: 767px) */
 
 
 /* --- 13. أنماط الطباعة (مهمة للفاتورة) --- */
 @media print {
-    /* ... (أنماط الطباعة تبقى كما هي من الرد السابق، مع التأكيد على خط الكاشير للفاتورة) ... */
-    #printable-receipt-area {
+    /* ... (أنماط الطباعة تبقى كما هي من الرد السابق) ... */
+    body { background-color: #fff !important; color: #000 !important; /* ... */ }
+    .no-print, .hotspot-container /* ...إلخ */ { display: none !important; }
+    #receipt-modal { /* ... */ }
+    #receipt-modal .receipt-modal-content { /* ... */ width: 80mm !important; /* ... */ }
+    #printable-receipt-area { /* هنا نستخدم خط الكاشير للطباعة */
         font-family: 'Courier New', Courier, monospace !important;
-        font-size: 9pt !important; /* حجم خط أصغر قليلاً للطباعة على ورق كاشير ضيق */
-        max-width: 76mm !important; /* عرض ورق الكاشير الشائع */
-        padding: 3mm !important; /* هوامش صغيرة للطباعة */
+        font-size: 9.5pt !important; /* تأكيد حجم الخط للطباعة */
+        /* ... بقية أنماط منطقة الطباعة للفاتورة ... */
+        max-width: 100% !important;
+        padding: 5mm 3mm !important;
+        margin: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
     }
     #printable-receipt-area * {
-        font-family: 'Courier New', Courier, monospace !important;
-        font-size: 9pt !important; /* ضمان أن كل شيء بنفس الحجم */
+        color: #000 !important;
+        background: transparent !important;
+        font-family: 'Courier New', Courier, monospace !important; /* تأكيد الخط لكل العناصر الداخلية */
     }
-    #printable-receipt-area .receipt-header h2#receipt-header-title,
+    #printable-receipt-area .receipt-header h2,
     #printable-receipt-area #receipt-restaurant-name {
-        font-size: 10pt !important; /* اسم المطعم والعنوان الرئيسي بحجم أكبر قليلاً */
-    }
-    #printable-receipt-area .receipt-logo {
-        max-width: 50px !important; /* شعار أصغر للطباعة */
+        font-size: 11pt !important;
     }
     /* ... بقية أنماط الطباعة ... */
 }
 
+/* فئات مساعدة */
 /* ... (فئات المساعدة تبقى كما هي) ... */
