@@ -527,3 +527,142 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     updateCartDisplay(); // تحديث عرض السلة عند التحميل (قد تكون هناك عناصر من LocalStorage)
 });
+// ... (كل الكود السابق من script.js يبقى كما هو) ...
+
+// تأكد من أن هذه الدالة موجودة ومستدعاة بشكل صحيح
+// وتأكد من أن لديك العناصر الجديدة للفاتورة في HTML (مثل receipt-header-title و vat-rate-display)
+function showReceiptModal(roomNumber, confirmedCart, orderId) {
+    if (!receiptModal) return;
+
+    // ملء معلومات المطعم الأساسية
+    if (receiptRestaurantNameEl) receiptRestaurantNameEl.textContent = hotelName; // اسم الفندق/المطعم من menu-data.js
+    if (document.getElementById('receipt-header-title')) document.getElementById('receipt-header-title').textContent = "فاتورة طلب طعام"; // أو "فاتورة ضريبية مبسطة"
+
+    // ملء معلومات الطلب
+    if (receiptOrderIdEl) receiptOrderIdEl.textContent = orderId;
+    if (receiptRoomNumberEl) receiptRoomNumberEl.textContent = roomNumber || "غير محدد";
+    
+    const now = new Date();
+    if (receiptDateEl) receiptDateEl.textContent = now.toLocaleDateString('ar-SA', { year: 'numeric', month: 'long', day: 'numeric' });
+    if (receiptTimeEl) receiptTimeEl.textContent = now.toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit', hour12: true });
+    if (receiptCashierNameEl) receiptCashierNameEl.textContent = "نظام الطلبات الآلي"; // أو اسم عام
+
+    // ملء جدول الأصناف وحساب الإجماليات
+    if (receiptItemsTbody) receiptItemsTbody.innerHTML = '';
+    let subtotal = 0;
+    confirmedCart.forEach(item => {
+        const itemTotal = item.price * item.quantity;
+        const row = receiptItemsTbody.insertRow();
+        row.innerHTML = `
+            <td class="item-name-col">${item.name}</td>
+            <td class="qty-col">${item.quantity}</td>
+            <td class="price-col">${item.price.toFixed(2)}</td>
+            <td class="subtotal-col">${itemTotal.toFixed(2)}</td>
+        `;
+        subtotal += itemTotal;
+    });
+
+    const currentVatRate = VAT_RATE * 100; // VAT_RATE يجب أن يكون معرفاً (مثلاً 0.15)
+    if (document.getElementById('vat-rate-display')) document.getElementById('vat-rate-display').textContent = currentVatRate.toFixed(0);
+    
+    const vatAmount = subtotal * VAT_RATE;
+    const grandTotalWithVat = subtotal + vatAmount;
+
+    if (receiptSubtotalEl) receiptSubtotalEl.textContent = subtotal.toFixed(2);
+    if (receiptVatEl) receiptVatEl.textContent = vatAmount.toFixed(2);
+    if (receiptGrandTotalValueEl) receiptGrandTotalValueEl.textContent = grandTotalWithVat.toFixed(2);
+
+    if(document.getElementById('receipt-payment-method')) document.getElementById('receipt-payment-method').textContent = `على الغرفة (${roomNumber})`;
+
+
+    closeCheckoutModal(); // تأكد من إغلاق نافذة الطلب قبل عرض الفاتورة
+    receiptModal.style.display = 'flex';
+    bodyElement.style.overflow = 'hidden';
+    setTimeout(() => receiptModal.classList.add('visible'), 10);
+}
+
+
+// وظيفة حفظ الصورة (تأكد من وجود مكتبة html2canvas)
+if (saveReceiptImageButton && typeof html2canvas !== 'undefined') {
+    saveReceiptImageButton.addEventListener('click', () => {
+        const receiptArea = document.getElementById('printable-receipt-area');
+        if (!receiptArea) {
+            showToast("خطأ: لم يتم العثور على منطقة الفاتورة.", 3000, 'error');
+            return;
+        }
+
+        // إضافة كلاس مؤقت لتغيير الخط إلى Courier New قبل الالتقاط
+        receiptArea.classList.add('prepare-for-image-capture');
+
+        const options = {
+            scale: 2.5, // زيادة الدقة
+            useCORS: true,
+            backgroundColor: '#ffffff',
+            logging: false,
+            onclone: (document) => { // للتأكد من تطبيق الخطوط بشكل صحيح في النسخة المستنسخة
+                const clonedReceiptArea = document.getElementById('printable-receipt-area');
+                if (clonedReceiptArea) {
+                    clonedReceiptArea.style.fontFamily = "'Courier New', Courier, monospace";
+                    // يمكنك تطبيق أنماط إضافية هنا إذا لزم الأمر للالتقاط
+                    const elementsToStyle = clonedReceiptArea.querySelectorAll('*');
+                    elementsToStyle.forEach(el => {
+                        el.style.fontFamily = "'Courier New', Courier, monospace";
+                        // قد تحتاج لتعديل أحجام الخطوط هنا لتناسب شكل إيصال الكاشير
+                        // el.style.fontSize = '9pt'; // مثال
+                    });
+                }
+            }
+        };
+
+        const originalButtonText = saveReceiptImageButton.innerHTML;
+        saveReceiptImageButton.disabled = true;
+        saveReceiptImageButton.innerHTML = ' <i class="fas fa-spinner fa-spin" style="margin-left: 5px;"></i> جارٍ الحفظ...';
+
+        html2canvas(receiptArea, options).then(canvas => {
+            receiptArea.classList.remove('prepare-for-image-capture'); // إزالة الكلاس بعد الالتقاط
+            const imageURL = canvas.toDataURL('image/png');
+            const downloadLink = document.createElement('a');
+            const orderIdForFilename = document.getElementById('receipt-order-id-val')?.textContent || 'طلب';
+            const timestamp = new Date().toISOString().slice(0, 10).replace(/-/g, ""); // YYYYMMDD
+            downloadLink.href = imageURL;
+            downloadLink.download = `فاتورة_${orderIdForFilename}_${timestamp}.png`;
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+            showToast("تم حفظ الفاتورة كصورة!", 2500, 'success');
+        }).catch(err => {
+            receiptArea.classList.remove('prepare-for-image-capture');
+            console.error("Error saving receipt as image:", err);
+            showToast("حدث خطأ أثناء حفظ الفاتورة.", 3000, 'error');
+        }).finally(() => {
+            saveReceiptImageButton.disabled = false;
+            saveReceiptImageButton.innerHTML = originalButtonText;
+        });
+    });
+} else if (saveReceiptImageButton) {
+    saveReceiptImageButton.title = "مكتبة html2canvas غير متوفرة";
+    saveReceiptImageButton.style.opacity = "0.5";
+    saveReceiptImageButton.style.cursor = "not-allowed";
+    console.warn("html2canvas library not loaded. 'Save as Image' feature is effectively disabled.");
+}
+
+// إضافة كلاس CSS مؤقت لتغيير الخط قبل التقاط الصورة
+// هذا الكلاس سيتم تطبيقه بواسطة JavaScript قبل html2canvas وإزالته بعد ذلك
+/*
+.prepare-for-image-capture,
+.prepare-for-image-capture * {
+    font-family: 'Courier New', Courier, monospace !important;
+    font-size: 9pt !important; // أو الحجم المناسب لشكل إيصال الكاشير
+    line-height: 1.3 !important;
+    color: #000 !important; // ضمان نص أسود للصورة
+    background-color: #fff !important; // ضمان خلفية بيضاء للصورة
+}
+#printable-receipt-area.prepare-for-image-capture {
+    border: none !important; // إزالة أي حدود عند التقاط الصورة
+    box-shadow: none !important;
+    padding: 3mm !important; // هوامش صغيرة للصورة
+    max-width: 76mm !important; // عرض ورقة الكاشير للصورة
+}
+*/
+// ملاحظة: تم نقل منطق تغيير الخط إلى خيار onclone في html2canvas لضمان تطبيقه على النسخة المستنسخة.
+// لا يزال بإمكانك استخدام الكلاس .prepare-for-image-capture لتطبيق أنماط أخرى إذا لزم الأمر.
