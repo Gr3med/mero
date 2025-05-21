@@ -8,21 +8,21 @@ const menuCategories = {
             id: "drink001",
             name: "عصير مانجو",
             description: "عصير مانجو طازج ومنعش.",
-            price: 7, // السعر كرقم
+            price: 2000, // السعر كرقم
             image: "images/mango-juice.jpg"
         },
         {
             id: "drink002",
             name: "ماء معدني",
             description: "مياه معدنية نقية.",
-            price: 3,
+            price: 800,
             image: "images/water.jpg"
         },
         {
             id: "drink003",
             name: "بيبسي",
             description: "مشروب غازي منعش.",
-            price: 5,
+            price: 1000,
             image: "images/pepsi.jpg"
         }
     ],
@@ -31,14 +31,14 @@ const menuCategories = {
             id: "qallab001",
             name: "فول",
             description: "طبق فول تقليدي غني بالنكهة.",
-            price: 10,
+            price: 2000,
             image: "images/foul.jpg"
         },
         {
             id: "qallab002",
             name: "عدس",
             description: "شوربة عدس دافئة ومغذية.",
-            price: 10,
+            price: 2000,
             image: "images/lentil.jpg"
         }
     ],
@@ -47,14 +47,14 @@ const menuCategories = {
             id: "rice001",
             name: "أرز مندي",
             description: "أرز مندي شهي مع بهارات خاصة.",
-            price: 20,
+            price: 4000,
             image: "images/mendy.jpg"
         },
         {
             id: "rice002",
             name: "أرز كبسة",
             description: "الكبسة التقليدية الغنية بالنكهات.",
-            price: 22,
+            price: 4500,
             image: "images/kabsa.jpg"
         }
     ],
@@ -63,7 +63,7 @@ const menuCategories = {
             id: "broast001",
             name: "بروست دجاج",
             description: "قطع دجاج بروستد مقرمشة ولذيذة.",
-            price: 25,
+            price: 6000,
             image: "images/broast.jpg"
         }
     ],
@@ -72,7 +72,7 @@ const menuCategories = {
             id: "chicken001",
             name: "شواية دجاج",
             description: "دجاج كامل مشوي على الشواية بتتبيلة مميزة.",
-            price: 30,
+            price: 12000,
             image: "images/grilled-chicken.jpg"
         }
     ],
@@ -81,21 +81,21 @@ const menuCategories = {
             id: "fastfood001",
             name: "برجر لحم",
             description: "برجر لحم طازج مع الخضروات والصوص.",
-            price: 15,
+            price: 5000,
             image: "images/burger.jpg"
         },
         {
             id: "fastfood002",
             name: "شاورما دجاج",
             description: "ساندويتش شاورما دجاج بخبز طازج.",
-            price: 12,
+            price: 4000,
             image: "images/shawarma.jpg"
         },
         {
             id: "fastfood003",
             name: "بيتزا صغيرة",
             description: "بيتزا بحجم شخصي مع إضافاتك المفضلة.",
-            price: 18,
+            price: 5000,
             image: "images/pizza.jpg"
         }
     ]
