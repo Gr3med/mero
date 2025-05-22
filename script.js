@@ -645,7 +645,82 @@ if (saveReceiptImageButton && typeof html2canvas !== 'undefined') {
     saveReceiptImageButton.style.cursor = "not-allowed";
     console.warn("html2canvas library not loaded. 'Save as Image' feature is effectively disabled.");
 }
+// دالة حفظ الفاتورة كصورة
+function saveReceiptAsImage() {
+    const receiptArea = document.getElementById('printable-receipt-area');
+    if (!receiptArea) {
+        showToast("خطأ: لم يتم العثور على منطقة الفاتورة.", 3000, 'error');
+        return;
+    }
 
+    // تحميل مكتبة html2canvas ديناميكياً إذا لم تكن محملة
+    if (typeof html2canvas === 'undefined') {
+        const script = document.createElement('script');
+        script.src = 'https://html2canvas.hertzen.com/dist/html2canvas.min.js';
+        script.onload = () => {
+            // بعد تحميل المكتبة، استدع الدالة مرة أخرى
+            saveReceiptAsImage();
+        };
+        script.onerror = () => {
+            showToast("خطأ في تحميل مكتبة حفظ الصور.", 3000, 'error');
+        };
+        document.head.appendChild(script);
+        return;
+    }
+
+    // إعداد خيارات html2canvas
+    const options = {
+        scale: 2, // زيادة الدقة
+        logging: false,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: '#FFFFFF',
+        onclone: (clonedDoc) => {
+            // تأكد من أن الفاتورة في النسخة المستنسخة تبدو كما نريد
+            const clonedReceipt = clonedDoc.getElementById('printable-receipt-area');
+            if (clonedReceipt) {
+                clonedReceipt.style.fontFamily = "'Courier New', monospace";
+                clonedReceipt.style.width = "80mm";
+                clonedReceipt.style.padding = "10px";
+            }
+        }
+    };
+
+    // تغيير حالة الزر أثناء المعالجة
+    const saveBtn = document.getElementById('save-receipt-image-button');
+    const originalText = saveBtn.innerHTML;
+    saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الحفظ...';
+    saveBtn.disabled = true;
+
+    // تحويل الفاتورة إلى صورة
+    html2canvas(receiptArea, options).then(canvas => {
+        // إنشاء رابط تنزيل
+        const link = document.createElement('a');
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+        link.download = `فاتورة-${hotelName}-${timestamp}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+        
+        showToast("تم حفظ الفاتورة كصورة بنجاح!", 2000, 'success');
+    }).catch(error => {
+        console.error('Error saving receipt as image:', error);
+        showToast("حدث خطأ أثناء حفظ الفاتورة كصورة", 3000, 'error');
+    }).finally(() => {
+        // استعادة حالة الزر الأصلية
+        saveBtn.innerHTML = originalText;
+        saveBtn.disabled = false;
+    });
+}
+
+// إضافة مستمع الحدث لزر حفظ الصورة
+document.addEventListener('DOMContentLoaded', () => {
+    // ... الكود الحالي الخاص بك ...
+
+    const saveReceiptImageButton = document.getElementById('save-receipt-image-button');
+    if (saveReceiptImageButton) {
+        saveReceiptImageButton.addEventListener('click', saveReceiptAsImage);
+    }
+});
 // إضافة كلاس CSS مؤقت لتغيير الخط قبل التقاط الصورة
 // هذا الكلاس سيتم تطبيقه بواسطة JavaScript قبل html2canvas وإزالته بعد ذلك
 /*
