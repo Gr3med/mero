@@ -723,7 +723,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 // إضافة كلاس CSS مؤقت لتغيير الخط قبل التقاط الصورة
 // هذا الكلاس سيتم تطبيقه بواسطة JavaScript قبل html2canvas وإزالته بعد ذلك
-/*
+
 .prepare-for-image-capture,
 .prepare-for-image-capture * {
     font-family: 'Courier New', Courier, monospace !important;
@@ -738,6 +738,6 @@ document.addEventListener('DOMContentLoaded', () => {
     padding: 3mm !important; // هوامش صغيرة للصورة
     max-width: 76mm !important; // عرض ورقة الكاشير للصورة
 }
-*/
+
 // ملاحظة: تم نقل منطق تغيير الخط إلى خيار onclone في html2canvas لضمان تطبيقه على النسخة المستنسخة.
 // لا يزال بإمكانك استخدام الكلاس .prepare-for-image-capture لتطبيق أنماط أخرى إذا لزم الأمر.
