@@ -1,12 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("DOM fully loaded. Initializing Marriott Hotspot Menu & Ordering System (Elegant Version).");
+    console.log("Hotel Menu System Initializing...");
 
-    if (typeof menuCategories === 'undefined' || typeof hotelName === 'undefined' || typeof welcomeMessage === 'undefined') {
-        console.error("CRITICAL ERROR: Essential data from menu-data.js is missing.");
-        document.body.innerHTML = "<p style='text-align:center;color:red;font-size:1.5em;padding:50px;'>خطأ: فشل تحميل بيانات القائمة. يرجى مراجعة ملف menu-data.js.</p>";
-        return;
-    }
-
+    // --- 1. DOM Element Selectors ---
     const bodyElement = document.body;
     const categoryTabsContainer = document.querySelector('.category-tabs');
     const menuItemsGrid = document.getElementById('menu-items-grid');
@@ -14,14 +9,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const welcomeTextElement = document.getElementById('welcome-text');
     const footerHotelNameElement = document.getElementById('footer-hotel-name');
     const currentYearElement = document.getElementById('current-year');
+    const themeSwitcher = document.getElementById('theme-switcher');
+    const toastNotification = document.getElementById('toast-notification');
 
-    const itemDetailsModal = document.getElementById('item-details-modal');
-    const modalImg = document.getElementById('modal-img');
-    const modalName = document.getElementById('modal-name');
-    const modalDescription = document.getElementById('modal-description');
-    const modalPrice = document.getElementById('modal-price');
-    const itemModalCloseBtn = itemDetailsModal ? itemDetailsModal.querySelector('.item-modal-close') : null;
-
+    // Cart Elements
     const cartToggleButton = document.getElementById('cart-toggle-button');
     const cartItemCountElement = document.getElementById('cart-item-count');
     const cartSidebar = document.getElementById('cart-sidebar');
@@ -30,148 +21,207 @@ document.addEventListener('DOMContentLoaded', () => {
     const cartTotalPriceElement = document.getElementById('cart-total-price');
     const checkoutButton = document.getElementById('checkout-button');
 
+    // Item Details Modal Elements
+    const itemDetailsModal = document.getElementById('item-details-modal');
+    const modalImg = document.getElementById('modal-img');
+    const modalName = document.getElementById('modal-name');
+    const modalDescription = document.getElementById('modal-description');
+    const modalPrice = document.getElementById('modal-price');
+    const modalAddToCartBtn = itemDetailsModal ? itemDetailsModal.querySelector('.modal-add-to-cart') : null;
+    const closeItemDetailsModalButton = itemDetailsModal ? itemDetailsModal.querySelector('.item-modal-close') : null;
+
+
+    // Checkout Modal Elements
     const checkoutModal = document.getElementById('checkout-modal');
     const checkoutSummaryItems = document.getElementById('checkout-summary-items');
     const checkoutGrandTotal = document.getElementById('checkout-grand-total');
     const roomNumberInput = document.getElementById('room-number-input');
     const confirmOrderButton = document.getElementById('confirm-order-button');
-    const checkoutModalCloseBtn = checkoutModal ? checkoutModal.querySelector('.checkout-modal-close') : null;
+    const closeCheckoutModalButton = checkoutModal ? checkoutModal.querySelector('.checkout-modal-close') : null;
 
+    // Receipt Modal Elements
     const receiptModal = document.getElementById('receipt-modal');
-    // عناصر الفاتورة المحدثة
-    const receiptRestaurantNameEl = document.getElementById('receipt-restaurant-name');
     const receiptOrderIdEl = document.getElementById('receipt-order-id-val');
     const receiptRoomNumberEl = document.getElementById('receipt-room-number');
     const receiptDateEl = document.getElementById('receipt-date');
     const receiptTimeEl = document.getElementById('receipt-time');
-    const receiptCashierNameEl = document.getElementById('receipt-cashier-name'); // افترض أن لديك هذا العنصر في HTML
     const receiptItemsTbody = document.getElementById('receipt-items-tbody');
     const receiptSubtotalEl = document.getElementById('receipt-subtotal-value');
     const receiptVatEl = document.getElementById('receipt-vat-value');
-    const receiptGrandTotalValueEl = document.getElementById('receipt-grand-total-value'); // هذا هو نفسه receiptGrandTotalValue في الكود السابق
+    const receiptGrandTotalValueEl = document.getElementById('receipt-grand-total-value');
     const printReceiptButton = document.getElementById('print-receipt-button');
     const saveReceiptImageButton = document.getElementById('save-receipt-image-button');
     const newOrderButton = document.getElementById('new-order-button');
-    const receiptModalCloseBtn = receiptModal ? receiptModal.querySelector('.receipt-modal-close') : null;
+    const closeReceiptModalButton = receiptModal ? receiptModal.querySelector('.receipt-modal-close') : null;
 
-    const toastNotification = document.getElementById('toast-notification');
 
-    let cart = JSON.parse(localStorage.getItem('marriottCart')) || []; // تحميل السلة من LocalStorage
-    let currentItemIndexInDetailsModal = 0;
-    let itemsInCurrentCategoryForDetailsModal = [];
+    // --- 2. State Variables ---
+    let cart = [];
+    let currentSelectedCategory = null;
     const VAT_RATE = 0.15;
+    let html2canvasLoaded = false; // For saving receipt as image
 
-    if (hotelTitleElement) hotelTitleElement.textContent = hotelName; // اسم الفندق الرئيسي
-    if (footerHotelNameElement) footerHotelNameElement.textContent = hotelName;
-    if (welcomeTextElement) welcomeTextElement.textContent = welcomeMessage;
-    if (currentYearElement) currentYearElement.textContent = new Date().getFullYear();
+    // --- 3. Initialization Functions ---
+    function checkPrerequisites() {
+        if (typeof menuCategories === 'undefined' || typeof hotelName === 'undefined' || typeof welcomeMessage === 'undefined') {
+            console.error("CRITICAL ERROR: Essential data from menu-data.js is missing.");
+            document.body.innerHTML = "<p style='text-align:center;color:red;font-size:1.5em;padding:50px;'>خطأ: فشل تحميل بيانات القائمة. يرجى مراجعة ملف menu-data.js أو الاتصال بالدعم.</p>";
+            return false;
+        }
+        // Check if essential DOM elements exist
+        if (!categoryTabsContainer || !menuItemsGrid || !cartSidebar || !itemDetailsModal || !checkoutModal || !receiptModal) {
+            console.error("CRITICAL ERROR: One or more essential DOM elements are missing from the HTML.");
+            // Optionally, display a user-friendly error message here too
+            return false;
+        }
+        return true;
+    }
 
-    const categories = Object.keys(menuCategories);
+    function initializeUI() {
+        if (hotelTitleElement) hotelTitleElement.textContent = hotelName;
+        if (footerHotelNameElement) footerHotelNameElement.textContent = hotelName;
+        if (welcomeTextElement) welcomeTextElement.textContent = welcomeMessage;
+        if (currentYearElement) currentYearElement.textContent = new Date().getFullYear();
 
-    const themeSwitcher = document.getElementById('theme-switcher');
-    function applyTheme(theme) {
-        if (theme === 'dark') {
-            bodyElement.classList.add('dark-mode');
-            if(themeSwitcher) themeSwitcher.innerHTML = '☀️'; // أو أيقونة شمس
+        loadCartFromLocalStorage();
+        updateCartDisplay();
+        setupTheme();
+        displayCategories();
+
+        if (Object.keys(menuCategories).length > 0) {
+            const firstCategory = Object.keys(menuCategories)[0];
+            setActiveCategory(firstCategory);
         } else {
-            bodyElement.classList.remove('dark-mode');
-            if(themeSwitcher) themeSwitcher.innerHTML = '🌙'; // أو أيقونة قمر
+            if (menuItemsGrid) menuItemsGrid.innerHTML = "<p class='no-items-message'>لا توجد أقسام في القائمة حالياً.</p>";
+            console.warn("No menu categories found in menu-data.js");
         }
     }
-    const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-    applyTheme(savedTheme);
-    if (themeSwitcher) {
-        themeSwitcher.addEventListener('click', () => {
-            const newTheme = bodyElement.classList.contains('dark-mode') ? 'light' : 'dark';
-            applyTheme(newTheme);
-            localStorage.setItem('theme', newTheme);
-        });
-    }
 
-    function showToast(message, duration = 3000, type = '') {
-        if (!toastNotification) return;
-        toastNotification.textContent = message;
-        toastNotification.className = 'toast-notification'; // Reset classes
-        if (type) {
-            toastNotification.classList.add(type); // 'success' or 'error'
+    // --- 4. Theme Management ---
+    function setupTheme() {
+        const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        applyTheme(savedTheme);
+        if (themeSwitcher) {
+            themeSwitcher.addEventListener('click', toggleTheme);
         }
-        toastNotification.classList.add('show');
-        setTimeout(() => {
-            toastNotification.classList.remove('show');
-        }, duration);
-    }
-    
-    function saveCartToLocalStorage() {
-        localStorage.setItem('marriottCart', JSON.stringify(cart));
     }
 
+    function applyTheme(theme) {
+        bodyElement.classList.toggle('dark-mode', theme === 'dark');
+        if (themeSwitcher) {
+            themeSwitcher.innerHTML = theme === 'dark' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+            themeSwitcher.setAttribute('aria-label', theme === 'dark' ? 'تبديل إلى الوضع النهاري' : 'تبديل إلى الوضع الليلي');
+        }
+    }
+
+    function toggleTheme() {
+        const newTheme = bodyElement.classList.contains('dark-mode') ? 'light' : 'dark';
+        applyTheme(newTheme);
+        localStorage.setItem('theme', newTheme);
+    }
+
+    // --- 5. Menu Display Functions ---
     function displayCategories() {
-        if (!categoryTabsContainer) { console.error("Category tabs container not found!"); return; }
+        if (!categoryTabsContainer) return;
         categoryTabsContainer.innerHTML = '';
-        if (categories.length === 0) { console.warn("No categories to display."); return; }
-
-        categories.forEach(category => {
+        Object.keys(menuCategories).forEach(category => {
             const button = document.createElement('button');
             button.classList.add('tab-button');
             button.textContent = category;
             button.dataset.category = category;
+            button.addEventListener('click', () => setActiveCategory(category));
             categoryTabsContainer.appendChild(button);
         });
     }
 
-    function displayMenuItems(category) {
-        if (!menuItemsGrid) { console.error("Menu items grid not found!"); return; }
+    function setActiveCategory(categoryName) {
+        if (!menuCategories[categoryName]) {
+            console.warn(`Category "${categoryName}" not found.`);
+            return;
+        }
+        currentSelectedCategory = categoryName;
+        displayMenuItems(menuCategories[categoryName]);
 
+        document.querySelectorAll('.category-tabs .tab-button').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.category === categoryName);
+        });
+    }
+
+    function displayMenuItems(items) {
+        if (!menuItemsGrid) return;
+        // Fade out existing items
         Array.from(menuItemsGrid.children).forEach((card, index) => {
             setTimeout(() => {
                 card.style.opacity = '0';
                 card.style.transform = 'translateY(20px) scale(0.95)';
-            }, index * 40);
+            }, index * 30);
         });
 
         setTimeout(() => {
             menuItemsGrid.innerHTML = '';
-            const items = menuCategories[category];
-
             if (!items || items.length === 0) {
                 menuItemsGrid.innerHTML = `<p class="no-items-message">لا توجد أصناف في هذا القسم حالياً.</p>`;
                 return;
             }
-
             items.forEach((item, index) => {
                 const card = document.createElement('div');
                 card.classList.add('menu-item-card');
                 card.dataset.itemId = item.id;
-                card.dataset.categoryName = category;
 
                 card.innerHTML = `
                     <img src="${item.image}" alt="${item.name}" loading="lazy" onerror="this.onerror=null; this.src='images/placeholder.png';">
                     <div class="item-info">
                         <h3>${item.name}</h3>
                         <p class="description">${item.description || ''}</p>
-                        <div> <!-- حاوية السعر والزر -->
-                            <p class="price">${item.price} ريال</p>
-                            <button class="add-to-cart-button" data-item-id="${item.id}">أضف للسلة</button>
+                        <div>
+                            <p class="price">${parseFloat(item.price).toFixed(2)} ريال</p>
+                            <button class="add-to-cart-button" data-item-id="${item.id}" aria-label="أضف ${item.name} إلى السلة">
+                                <i class="fas fa-cart-plus"></i> أضف للسلة
+                            </button>
                         </div>
                     </div>
                 `;
+                // Event listener for the card itself (to open details modal)
+                card.addEventListener('click', (e) => {
+                    if (!e.target.closest('.add-to-cart-button')) { // Don't open modal if add-to-cart is clicked
+                        openItemDetailsModal(item);
+                    }
+                });
+                // Event listener for the add-to-cart button on the card
+                const cardAddToCartBtn = card.querySelector('.add-to-cart-button');
+                if (cardAddToCartBtn) {
+                    cardAddToCartBtn.addEventListener('click', (e) => {
+                        e.stopPropagation(); // Prevent card click event
+                        addToCart(item.id);
+                    });
+                }
                 menuItemsGrid.appendChild(card);
-
+                // Fade in new item
                 setTimeout(() => {
                     card.style.opacity = '1';
                     card.style.transform = 'translateY(0) scale(1)';
-                }, (index * 60) + 200); // تعديل التوقيت
+                }, (index * 50) + 150); // Staggered animation
             });
-        }, 200 + (menuItemsGrid.children.length * 40));
+        }, (menuItemsGrid.children.length * 30) + 50); // Wait for fade out to roughly finish
+    }
+
+
+    // --- 6. Cart Management ---
+    function findItemById(itemId) {
+        for (const categoryName in menuCategories) {
+            const item = menuCategories[categoryName].find(i => i.id === itemId);
+            if (item) return item;
+        }
+        return null;
     }
 
     function addToCart(itemId) {
-        let itemToAdd = null;
-        for (const categoryName in menuCategories) {
-            itemToAdd = menuCategories[categoryName].find(item => item.id === itemId);
-            if (itemToAdd) break;
+        const itemToAdd = findItemById(itemId);
+        if (!itemToAdd) {
+            console.error(`Item with ID ${itemId} not found.`);
+            showToast(`خطأ: الصنف غير موجود.`, 3000, 'error');
+            return;
         }
-        if (!itemToAdd) { console.error(`Item with ID ${itemId} not found.`); return; }
 
         const existingItem = cart.find(cartItem => cartItem.id === itemId);
         if (existingItem) {
@@ -179,36 +229,38 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             cart.push({ ...itemToAdd, quantity: 1 });
         }
-        updateCartDisplay();
-        saveCartToLocalStorage();
-        showToast(`${itemToAdd.name} أضيف إلى السلة!`, 2000, 'success');
+        updateCartAndStorage();
+        showToast(`${itemToAdd.name} أضيف إلى السلة بنجاح!`, 2000, 'success');
     }
 
-    function updateCartItemQuantity(itemId, newQuantity) {
+    function updateCartItemQuantity(itemId, change) { // change can be 1 or -1
         const itemIndex = cart.findIndex(cartItem => cartItem.id === itemId);
         if (itemIndex > -1) {
-            if (newQuantity <= 0) {
-                cart.splice(itemIndex, 1);
-            } else {
-                cart[itemIndex].quantity = newQuantity;
+            cart[itemIndex].quantity += change;
+            if (cart[itemIndex].quantity <= 0) {
+                cart.splice(itemIndex, 1); // Remove item if quantity is 0 or less
+                 showToast(`${cart[itemIndex].name} أزيل من السلة.`, 2000);
             }
         }
-        updateCartDisplay();
-        saveCartToLocalStorage();
+        updateCartAndStorage();
     }
-
+    
     function removeFromCart(itemId) {
         const itemIndex = cart.findIndex(cartItem => cartItem.id === itemId);
         if (itemIndex > -1) {
-            showToast(`${cart[itemIndex].name} أزيل من السلة.`, 2000);
+            const itemName = cart[itemIndex].name;
             cart.splice(itemIndex, 1);
+            updateCartAndStorage();
+            showToast(`${itemName} أزيل من السلة.`, 2000);
         }
-        updateCartDisplay();
-        saveCartToLocalStorage();
     }
 
+
     function updateCartDisplay() {
-        if (!cartItemsList || !cartTotalPriceElement || !cartItemCountElement || !checkoutButton) return;
+        if (!cartItemsList || !cartTotalPriceElement || !cartItemCountElement || !checkoutButton) {
+            console.warn("One or more cart UI elements are missing.");
+            return;
+        }
         cartItemsList.innerHTML = '';
         let total = 0;
         let totalItemCount = 0;
@@ -219,7 +271,8 @@ document.addEventListener('DOMContentLoaded', () => {
             cart.forEach(item => {
                 const listItem = document.createElement('div');
                 listItem.classList.add('cart-item-entry');
-                const itemTotal = item.price * item.quantity;
+                const itemTotal = parseFloat(item.price) * item.quantity;
+
                 listItem.innerHTML = `
                     <img src="${item.image}" alt="${item.name}" onerror="this.onerror=null; this.src='images/placeholder.png';">
                     <div class="cart-item-details">
@@ -232,7 +285,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         <span class="item-subtotal-price">الإجمالي: ${itemTotal.toFixed(2)} ريال</span>
                     </div>
                     <div class="cart-item-actions">
-                        <button class="remove-from-cart-btn" data-id="${item.id}" title="إزالة من السلة" aria-label="إزالة ${item.name} من السلة">×</button>
+                        <button class="remove-from-cart-btn" data-id="${item.id}" title="إزالة من السلة" aria-label="إزالة ${item.name} من السلة">
+                            <i class="fas fa-trash"></i>
+                        </button>
                     </div>
                 `;
                 cartItemsList.appendChild(listItem);
@@ -245,79 +300,92 @@ document.addEventListener('DOMContentLoaded', () => {
         cartItemCountElement.textContent = totalItemCount;
         checkoutButton.disabled = cart.length === 0;
     }
+    
+    function updateCartAndStorage() {
+        updateCartDisplay();
+        saveCartToLocalStorage();
+    }
+
+    function saveCartToLocalStorage() {
+        localStorage.setItem('hotelMenuCart', JSON.stringify(cart));
+    }
+
+    function loadCartFromLocalStorage() {
+        const savedCart = localStorage.getItem('hotelMenuCart');
+        if (savedCart) {
+            cart = JSON.parse(savedCart);
+        }
+    }
+
+    // --- 7. Modal Management ---
+    function openModal(modalElement) {
+        if (!modalElement) return;
+        modalElement.style.display = 'flex';
+        bodyElement.style.overflow = 'hidden';
+        setTimeout(() => modalElement.classList.add('visible'), 10); // For CSS transition
+    }
+
+    function closeModal(modalElement) {
+        if (!modalElement) return;
+        modalElement.classList.remove('visible');
+        setTimeout(() => {
+            modalElement.style.display = 'none';
+            // Only restore body overflow if no other modals are visible
+            if (!document.querySelector('.modal.visible')) {
+                 bodyElement.style.overflow = 'auto';
+            }
+        }, 300); // Match CSS transition duration
+    }
 
     function openItemDetailsModal(itemData) {
-        if (!itemDetailsModal) return;
+        if (!itemDetailsModal || !modalImg || !modalName || !modalDescription || !modalPrice || !modalAddToCartBtn) return;
         modalImg.src = itemData.image;
         modalImg.alt = itemData.name;
         modalName.textContent = itemData.name;
         modalDescription.textContent = itemData.description || "لا يوجد وصف متوفر.";
-        modalPrice.textContent = `${itemData.price} ريال`;
-        
-        itemDetailsModal.style.display = 'flex';
-        bodyElement.style.overflow = 'hidden';
-        setTimeout(() => itemDetailsModal.classList.add('visible'), 10);
-    }
-    function closeItemDetailsModal() {
-        if (!itemDetailsModal) return;
-        itemDetailsModal.classList.remove('visible');
-        setTimeout(() => {
-            itemDetailsModal.style.display = 'none';
-            bodyElement.style.overflow = 'auto';
-        }, 300); // تطابق سرعة انتقال CSS
+        modalPrice.textContent = `${parseFloat(itemData.price).toFixed(2)} ريال`;
+        modalAddToCartBtn.dataset.itemId = itemData.id; // Set item ID for the modal's add to cart button
+        openModal(itemDetailsModal);
     }
 
     function showCheckoutModal() {
         if (!checkoutModal || cart.length === 0) return;
-        
         let summaryHTML = '<ul>';
         let grandTotal = 0;
         cart.forEach(item => {
-            const itemTotal = item.price * item.quantity;
+            const itemTotal = parseFloat(item.price) * item.quantity;
             summaryHTML += `<li>${item.name} (×${item.quantity}) <span>${itemTotal.toFixed(2)} ريال</span></li>`;
             grandTotal += itemTotal;
         });
         summaryHTML += '</ul>';
+
+        if (checkoutSummaryItems) checkoutSummaryItems.innerHTML = summaryHTML;
+        if (checkoutGrandTotal) checkoutGrandTotal.innerHTML = `الإجمالي النهائي: <span>${grandTotal.toFixed(2)}</span> ريال`; // Updated to match HTML structure
         
-        if(checkoutSummaryItems) checkoutSummaryItems.innerHTML = summaryHTML;
-        if(checkoutGrandTotal) checkoutGrandTotal.textContent = grandTotal.toFixed(2);
-        
-        if(cartSidebar) cartSidebar.classList.remove('visible');
-        checkoutModal.style.display = 'flex';
-        bodyElement.style.overflow = 'hidden';
-        setTimeout(() => checkoutModal.classList.add('visible'), 10);
-    }
-    function closeCheckoutModal() {
-        if (!checkoutModal) return;
-        checkoutModal.classList.remove('visible');
-        setTimeout(() => {
-            checkoutModal.style.display = 'none';
-            bodyElement.style.overflow = 'auto';
-        }, 300);
+        if (cartSidebar && cartSidebar.classList.contains('visible')) {
+            closeModal(cartSidebar); // Close cart sidebar if open
+        }
+        openModal(checkoutModal);
     }
 
     function showReceiptModal(roomNumber, confirmedCart, orderId) {
         if (!receiptModal) return;
-
-        if (receiptRestaurantNameEl) receiptRestaurantNameEl.textContent = hotelName; // أو اسم مطعم مخصص
         if (receiptOrderIdEl) receiptOrderIdEl.textContent = orderId;
-        if (receiptRoomNumberEl) receiptRoomNumberEl.textContent = roomNumber;
-        
+        if (receiptRoomNumberEl) receiptRoomNumberEl.textContent = roomNumber || "غير محدد";
         const now = new Date();
-        if (receiptDateEl) receiptDateEl.textContent = now.toLocaleDateString('ar-SA', { year: 'numeric', month: '2-digit', day: '2-digit' });
-        if (receiptTimeEl) receiptTimeEl.textContent = now.toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit', hour12: false });
-        if (receiptCashierNameEl) receiptCashierNameEl.textContent = "نظام الطلبات"; // أو أي اسم عام
+        if (receiptDateEl) receiptDateEl.textContent = now.toLocaleDateString('ar-SA', { year: 'numeric', month: 'long', day: 'numeric' });
+        if (receiptTimeEl) receiptTimeEl.textContent = now.toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit', hour12: true });
 
         if (receiptItemsTbody) receiptItemsTbody.innerHTML = '';
         let subtotal = 0;
         confirmedCart.forEach(item => {
-            const itemTotal = item.price * item.quantity;
+            const itemTotal = parseFloat(item.price) * item.quantity;
             const row = receiptItemsTbody.insertRow();
             row.innerHTML = `
                 <td class="item-name-col">${item.name}</td>
                 <td class="qty-col">${item.quantity}</td>
-                <td class="price-col">${item.price.toFixed(2)}</td>
-                <td class="subtotal-col">${itemTotal.toFixed(2)}</td>
+                <td class="price-col">${parseFloat(item.price).toFixed(2)} ريال</td>
+                <td class="subtotal-col">${itemTotal.toFixed(2)} ريال</td>
             `;
             subtotal += itemTotal;
         });
@@ -329,401 +397,200 @@ document.addEventListener('DOMContentLoaded', () => {
         if (receiptVatEl) receiptVatEl.textContent = vatAmount.toFixed(2);
         if (receiptGrandTotalValueEl) receiptGrandTotalValueEl.textContent = grandTotalWithVat.toFixed(2);
 
-        closeCheckoutModal();
-        receiptModal.style.display = 'flex';
-        bodyElement.style.overflow = 'hidden';
-        setTimeout(() => receiptModal.classList.add('visible'), 10);
-    }
-    function closeReceiptModal() {
-        if(!receiptModal) return;
-        receiptModal.classList.remove('visible');
-        setTimeout(() => {
-            receiptModal.style.display = 'none';
-            bodyElement.style.overflow = 'auto';
-        }, 300);
-    }
-
-    if (cartToggleButton) {
-        cartToggleButton.addEventListener('click', () => {
-            if(cartSidebar) cartSidebar.classList.toggle('visible');
-            bodyElement.style.overflow = cartSidebar.classList.contains('visible') ? 'hidden' : 'auto';
-        });
-    }
-    if (closeCartButton) {
-        closeCartButton.addEventListener('click', () => {
-            if(cartSidebar) cartSidebar.classList.remove('visible');
-            bodyElement.style.overflow = 'auto';
-        });
-    }
-
-    if (cartItemsList) {
-        cartItemsList.addEventListener('click', (e) => {
-            const target = e.target;
-            const itemId = target.dataset.id || target.closest('[data-id]')?.dataset.id;
-            if (!itemId) return;
-
-            if (target.classList.contains('remove-from-cart-btn') || target.closest('.remove-from-cart-btn')) {
-                removeFromCart(itemId);
-            } else if (target.classList.contains('quantity-change-btn') || target.closest('.quantity-change-btn')) {
-                const changeButton = target.classList.contains('quantity-change-btn') ? target : target.closest('.quantity-change-btn');
-                const change = parseInt(changeButton.dataset.change, 10);
-                const itemInCart = cart.find(i => i.id === itemId);
-                if (itemInCart) {
-                    updateCartItemQuantity(itemId, itemInCart.quantity + change);
-                }
-            }
-        });
-    }
-    
-    if (menuItemsGrid) {
-        menuItemsGrid.addEventListener('click', (e) => {
-            const card = e.target.closest('.menu-item-card');
-            if (!card) return;
-
-            const itemId = card.dataset.itemId;
-            const categoryName = card.dataset.categoryName;
-
-            if (e.target.classList.contains('add-to-cart-button') || e.target.closest('.add-to-cart-button')) {
-                e.stopPropagation();
-                addToCart(itemId);
-            } else {
-                const itemData = menuCategories[categoryName]?.find(item => item.id === itemId);
-                if (itemData) {
-                    itemsInCurrentCategoryForDetailsModal = menuCategories[categoryName];
-                    currentItemIndexInDetailsModal = itemsInCurrentCategoryForDetailsModal.findIndex(i => i.id === itemId);
-                    openItemDetailsModal(itemData);
-                }
-            }
-        });
-    }
-
-    if (itemModalCloseBtn) itemModalCloseBtn.addEventListener('click', closeItemDetailsModal);
-    if (itemDetailsModal) {
-        itemDetailsModal.addEventListener('click', (e) => { if (e.target === itemDetailsModal) closeItemDetailsModal(); });
-    }
-    
-    window.addEventListener('keydown', (e) => { 
-        if (e.key === 'Escape') {
-            if (itemDetailsModal && itemDetailsModal.classList.contains('visible')) closeItemDetailsModal();
-            if (cartSidebar && cartSidebar.classList.contains('visible')) {
-                cartSidebar.classList.remove('visible');
-                bodyElement.style.overflow = 'auto';
-            }
-            if (checkoutModal && checkoutModal.classList.contains('visible')) closeCheckoutModal();
-            if (receiptModal && receiptModal.classList.contains('visible')) closeReceiptModal();
+        if (checkoutModal && checkoutModal.classList.contains('visible')) {
+            closeModal(checkoutModal); // Close checkout modal if open
         }
-    });
-
-    if (checkoutButton) {
-        checkoutButton.addEventListener('click', showCheckoutModal);
-    }
-    if (checkoutModalCloseBtn) checkoutModalCloseBtn.addEventListener('click', closeCheckoutModal);
-    if (checkoutModal) {
-        checkoutModal.addEventListener('click', (e) => { if (e.target === checkoutModal) closeCheckoutModal(); });
+        openModal(receiptModal);
     }
 
-    if (confirmOrderButton) {
-        confirmOrderButton.addEventListener('click', () => {
+    // --- 8. Receipt Actions ---
+    function generateOrderId() {
+        return `ORD-${Date.now().toString().slice(-7)}`;
+    }
+    
+    async function saveReceiptAsImage() {
+        const receiptArea = document.getElementById('printable-receipt-area');
+        if (!receiptArea || !saveReceiptImageButton) {
+            showToast("خطأ: لم يتم العثور على منطقة الفاتورة أو زر الحفظ.", 3000, 'error');
+            return;
+        }
+
+        if (!html2canvasLoaded) {
+            try {
+                await loadHtml2CanvasScript(); // Renamed for clarity
+                html2canvasLoaded = true;
+            } catch (error) {
+                console.error("Failed to load html2canvas:", error);
+                showToast("خطأ في تحميل مكتبة حفظ الصور. يرجى المحاولة مرة أخرى.", 3000, 'error');
+                return;
+            }
+        }
+
+        const originalButtonContent = saveReceiptImageButton.innerHTML;
+        saveReceiptImageButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الحفظ...';
+        saveReceiptImageButton.disabled = true;
+
+        try {
+            const canvas = await html2canvas(receiptArea, {
+                scale: 2.5, // Increased scale for better quality
+                logging: false,
+                useCORS: true,
+                backgroundColor: '#FFFFFF', // Ensure white background
+                onclone: (clonedDoc) => {
+                    const clonedReceipt = clonedDoc.getElementById('printable-receipt-area');
+                    if (clonedReceipt) {
+                        // Apply print-like styles for image capture for consistency
+                        clonedReceipt.style.fontFamily = getComputedStyle(document.documentElement).getPropertyValue('--font-receipt-print').trim();
+                        clonedReceipt.style.fontSize = "9pt"; // Consistent with print
+                        clonedReceipt.style.maxWidth = "76mm"; // Standard receipt width
+                        clonedReceipt.style.padding = "3mm";
+                        clonedReceipt.style.border = "none";
+                        clonedReceipt.style.boxShadow = "none";
+                        Array.from(clonedReceipt.querySelectorAll('*')).forEach(el => {
+                            el.style.color = '#000000';
+                            el.style.backgroundColor = 'transparent';
+                        });
+                         const logo = clonedReceipt.querySelector('.receipt-logo');
+                        if(logo) logo.style.filter = 'grayscale(100%) contrast(180%)';
+                    }
+                }
+            });
+            const link = document.createElement('a');
+            const timestamp = new Date().toISOString().replace(/[:.T-]/g, '').slice(0, -4); // Shorter timestamp
+            link.download = `فاتورة_${hotelName.replace(/\s+/g, '_')}_${timestamp}.png`;
+            link.href = canvas.toDataURL('image/png');
+            document.body.appendChild(link); // Required for Firefox
+            link.click();
+            document.body.removeChild(link);
+            showToast("تم حفظ الفاتورة كصورة بنجاح!", 2500, 'success');
+        } catch (error) {
+            console.error('Error saving receipt as image:', error);
+            showToast("حدث خطأ أثناء حفظ الفاتورة كصورة.", 3000, 'error');
+        } finally {
+            saveReceiptImageButton.innerHTML = originalButtonContent;
+            saveReceiptImageButton.disabled = false;
+        }
+    }
+
+    function loadHtml2CanvasScript() {
+        return new Promise((resolve, reject) => {
+            if (typeof html2canvas !== 'undefined') {
+                resolve();
+                return;
+            }
+            const script = document.createElement('script');
+            script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js'; // Using CDN
+            script.integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgHhsubOulPWS9EAUceKajiXsPqcAUbORtnHhpUcmXA==";
+            script.crossOrigin="anonymous";
+            script.referrerPolicy="no-referrer";
+            script.onload = () => resolve();
+            script.onerror = (err) => reject(new Error('Failed to load html2canvas.js: ' + err));
+            document.head.appendChild(script);
+        });
+    }
+
+
+    // --- 9. Helper Functions ---
+    function showToast(message, duration = 3000, type = '') {
+        if (!toastNotification) return;
+        toastNotification.textContent = message;
+        toastNotification.className = 'toast-notification'; // Reset classes
+        if (type) toastNotification.classList.add(type);
+        toastNotification.classList.add('show');
+        setTimeout(() => {
+            toastNotification.classList.remove('show');
+        }, duration);
+    }
+
+    // --- 10. Event Listeners Setup ---
+    function setupEventListeners() {
+        // Cart Toggle
+        if (cartToggleButton) cartToggleButton.addEventListener('click', () => {
+            cartSidebar.classList.contains('visible') ? closeModal(cartSidebar) : openModal(cartSidebar);
+        });
+        if (closeCartButton) closeCartButton.addEventListener('click', () => closeModal(cartSidebar));
+
+        // Cart Item Interactions (delegated)
+        if (cartItemsList) {
+            cartItemsList.addEventListener('click', (e) => {
+                const quantityBtn = e.target.closest('.quantity-change-btn');
+                const removeBtn = e.target.closest('.remove-from-cart-btn');
+                if (quantityBtn) {
+                    updateCartItemQuantity(quantityBtn.dataset.id, parseInt(quantityBtn.dataset.change));
+                } else if (removeBtn) {
+                    removeFromCart(removeBtn.dataset.id);
+                }
+            });
+        }
+        
+        // Item Details Modal
+        if (closeItemDetailsModalButton) closeItemDetailsModalButton.addEventListener('click', () => closeModal(itemDetailsModal));
+        if (itemDetailsModal) itemDetailsModal.addEventListener('click', (e) => { // Click outside content to close
+            if (e.target === itemDetailsModal) closeModal(itemDetailsModal);
+        });
+        if (modalAddToCartBtn) modalAddToCartBtn.addEventListener('click', () => {
+            addToCart(modalAddToCartBtn.dataset.itemId);
+            closeModal(itemDetailsModal); // Close modal after adding
+        });
+
+        // Checkout
+        if (checkoutButton) checkoutButton.addEventListener('click', showCheckoutModal);
+        if (closeCheckoutModalButton) closeCheckoutModalButton.addEventListener('click', () => closeModal(checkoutModal));
+        if (checkoutModal) checkoutModal.addEventListener('click', (e) => {
+            if (e.target === checkoutModal) closeModal(checkoutModal);
+        });
+        if (confirmOrderButton) confirmOrderButton.addEventListener('click', () => {
             const roomNum = roomNumberInput ? roomNumberInput.value.trim() : null;
             if (!roomNum) {
                 showToast("الرجاء إدخال رقم الغرفة.", 3000, 'error');
-                if(roomNumberInput) roomNumberInput.focus();
+                if (roomNumberInput) roomNumberInput.focus();
                 return;
             }
             if (cart.length === 0) {
                 showToast("سلة الطلبات فارغة!", 3000, 'error');
                 return;
             }
-            
-            const currentOrderId = `ORD-${Date.now().toString().slice(-7)}`; // رقم طلب فريد أكثر
-            console.log("Order Confirmed:", { orderId: currentOrderId, roomNumber: roomNum, items: cart });
-            showToast(`تم إرسال طلبك للغرفة ${roomNum} بنجاح!`, 3000, 'success');
-            
-            showReceiptModal(roomNum, [...cart], currentOrderId);
-            cart = [];
-            updateCartDisplay();
-            saveCartToLocalStorage(); // حفظ السلة الفارغة
-            if(roomNumberInput) roomNumberInput.value = '';
+            const currentOrderId = generateOrderId();
+            showReceiptModal(roomNum, [...cart], currentOrderId); // Pass a copy of the cart
+            cart = []; // Clear cart
+            updateCartAndStorage();
+            if (roomNumberInput) roomNumberInput.value = '';
         });
-    }
 
-    if (printReceiptButton) {
-        printReceiptButton.addEventListener('click', () => {
-            window.print();
-        });
-    }
-
-    if (saveReceiptImageButton && typeof html2canvas !== 'undefined') {
-        saveReceiptImageButton.addEventListener('click', () => {
-            const receiptArea = document.getElementById('printable-receipt-area');
-            if (!receiptArea) {
-                console.error("Receipt area not found for saving as image.");
-                showToast("خطأ: لم يتم العثور على منطقة الفاتورة.", 3000, 'error');
-                return;
-            }
-
-            const options = { scale: 2.5, useCORS: true, backgroundColor: '#ffffff', logging: false };
-            saveReceiptImageButton.disabled = true;
-            saveReceiptImageButton.innerHTML = 'جارٍ الحفظ...'; //  أو أيقونة تحميل
-
-            html2canvas(receiptArea, options).then(canvas => {
-                const imageURL = canvas.toDataURL('image/png');
-                const downloadLink = document.createElement('a');
-                const timestamp = new Date().toISOString().slice(0, 19).replace(/[-:T]/g, "");
-                downloadLink.href = imageURL;
-                downloadLink.download = `فاتورة_طلب_${timestamp}.png`;
-                document.body.appendChild(downloadLink);
-                downloadLink.click();
-                document.body.removeChild(downloadLink);
-                showToast("تم حفظ الفاتورة كصورة!", 2500, 'success');
-            }).catch(err => {
-                console.error("Error saving receipt as image:", err);
-                showToast("حدث خطأ أثناء حفظ الفاتورة.", 3000, 'error');
-            }).finally(() => {
-                saveReceiptImageButton.disabled = false;
-                saveReceiptImageButton.innerHTML = 'حفظ كصورة'; //  أو أيقونة حفظ الصورة
-            });
-        });
-    } else if (saveReceiptImageButton) {
-        // إذا لم يتم تحميل html2canvas، يمكن إخفاء الزر أو إظهار رسالة
-        saveReceiptImageButton.style.display = 'none';
-        console.warn("html2canvas library not loaded. 'Save as Image' feature is disabled.");
-    }
-
-
-    if (newOrderButton) {
-        newOrderButton.addEventListener('click', () => {
-            closeReceiptModal();
-            // لا حاجة لإعادة إظهار العناصر، هي ليست مخفية
-        });
-    }
-    if (receiptModalCloseBtn) receiptModalCloseBtn.addEventListener('click', closeReceiptModal);
-    if (receiptModal) {
-        receiptModal.addEventListener('click', (e) => { if (e.target === receiptModal) closeReceiptModal(); });
-    }
-    
-    if (categoryTabsContainer) {
-        categoryTabsContainer.addEventListener('click', (e) => {
-            const button = e.target.closest('.tab-button');
-            if (button && !button.classList.contains('active')) {
-                document.querySelectorAll('.tab-button.active').forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
-                displayMenuItems(button.dataset.category);
-            }
-        });
-    }
-
-    if (categories.length > 0) {
-        displayCategories();
-        const firstTabButton = categoryTabsContainer ? categoryTabsContainer.querySelector('.tab-button') : null;
-        if (firstTabButton) {
-            firstTabButton.classList.add('active');
-            displayMenuItems(categories[0]);
-        } else if (menuItemsGrid) { // احتياطي إذا لم يتم العثور على الأزرار
-             displayMenuItems(categories[0]);
-        }
-    } else if (menuItemsGrid) {
-        menuItemsGrid.innerHTML = "<p class='no-items-message'>لا توجد أقسام في القائمة حالياً.</p>";
-    }
-    updateCartDisplay(); // تحديث عرض السلة عند التحميل (قد تكون هناك عناصر من LocalStorage)
-});
-// ... (كل الكود السابق من script.js يبقى كما هو) ...
-
-// تأكد من أن هذه الدالة موجودة ومستدعاة بشكل صحيح
-// وتأكد من أن لديك العناصر الجديدة للفاتورة في HTML (مثل receipt-header-title و vat-rate-display)
-function showReceiptModal(roomNumber, confirmedCart, orderId) {
-    if (!receiptModal) return;
-
-    // ملء معلومات المطعم الأساسية
-    if (receiptRestaurantNameEl) receiptRestaurantNameEl.textContent = hotelName; // اسم الفندق/المطعم من menu-data.js
-    if (document.getElementById('receipt-header-title')) document.getElementById('receipt-header-title').textContent = "فاتورة طلب طعام"; // أو "فاتورة ضريبية مبسطة"
-
-    // ملء معلومات الطلب
-    if (receiptOrderIdEl) receiptOrderIdEl.textContent = orderId;
-    if (receiptRoomNumberEl) receiptRoomNumberEl.textContent = roomNumber || "غير محدد";
-    
-    const now = new Date();
-    if (receiptDateEl) receiptDateEl.textContent = now.toLocaleDateString('ar-SA', { year: 'numeric', month: 'long', day: 'numeric' });
-    if (receiptTimeEl) receiptTimeEl.textContent = now.toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit', hour12: true });
-    if (receiptCashierNameEl) receiptCashierNameEl.textContent = "نظام الطلبات الآلي"; // أو اسم عام
-
-    // ملء جدول الأصناف وحساب الإجماليات
-    if (receiptItemsTbody) receiptItemsTbody.innerHTML = '';
-    let subtotal = 0;
-    confirmedCart.forEach(item => {
-        const itemTotal = item.price * item.quantity;
-        const row = receiptItemsTbody.insertRow();
-        row.innerHTML = `
-            <td class="item-name-col">${item.name}</td>
-            <td class="qty-col">${item.quantity}</td>
-            <td class="price-col">${item.price.toFixed(2)}</td>
-            <td class="subtotal-col">${itemTotal.toFixed(2)}</td>
-        `;
-        subtotal += itemTotal;
-    });
-
-    const currentVatRate = VAT_RATE * 100; // VAT_RATE يجب أن يكون معرفاً (مثلاً 0.15)
-    if (document.getElementById('vat-rate-display')) document.getElementById('vat-rate-display').textContent = currentVatRate.toFixed(0);
-    
-    const vatAmount = subtotal * VAT_RATE;
-    const grandTotalWithVat = subtotal + vatAmount;
-
-    if (receiptSubtotalEl) receiptSubtotalEl.textContent = subtotal.toFixed(2);
-    if (receiptVatEl) receiptVatEl.textContent = vatAmount.toFixed(2);
-    if (receiptGrandTotalValueEl) receiptGrandTotalValueEl.textContent = grandTotalWithVat.toFixed(2);
-
-    if(document.getElementById('receipt-payment-method')) document.getElementById('receipt-payment-method').textContent = `على الغرفة (${roomNumber})`;
-
-
-    closeCheckoutModal(); // تأكد من إغلاق نافذة الطلب قبل عرض الفاتورة
-    receiptModal.style.display = 'flex';
-    bodyElement.style.overflow = 'hidden';
-    setTimeout(() => receiptModal.classList.add('visible'), 10);
-}
-
-
-// وظيفة حفظ الصورة (تأكد من وجود مكتبة html2canvas)
-if (saveReceiptImageButton && typeof html2canvas !== 'undefined') {
-    saveReceiptImageButton.addEventListener('click', () => {
-        const receiptArea = document.getElementById('printable-receipt-area');
-        if (!receiptArea) {
-            showToast("خطأ: لم يتم العثور على منطقة الفاتورة.", 3000, 'error');
-            return;
+        // Receipt Modal
+        if (closeReceiptModalButton) {
+             closeReceiptModalButton.addEventListener('click', () => closeModal(receiptModal));
+        } else if(receiptModal) {
+            console.warn("Receipt modal close button (.receipt-modal-close) not found inside #receipt-modal, but receipt modal exists.");
         }
 
-        // إضافة كلاس مؤقت لتغيير الخط إلى Courier New قبل الالتقاط
-        receiptArea.classList.add('prepare-for-image-capture');
-
-        const options = {
-            scale: 2.5, // زيادة الدقة
-            useCORS: true,
-            backgroundColor: '#ffffff',
-            logging: false,
-            onclone: (document) => { // للتأكد من تطبيق الخطوط بشكل صحيح في النسخة المستنسخة
-                const clonedReceiptArea = document.getElementById('printable-receipt-area');
-                if (clonedReceiptArea) {
-                    clonedReceiptArea.style.fontFamily = "'Courier New', Courier, monospace";
-                    // يمكنك تطبيق أنماط إضافية هنا إذا لزم الأمر للالتقاط
-                    const elementsToStyle = clonedReceiptArea.querySelectorAll('*');
-                    elementsToStyle.forEach(el => {
-                        el.style.fontFamily = "'Courier New', Courier, monospace";
-                        // قد تحتاج لتعديل أحجام الخطوط هنا لتناسب شكل إيصال الكاشير
-                        // el.style.fontSize = '9pt'; // مثال
-                    });
-                }
-            }
-        };
-
-        const originalButtonText = saveReceiptImageButton.innerHTML;
-        saveReceiptImageButton.disabled = true;
-        saveReceiptImageButton.innerHTML = ' <i class="fas fa-spinner fa-spin" style="margin-left: 5px;"></i> جارٍ الحفظ...';
-
-        html2canvas(receiptArea, options).then(canvas => {
-            receiptArea.classList.remove('prepare-for-image-capture'); // إزالة الكلاس بعد الالتقاط
-            const imageURL = canvas.toDataURL('image/png');
-            const downloadLink = document.createElement('a');
-            const orderIdForFilename = document.getElementById('receipt-order-id-val')?.textContent || 'طلب';
-            const timestamp = new Date().toISOString().slice(0, 10).replace(/-/g, ""); // YYYYMMDD
-            downloadLink.href = imageURL;
-            downloadLink.download = `فاتورة_${orderIdForFilename}_${timestamp}.png`;
-            document.body.appendChild(downloadLink);
-            downloadLink.click();
-            document.body.removeChild(downloadLink);
-            showToast("تم حفظ الفاتورة كصورة!", 2500, 'success');
-        }).catch(err => {
-            receiptArea.classList.remove('prepare-for-image-capture');
-            console.error("Error saving receipt as image:", err);
-            showToast("حدث خطأ أثناء حفظ الفاتورة.", 3000, 'error');
-        }).finally(() => {
-            saveReceiptImageButton.disabled = false;
-            saveReceiptImageButton.innerHTML = originalButtonText;
+        if (receiptModal) receiptModal.addEventListener('click', (e) => { // Click outside content to close
+            if (e.target === receiptModal) closeModal(receiptModal);
         });
-    });
-} else if (saveReceiptImageButton) {
-    saveReceiptImageButton.title = "مكتبة html2canvas غير متوفرة";
-    saveReceiptImageButton.style.opacity = "0.5";
-    saveReceiptImageButton.style.cursor = "not-allowed";
-    console.warn("html2canvas library not loaded. 'Save as Image' feature is effectively disabled.");
-}
-// دالة حفظ الفاتورة كصورة
-function saveReceiptAsImage() {
-    const receiptArea = document.getElementById('printable-receipt-area');
-    if (!receiptArea) {
-        showToast("خطأ: لم يتم العثور على منطقة الفاتورة.", 3000, 'error');
-        return;
-    }
+        if (printReceiptButton) printReceiptButton.addEventListener('click', () => window.print());
+        if (saveReceiptImageButton) saveReceiptImageButton.addEventListener('click', saveReceiptAsImage);
+        if (newOrderButton) newOrderButton.addEventListener('click', () => {
+            closeModal(receiptModal);
+            // Optionally, navigate to the menu or reset other state
+        });
 
-    // تحميل مكتبة html2canvas ديناميكياً إذا لم تكن محملة
-    if (typeof html2canvas === 'undefined') {
-        const script = document.createElement('script');
-        script.src = 'https://html2canvas.hertzen.com/dist/html2canvas.min.js';
-        script.onload = () => {
-            // بعد تحميل المكتبة، استدع الدالة مرة أخرى
-            saveReceiptAsImage();
-        };
-        script.onerror = () => {
-            showToast("خطأ في تحميل مكتبة حفظ الصور.", 3000, 'error');
-        };
-        document.head.appendChild(script);
-        return;
-    }
-
-    // إعداد خيارات html2canvas
-    const options = {
-        scale: 2, // زيادة الدقة
-        logging: false,
-        useCORS: true,
-        allowTaint: true,
-        backgroundColor: '#FFFFFF',
-        onclone: (clonedDoc) => {
-            // تأكد من أن الفاتورة في النسخة المستنسخة تبدو كما نريد
-            const clonedReceipt = clonedDoc.getElementById('printable-receipt-area');
-            if (clonedReceipt) {
-                clonedReceipt.style.fontFamily = "'Courier New', monospace";
-                clonedReceipt.style.width = "80mm";
-                clonedReceipt.style.padding = "10px";
+        // Global Escape key handler for modals
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (itemDetailsModal && itemDetailsModal.classList.contains('visible')) closeModal(itemDetailsModal);
+                else if (cartSidebar && cartSidebar.classList.contains('visible')) closeModal(cartSidebar);
+                else if (checkoutModal && checkoutModal.classList.contains('visible')) closeModal(checkoutModal);
+                else if (receiptModal && receiptModal.classList.contains('visible')) closeModal(receiptModal);
             }
-        }
-    };
+        });
+    }
 
-    // تغيير حالة الزر أثناء المعالجة
-    const saveBtn = document.getElementById('save-receipt-image-button');
-    const originalText = saveBtn.innerHTML;
-    saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الحفظ...';
-    saveBtn.disabled = true;
-
-    // تحويل الفاتورة إلى صورة
-    html2canvas(receiptArea, options).then(canvas => {
-        // إنشاء رابط تنزيل
-        const link = document.createElement('a');
-        const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-        link.download = `فاتورة-${hotelName}-${timestamp}.png`;
-        link.href = canvas.toDataURL('image/png');
-        link.click();
-        
-        showToast("تم حفظ الفاتورة كصورة بنجاح!", 2000, 'success');
-    }).catch(error => {
-        console.error('Error saving receipt as image:', error);
-        showToast("حدث خطأ أثناء حفظ الفاتورة كصورة", 3000, 'error');
-    }).finally(() => {
-        // استعادة حالة الزر الأصلية
-        saveBtn.innerHTML = originalText;
-        saveBtn.disabled = false;
-    });
-}
-
-// إضافة مستمع الحدث لزر حفظ الصورة
-document.addEventListener('DOMContentLoaded', () => {
-    // ... الكود الحالي الخاص بك ...
-
-    const saveReceiptImageButton = document.getElementById('save-receipt-image-button');
-    if (saveReceiptImageButton) {
-        saveReceiptImageButton.addEventListener('click', saveReceiptAsImage);
+    // --- 11. Application Start ---
+    if (checkPrerequisites()) {
+        initializeUI();
+        setupEventListeners();
+        console.log("Hotel Menu System Initialized Successfully.");
+    } else {
+        console.error("Hotel Menu System Initialization Failed due to missing prerequisites.");
     }
 });
-// إضافة كلاس CSS مؤقت لتغيير الخط قبل التقاط الصورة
-// هذا الكلاس سيتم تطبيقه بواسطة JavaScript قبل html2canvas وإزالته بعد ذلك
-
-
-// ملاحظة: تم نقل منطق تغيير الخط إلى خيار onclone في html2canvas لضمان تطبيقه على النسخة المستنسخة.
-// لا يزال بإمكانك استخدام الكلاس .prepare-for-image-capture لتطبيق أنماط أخرى إذا لزم الأمر.

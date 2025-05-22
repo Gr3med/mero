@@ -1,67 +1,116 @@
-/* --- style.css - تصميم أنيق واحترافي ومتجاوب (مع تحسينات شاملة للهواتف) --- */
+/* --- style.css - Refined Professional Hotel Menu System --- */
 
-/* --- 1. متغيرات CSS أساسية وتصميم عام --- */
+/* --- 1. Core Variables & Global Resets --- */
 @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=Marhey:wght@400;600;700&display=swap');
 
 :root {
     --font-body: 'Tajawal', sans-serif;
-    --font-display: 'Marhey', sans-serif;
+    --font-display: 'Marhey', sans-serif; /* For headings, potentially more formal option if needed */
+    --font-receipt-onscreen: 'Tajawal', sans-serif; /* For on-screen receipt view */
+    --font-receipt-print: 'Courier New', Courier, monospace; /* For printed receipt */
 
-    --color-primary: #D4AF37;
-    --color-primary-dark: #B8860B;
-    --color-primary-rgb: 212, 175, 55;
+    /* Light Mode Palette - More Formal & Professional */
+    --color-primary-lm: #8A6F47; /* A richer, muted gold - can be replaced with a deep blue/burgundy */
+    /* --color-primary-lm: #2A3B4D; */ /* Example: Deep Navy Blue */
+    --color-primary-dark-lm: #6B5535;
+    /* --color-primary-dark-lm: #1E2A38; */ /* Darker Navy */
+    --color-primary-rgb-lm: 138, 111, 71;
+    /* --color-primary-rgb-lm: 42, 59, 77; */
 
-    --color-secondary: #2C3E50;
-    --color-secondary-light: #34495E;
-    --color-secondary-rgb: 44, 62, 80;
+    --color-secondary-lm: #333333; /* Dark grey for primary text */
+    --color-secondary-light-lm: #555555;
+    --color-secondary-rgb-lm: 51, 51, 51;
 
-    --color-accent: #E74C3C;
-    --color-accent-rgb: 231, 76, 60;
+    --color-accent-lm: #A0845E; /* Lighter, complementary to primary */
+    /* --color-accent-lm: #5C7A99; */ /* Accent for Navy */
+    --color-accent-rgb-lm: 160, 132, 94;
 
-    --color-text: #333333;
-    --color-text-muted: #7f8c8d;
-    --color-background: #FDFEFE;
-    --color-surface: #FFFFFF;
-    --color-border: #ECF0F1;
-    --color-success: #2ECC71;
-    --color-error: var(--color-accent);
-    --color-error-rgb: 231, 76, 60;
+    --color-text-lm: #212529;
+    --color-text-muted-lm: #6c757d;
+    --color-background-lm: #F4F6F8; /* Very light grey background */
+    --color-surface-lm: #FFFFFF;
+    --color-border-lm: #D1D5DB; /* Softer border color */
+    --color-success-lm: #10B981; /* Emerald green for success */
+    --color-error-lm: #EF4444; /* Clear red for errors */
 
-    --shadow-sm: 0 2px 4px rgba(0,0,0,0.04);
-    --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
-    --shadow-lg: 0 10px 25px rgba(0,0,0,0.1);
+    /* Dark Mode Palette */
+    --color-primary-dm: #C0A57A; /* Gold for dark mode, adjusted */
+    /* --color-primary-dm: #70A1D7; */ /* Lighter Blue for Dark Mode */
+    --color-primary-dark-dm: #A0845E;
+    /* --color-primary-dark-dm: #4F7CAC; */
+    --color-primary-rgb-dm: 192, 165, 122;
 
-    --border-radius-sm: 6px;
-    --border-radius-md: 10px;
-    --border-radius-lg: 16px;
+    --color-secondary-dm: #E5E7EB; /* Light grey for text in dark mode */
+    --color-secondary-light-dm: #D1D5DB;
+    --color-secondary-rgb-dm: 229, 231, 235;
 
-    --spacing-xs: 4px;
-    --spacing-sm: 8px;
-    --spacing-md: 16px;
-    --spacing-lg: 24px;
-    --spacing-xl: 32px;
+    --color-accent-dm: #D4B996;
+    /* --color-accent-dm: #8FB8DE; */
+    --color-accent-rgb-dm: 212, 185, 150;
 
-    --transition-fast: 0.2s ease-out;
-    --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --color-text-dm: #F3F4F6;
+    --color-text-muted-dm: #9CA3AF;
+    --color-background-dm: #111827; /* Dark blue-grey */
+    --color-surface-dm: #1F2937;   /* Slightly lighter surface */
+    --color-border-dm: #374151;
+    --color-success-dm: #34D399;
+    --color-error-dm: #F87171;
+
+
+    /* Dynamic Variables (initially light mode) */
+    --color-primary: var(--color-primary-lm);
+    --color-primary-dark: var(--color-primary-dark-lm);
+    --color-primary-rgb: var(--color-primary-rgb-lm);
+    --color-secondary: var(--color-secondary-lm);
+    --color-secondary-light: var(--color-secondary-light-lm);
+    --color-secondary-rgb: var(--color-secondary-rgb-lm);
+    --color-accent: var(--color-accent-lm);
+    --color-accent-rgb: var(--color-accent-rgb-lm);
+    --color-text: var(--color-text-lm);
+    --color-text-muted: var(--color-text-muted-lm);
+    --color-background: var(--color-background-lm);
+    --color-surface: var(--color-surface-lm);
+    --color-border: var(--color-border-lm);
+    --color-success: var(--color-success-lm);
+    --color-error: var(--color-error-lm);
+
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-md: 0 3px 6px rgba(0,0,0,0.06);
+    --shadow-lg: 0 8px 16px rgba(0,0,0,0.08);
+
+    --border-radius-sm: 5px;
+    --border-radius-md: 8px;
+    --border-radius-lg: 10px;
+
+    --spacing-xs: 0.25rem;  /* 4px */
+    --spacing-sm: 0.5rem;   /* 8px */
+    --spacing-md: 1rem;     /* 16px */
+    --spacing-lg: 1.5rem;   /* 24px */
+    --spacing-xl: 2rem;     /* 32px */
+
+    --transition-fast: 0.15s ease-out;
+    --transition-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 body.dark-mode {
-    --color-primary: #F1C40F;
-    --color-primary-dark: #D4AC0D;
-    --color-primary-rgb: 241, 196, 15;
-
-    --color-secondary: #ECF0F1;
-    --color-secondary-light: #BDC3C7;
-    --color-secondary-rgb: 236, 240, 241;
-
-    --color-text: #F5F5F5;
-    --color-text-muted: #95A5A6;
-    --color-background: #1C2833;
-    --color-surface: #283747;
-    --color-border: #34495E;
+    --color-primary: var(--color-primary-dm);
+    --color-primary-dark: var(--color-primary-dark-dm);
+    --color-primary-rgb: var(--color-primary-rgb-dm);
+    --color-secondary: var(--color-secondary-dm);
+    --color-secondary-light: var(--color-secondary-light-dm);
+    --color-secondary-rgb: var(--color-secondary-rgb-dm);
+    --color-accent: var(--color-accent-dm);
+    --color-accent-rgb: var(--color-accent-rgb-dm);
+    --color-text: var(--color-text-dm);
+    --color-text-muted: var(--color-text-muted-dm);
+    --color-background: var(--color-background-dm);
+    --color-surface: var(--color-surface-dm);
+    --color-border: var(--color-border-dm);
+    --color-success: var(--color-success-dm);
+    --color-error: var(--color-error-dm);
 }
 
-* {
+*, *::before, *::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -71,7 +120,7 @@ body {
     font-family: var(--font-body);
     background-color: var(--color-background);
     color: var(--color-text);
-    line-height: 1.7;
+    line-height: 1.65;
     font-size: 16px;
     transition: background-color var(--transition-normal), color var(--transition-normal);
     -webkit-font-smoothing: antialiased;
@@ -87,7 +136,7 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
-    font-weight: 600;
+    font-weight: 700; /* Bolder headings */
     line-height: 1.3;
     color: var(--color-secondary);
     margin-bottom: var(--spacing-md);
@@ -95,43 +144,47 @@ h1, h2, h3, h4, h5, h6 {
 body.dark-mode h1, body.dark-mode h2, body.dark-mode h3, body.dark-mode h4, body.dark-mode h5, body.dark-mode h6 {
     color: var(--color-primary);
 }
+h1 { font-size: clamp(1.8rem, 5vw, 2.5rem); }
+h2 { font-size: clamp(1.5rem, 4vw, 2rem); }
+h3 { font-size: clamp(1.15rem, 3vw, 1.4rem); }
 
-/* --- 2. الهيدر --- */
+/* --- 2. Header --- */
 .hotspot-header {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
     padding-bottom: var(--spacing-lg);
     margin-bottom: var(--spacing-lg);
     border-bottom: 1px solid var(--color-border);
-    position: relative;
+    gap: var(--spacing-md);
 }
 
-.header-main-content #hotel-title {
-    font-size: clamp(1.8rem, 5vw, 2.5rem);
+.logo-container { flex-grow: 1; }
+#hotel-title {
+    font-size: clamp(1.7rem, 5.5vw, 2.4rem);
     color: var(--color-primary);
-    margin-bottom: var(--spacing-xs);
-}
-body.dark-mode .header-main-content #hotel-title {
-    color: var(--color-primary);
+    margin-bottom: 0; /* Reduced margin */
+    line-height: 1.2;
 }
 .welcome-message {
     font-size: clamp(0.9rem, 2.5vw, 1rem);
     color: var(--color-text-muted);
+    margin-top: var(--spacing-xs);
 }
 
 .header-controls {
-    position: static;
     display: flex;
     align-items: center;
     gap: var(--spacing-md);
 }
 
+.cart-icon-container { position: relative; }
 .cart-icon-container button, .theme-switcher {
     background: transparent;
     border: none;
-    color: var(--color-secondary);
-    font-size: 1.7rem;
+    color: var(--color-secondary-light); /* Slightly lighter icon color */
+    font-size: 1.6rem; /* Adjusted icon size */
     cursor: pointer;
     padding: var(--spacing-sm);
     border-radius: 50%;
@@ -139,24 +192,22 @@ body.dark-mode .header-main-content #hotel-title {
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 40px;
+    height: 40px;
 }
 body.dark-mode .cart-icon-container button, body.dark-mode .theme-switcher {
     color: var(--color-primary);
 }
-
 .cart-icon-container button:hover, .theme-switcher:hover {
-    background-color: rgba(var(--color-primary-rgb), 0.1);
+    background-color: rgba(var(--color-primary-rgb), 0.08);
+    color: var(--color-primary);
     transform: scale(1.1);
 }
-body.dark-mode .cart-icon-container button:hover, body.dark-mode .theme-switcher:hover {
-    background-color: rgba(var(--color-primary-rgb), 0.15);
-}
-
 #cart-item-count {
     position: absolute;
-    top: 0px;
-    right: 0px;
-    background-color: var(--color-accent);
+    top: -3px;
+    right: -3px;
+    background-color: var(--color-error); /* Use error color for count */
     color: white;
     border-radius: 50%;
     padding: 2px 5px;
@@ -165,13 +216,10 @@ body.dark-mode .cart-icon-container button:hover, body.dark-mode .theme-switcher
     line-height: 1;
     min-width: 16px;
     text-align: center;
-    border: 1px solid var(--color-surface);
-}
-.cart-icon-container {
-    position: relative;
+    border: 1.5px solid var(--color-surface);
 }
 
-/* --- 3. أزرار الأقسام (Tabs) --- */
+/* --- 3. Category Tabs --- */
 .category-tabs {
     display: flex;
     flex-wrap: nowrap;
@@ -180,75 +228,61 @@ body.dark-mode .cart-icon-container button:hover, body.dark-mode .theme-switcher
     overflow-x: auto;
     padding-bottom: var(--spacing-sm);
     -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-primary) transparent;
 }
-.category-tabs::-webkit-scrollbar {
-    display: none;
-}
+.category-tabs::-webkit-scrollbar { height: 5px; }
+.category-tabs::-webkit-scrollbar-thumb { background-color: var(--color-primary); border-radius: var(--border-radius-lg); }
+.category-tabs::-webkit-scrollbar-track { background: rgba(var(--color-border-lm), 0.5); border-radius: var(--border-radius-lg); }
+body.dark-mode .category-tabs::-webkit-scrollbar-track { background: rgba(var(--color-border-dm), 0.5); }
+
 
 .tab-button {
-    padding: var(--spacing-sm) var(--spacing-lg);
+    padding: calc(var(--spacing-sm) - 2px) var(--spacing-md); /* Slightly smaller padding */
     border: 1px solid var(--color-border);
     background-color: var(--color-surface);
     color: var(--color-text-muted);
-    border-radius: var(--border-radius-lg);
+    border-radius: var(--border-radius-md); /* Consistent border radius */
     cursor: pointer;
     font-weight: 500;
+    font-size: clamp(0.85rem, 2.2vw, 0.95rem);
     white-space: nowrap;
     transition: all var(--transition-normal);
     box-shadow: var(--shadow-sm);
 }
 .tab-button:hover {
-    border-color: var(--color-primary);
-    color: var(--color-primary);
+    border-color: var(--color-accent);
+    color: var(--color-accent);
     box-shadow: var(--shadow-md);
-    transform: translateY(-2px);
 }
 .tab-button.active {
     background-color: var(--color-primary);
-    color: white;
+    color: white; /* Text on primary button */
     border-color: var(--color-primary);
-    font-weight: 700;
+    font-weight: 600; /* Slightly less bold */
     box-shadow: var(--shadow-md);
-    transform: translateY(-1px);
-}
-body.dark-mode .tab-button {
-    background-color: var(--color-surface);
-    border-color: var(--color-border);
-    color: var(--color-text-muted);
-}
-body.dark-mode .tab-button:hover {
-    border-color: var(--color-primary);
-    color: var(--color-primary);
+    transform: translateY(0); /* No lift for active tab, just color change */
 }
 body.dark-mode .tab-button.active {
-    background-color: var(--color-primary);
-    color: var(--color-secondary);
-    border-color: var(--color-primary);
+    color: var(--color-background); /* Dark text on primary for dark mode */
 }
 
-/* --- 4. شبكة أصناف الطعام (Menu Grid) --- */
+
+/* --- 4. Menu Items Grid --- */
 #menu-items-grid {
     display: grid;
-    grid-template-columns: 1fr; /* عمود واحد افتراضيًا (Mobile First) */
+    grid-template-columns: 1fr;
     gap: var(--spacing-lg);
 }
-
-/* عمودان للشاشات الأكبر من 550px */
 @media (min-width: 550px) {
-    #menu-items-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: var(--spacing-md);
-    }
+    #menu-items-grid { grid-template-columns: repeat(2, 1fr); }
 }
-
-/* يمكن إضافة المزيد من نقاط التوقف لأكثر من عمودين إذا لزم الأمر
-@media (min-width: 1024px) {
-    #menu-items-grid {
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    }
+@media (min-width: 992px) {
+    #menu-items-grid { grid-template-columns: repeat(3, 1fr); }
 }
-*/
+@media (min-width: 1200px) {
+    #menu-items-grid { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+}
 
 .menu-item-card {
     background-color: var(--color-surface);
@@ -259,22 +293,21 @@ body.dark-mode .tab-button.active {
     flex-direction: column;
     transition: transform var(--transition-normal), box-shadow var(--transition-normal);
     cursor: pointer;
+    border: 1px solid var(--color-border); /* Subtle border */
 }
 .menu-item-card:hover {
-    transform: translateY(-5px) scale(1.02);
+    transform: translateY(-4px);
     box-shadow: var(--shadow-lg);
 }
 
 .menu-item-card img {
     width: 100%;
-    height: 220px; /* زيادة ارتفاع الصورة الافتراضي */
+    height: 180px; /* Slightly reduced height */
     object-fit: cover;
     display: block;
-    transition: transform 0.4s ease-in-out;
+    transition: transform 0.3s ease-out;
 }
-.menu-item-card:hover img {
-    transform: scale(1.05);
-}
+.menu-item-card:hover img { transform: scale(1.03); }
 
 .item-info {
     padding: var(--spacing-md);
@@ -284,27 +317,25 @@ body.dark-mode .tab-button.active {
     text-align: right;
 }
 .item-info h3 {
-    font-size: 1.15rem;
-    margin-bottom: var(--spacing-sm);
+    font-size: clamp(1.05rem, 2.8vw, 1.25rem);
+    margin-bottom: var(--spacing-xs);
     color: var(--color-secondary);
-    font-weight: 700;
-    letter-spacing: 0.3px;
+    font-weight: 600; /* Bolder item name */
 }
-body.dark-mode .item-info h3 {
-    color: var(--color-primary);
-}
+body.dark-mode .item-info h3 { color: var(--color-primary); }
+
 .item-info .description {
-    font-size: 0.85rem;
+    font-size: clamp(0.75rem, 1.8vw, 0.85rem);
     color: var(--color-text-muted);
-    margin-bottom: var(--spacing-md);
+    margin-bottom: var(--spacing-sm);
     flex-grow: 1;
-    line-height: 1.6;
+    line-height: 1.5;
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 2; /* Max 2 lines for description */
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-    min-height: calc(0.85rem * 1.6 * 2);
+    min-height: calc(0.85rem * 1.5 * 2);
 }
 
 .item-info > div:last-child {
@@ -315,15 +346,29 @@ body.dark-mode .item-info h3 {
 }
 .item-info .price {
     font-family: var(--font-display);
-    font-size: 1.2rem;
+    font-size: clamp(1rem, 3vw, 1.3rem);
     font-weight: 700;
     color: var(--color-primary);
 }
-body.dark-mode .item-info .price {
-    color: var(--color-primary);
+
+@media (max-width: 549px) {
+    #menu-items-grid { gap: var(--spacing-md); }
+    .menu-item-card { flex-direction: row; align-items: center; min-height: 110px; }
+    .menu-item-card img {
+        width: 100px; height: 100px; /* Square image for horizontal */
+        border-left: 1px solid var(--color-border); border-bottom: none;
+        flex-shrink: 0;
+    }
+    .item-info { padding: var(--spacing-sm); }
+    .item-info h3 { font-size: 0.95rem; }
+    .item-info .description { font-size: 0.7rem; -webkit-line-clamp: 2; min-height: calc(0.7rem * 1.5 * 2); }
+    .item-info .price { font-size: 0.9rem; }
+    .add-to-cart-button { padding: var(--spacing-xs) var(--spacing-sm); font-size: 0.7rem; }
+    .item-info > div:last-child { flex-direction: row; align-items: center; gap: var(--spacing-sm); }
 }
 
-/* --- 5. زر إضافة للسلة داخل الكرت --- */
+
+/* --- 5. Add to Cart Button --- */
 .add-to-cart-button {
     background-color: var(--color-primary);
     color: white;
@@ -331,39 +376,39 @@ body.dark-mode .item-info .price {
     padding: var(--spacing-sm) var(--spacing-md);
     border-radius: var(--border-radius-md);
     font-weight: 500;
-    font-size: 0.9rem;
+    font-size: clamp(0.75rem, 2vw, 0.85rem);
     cursor: pointer;
     transition: all var(--transition-normal);
-    display: flex;
+    display: inline-flex; /* Changed to inline-flex */
     align-items: center;
     gap: var(--spacing-xs);
+    box-shadow: var(--shadow-sm);
+    line-height: 1.2; /* Ensure text vertical alignment */
+}
+.add-to-cart-button i {
+    font-size: 0.9em; /* Icon size relative to button text */
 }
 .add-to-cart-button:hover {
     background-color: var(--color-primary-dark);
-    transform: scale(1.05);
+    transform: scale(1.03);
+    box-shadow: var(--shadow-md);
 }
-body.dark-mode .add-to-cart-button {
-    background-color: var(--color-primary);
-    color: var(--color-secondary);
-}
-body.dark-mode .add-to-cart-button:hover {
-    background-color: var(--color-primary-dark);
-}
+body.dark-mode .add-to-cart-button { color: var(--color-background); }
 
-/* --- 6. الشريط الجانبي للسلة (Cart Sidebar) --- */
+/* --- 6. Cart Sidebar --- */
 .cart-sidebar {
     position: fixed;
     top: 0;
     left: -100%;
     width: 100%;
-    max-width: 380px;
+    max-width: 380px; /* Slightly narrower */
     height: 100%;
     background-color: var(--color-surface);
     box-shadow: var(--shadow-lg);
     z-index: 1005;
     display: flex;
     flex-direction: column;
-    transition: left 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55), right 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55), background-color var(--transition-normal);
+    transition: left 0.35s cubic-bezier(0.65, 0, 0.35, 1), right 0.35s cubic-bezier(0.65, 0, 0.35, 1);
 }
 html[dir="ltr"] .cart-sidebar { left: auto; right: -100%; }
 .cart-sidebar.visible { left: 0; }
@@ -373,963 +418,504 @@ html[dir="ltr"] .cart-sidebar.visible { right: 0; }
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: var(--spacing-md) var(--spacing-lg);
+    padding: var(--spacing-md);
     background-color: var(--color-secondary);
     color: white;
-    border-bottom: 3px solid var(--color-primary);
+    border-bottom: 2px solid var(--color-primary);
 }
 .cart-header h2 {
-    font-size: 1.4rem;
-    color: white;
-    margin: 0;
+    font-size: clamp(1.1rem, 3vw, 1.4rem);
+    color: inherit; margin: 0;
 }
 .close-button-cart {
-    background: none;
-    border: none;
-    color: inherit;
-    font-size: 1.8rem;
-    cursor: pointer;
-    padding: var(--spacing-xs);
-    line-height: 1;
-    transition: transform var(--transition-fast);
+    background: none; border: none; color: inherit;
+    font-size: 1.8rem; cursor: pointer; padding: var(--spacing-xs);
+    line-height: 1; transition: transform var(--transition-fast), color var(--transition-fast);
 }
-.close-button-cart:hover {
-    transform: scale(1.1);
-}
+.close-button-cart:hover { transform: scale(1.1) rotate(90deg); color: var(--color-primary); }
 
-.cart-items {
-    flex-grow: 1;
-    overflow-y: auto;
-    padding: var(--spacing-lg);
-}
-.empty-cart-message {
-    text-align: center;
-    padding: var(--spacing-xl) var(--spacing-md);
-    color: var(--color-text-muted);
-    font-size: 1.1rem;
-}
+.cart-items { flex-grow: 1; overflow-y: auto; padding: var(--spacing-md); }
+.empty-cart-message { text-align: center; padding: var(--spacing-xl) var(--spacing-md); color: var(--color-text-muted); font-size: 1.05rem; }
+
 .cart-item-entry {
-    display: flex;
-    align-items: center;
-    margin-bottom: var(--spacing-lg);
-    padding-bottom: var(--spacing-lg);
-    border-bottom: 1px solid var(--color-border);
-    gap: var(--spacing-md);
+    display: flex; align-items: flex-start; /* Align image top with text block */
+    margin-bottom: var(--spacing-md); padding-bottom: var(--spacing-md);
+    border-bottom: 1px solid var(--color-border); gap: var(--spacing-sm);
 }
-.cart-item-entry:last-child {
-    margin-bottom: 0;
-    padding-bottom: 0;
-    border-bottom: none;
-}
+.cart-item-entry:last-child { border-bottom: none; margin-bottom: 0; }
 .cart-item-entry img {
-    width: 70px;
-    height: 70px;
-    object-fit: cover;
-    border-radius: var(--border-radius-sm);
-    border: 1px solid var(--color-border);
+    width: 70px; height: 70px; object-fit: cover;
+    border-radius: var(--border-radius-sm); border: 1px solid var(--color-border);
+    flex-shrink: 0;
 }
 .cart-item-details { flex-grow: 1; }
-.cart-item-details span:first-child {
-    font-weight: 600;
-    font-size: 1rem;
-    display: block;
-    margin-bottom: var(--spacing-xs);
-    color: var(--color-secondary);
+.cart-item-details span:first-child { /* Name */
+    font-weight: 600; font-size: 0.95rem; display: block;
+    margin-bottom: var(--spacing-xs); color: var(--color-secondary);
 }
-body.dark-mode .cart-item-details span:first-child {
-    color: var(--color-primary);
-}
+body.dark-mode .cart-item-details span:first-child { color: var(--color-primary); }
 .cart-item-details .item-quantity-controls {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-xs);
-    margin: var(--spacing-xs) 0;
+    display: flex; align-items: center; gap: var(--spacing-xs);
+    margin: var(--spacing-xs) 0 var(--spacing-sm) 0;
 }
 .cart-item-details .quantity-change-btn {
-    background-color: var(--color-surface);
-    border: 1px solid var(--color-border);
-    color: var(--color-text);
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    font-size: 1.1rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all var(--transition-fast);
+    background-color: var(--color-surface); border: 1px solid var(--color-border);
+    color: var(--color-text); width: 28px; height: 28px;
+    border-radius: 50%; font-size: 1.1rem; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all var(--transition-fast); box-shadow: var(--shadow-sm);
 }
 .cart-item-details .quantity-change-btn:hover {
-    background-color: var(--color-primary);
-    color: white;
-    border-color: var(--color-primary);
-    transform: scale(1.1);
+    background-color: var(--color-primary); color: white;
+    border-color: var(--color-primary); transform: scale(1.05);
 }
-body.dark-mode .cart-item-details .quantity-change-btn {
-    background-color: var(--color-secondary-light);
-    border-color: var(--color-border);
-    color: var(--color-text);
-}
-body.dark-mode .cart-item-details .quantity-change-btn:hover {
-    background-color: var(--color-primary);
-    color: var(--color-secondary);
-}
-
+body.dark-mode .cart-item-details .quantity-change-btn:hover { color: var(--color-background); }
 .cart-item-details .quantity-display {
-    font-weight: 500;
-    min-width: 20px;
-    text-align: center;
+    font-weight: 500; min-width: 22px; text-align: center; font-size: 0.95rem;
 }
 .cart-item-details .item-subtotal-price {
-    font-size: 0.9rem;
-    font-weight: 700;
-    color: var(--color-primary);
-    display: block;
-    margin-top: var(--spacing-xs);
+    font-size: 0.9rem; font-weight: 600; color: var(--color-primary);
+    display: block; margin-top: var(--spacing-xs);
 }
 
+.cart-item-actions { margin-left: auto; /* Pushes button to the right in LTR */ }
 .cart-item-actions .remove-from-cart-btn {
-    background: none;
-    border: none;
-    color: var(--color-error);
-    font-size: 1.3rem;
-    cursor: pointer;
-    padding: var(--spacing-xs);
+    background: none; border: none; color: var(--color-error);
+    font-size: 1.3rem; cursor: pointer; padding: var(--spacing-sm);
     transition: color var(--transition-fast), transform var(--transition-fast);
+    border-radius: 50%;
 }
 .cart-item-actions .remove-from-cart-btn:hover {
-    color: darkred;
-    transform: scale(1.1);
+    color: var(--color-primary-dark); /* Using primary dark for a less harsh error hover */
+    transform: scale(1.1); background-color: rgba(var(--color-error-rgb), 0.05);
 }
 
 .cart-summary {
-    padding: var(--spacing-lg);
-    border-top: 1px solid var(--color-border);
-    background-color: var(--color-background);
-    text-align: center;
+    padding: var(--spacing-md); border-top: 1px solid var(--color-border);
+    background-color: var(--color-background); text-align: center;
 }
 .cart-summary p {
-    font-family: var(--font-display);
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin-bottom: var(--spacing-md);
+    font-family: var(--font-body); /* Using body font for total */
+    font-size: clamp(1.2rem, 3.5vw, 1.5rem);
+    font-weight: 600; margin-bottom: var(--spacing-sm);
     color: var(--color-secondary);
 }
-body.dark-mode .cart-summary p {
-    color: var(--color-primary);
-}
+body.dark-mode .cart-summary p { color: var(--color-primary); }
 
-/* --- 7. أزرار الإجراءات العامة --- */
+
+/* --- 7. Action Buttons (General) --- */
 .action-button {
     background-color: var(--color-primary);
     color: white;
-    border: none;
-    padding: var(--spacing-md) var(--spacing-xl);
-    border-radius: var(--border-radius-lg);
+    border: 1px solid transparent;
+    padding: calc(var(--spacing-sm) + 2px) var(--spacing-lg);
+    border-radius: var(--border-radius-md);
     font-family: var(--font-body);
-    font-weight: 700;
-    font-size: 1rem;
+    font-weight: 600;
+    font-size: clamp(0.85rem, 2.3vw, 1rem);
     cursor: pointer;
     transition: all var(--transition-normal);
-    box-shadow: var(--shadow-md);
-    width: 100%;
-    display: block;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    box-shadow: var(--shadow-sm);
+    width: 100%; display: block;
+    text-transform: uppercase; letter-spacing: 0.8px;
     text-align: center;
 }
 .action-button:hover:not(:disabled) {
     background-color: var(--color-primary-dark);
     transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
+    box-shadow: var(--shadow-md);
 }
 .action-button:disabled {
-    background-color: #bdc3c7;
-    color: #7f8c8d;
-    cursor: not-allowed;
-    box-shadow: none;
+    background-color: var(--color-text-muted);
+    color: var(--color-surface); opacity: 0.6;
+    cursor: not-allowed; box-shadow: none; transform: none;
 }
-body.dark-mode .action-button {
-    background-color: var(--color-primary);
-    color: var(--color-secondary);
-}
-body.dark-mode .action-button:hover:not(:disabled) {
-    background-color: var(--color-primary-dark);
+body.dark-mode .action-button { color: var(--color-background); }
+body.dark-mode .action-button:disabled {
+    background-color: var(--color-border); color: var(--color-text-muted);
 }
 
 .secondary-action {
-    background-color: transparent;
+    background-color: var(--color-surface);
     color: var(--color-primary);
-    border: 2px solid var(--color-primary);
-    margin-top: var(--spacing-md);
+    border: 1px solid var(--color-primary);
 }
 .secondary-action:hover:not(:disabled) {
-    background-color: var(--color-primary);
-    color: white;
+    background-color: rgba(var(--color-primary-rgb), 0.1);
+    border-color: var(--color-primary-dark);
+    color: var(--color-primary-dark);
 }
 body.dark-mode .secondary-action {
-    color: var(--color-primary);
-    border-color: var(--color-primary);
-}
-body.dark-mode .secondary-action:hover:not(:disabled) {
-    background-color: var(--color-primary);
-    color: var(--color-secondary);
+    background-color: var(--color-surface-dm);
 }
 
-/* --- 8. النوافذ المنبثقة (Modals) --- */
+
+/* --- 8. Modals (General) --- */
 .modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow-y: auto;
-    background-color: rgba(0,0,0,0.7);
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    padding: var(--spacing-md);
-    transition: opacity var(--transition-normal), backdrop-filter var(--transition-normal);
+    display: none; position: fixed; z-index: 1000;
+    left: 0; top: 0; width: 100%; height: 100%;
+    overflow-y: auto; background-color: rgba(17, 24, 39, 0.6); /* Darker, slightly blue overlay */
+    backdrop-filter: blur(4px);
+    align-items: center; justify-content: center;
+    opacity: 0; padding: var(--spacing-md);
+    transition: opacity var(--transition-normal);
 }
-.modal.visible {
-    display: flex;
-    opacity: 1;
-}
+.modal.visible { display: flex; opacity: 1; }
 
 .modal-content {
     background-color: var(--color-surface);
-    margin: auto;
-    padding: var(--spacing-lg);
+    margin: auto; padding: var(--spacing-lg);
     border-radius: var(--border-radius-lg);
     box-shadow: var(--shadow-lg);
-    width: 100%;
-    max-width: 500px;
+    width: 100%; max-width: 500px; /* Default max-width */
     position: relative;
-    transform: scale(0.9) translateY(30px);
-    opacity: 0;
-    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease-out, background-color var(--transition-normal);
+    transform: scale(0.95) translateY(15px); opacity: 0;
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.25s ease-out;
     text-align: right;
 }
-.modal.visible .modal-content {
-    transform: scale(1) translateY(0);
-    opacity: 1;
-}
+.modal.visible .modal-content { transform: scale(1) translateY(0); opacity: 1; }
 
 .close-button {
-    color: var(--color-text-muted);
-    position: absolute;
-    top: var(--spacing-sm);
-    left: var(--spacing-sm);
-    font-size: 2rem;
-    font-weight: 300;
-    line-height: 1;
-    cursor: pointer;
-    padding: var(--spacing-xs);
-    border-radius: 50%;
-    width: 36px;
-    height: 36px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    color: var(--color-text-muted); position: absolute;
+    top: var(--spacing-sm); left: var(--spacing-sm); /* Adjusted position */
+    font-size: 2rem; font-weight: 300; line-height: 1;
+    cursor: pointer; padding: var(--spacing-xs); border-radius: 50%;
+    width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
     transition: color var(--transition-fast), background-color var(--transition-fast), transform var(--transition-fast);
 }
 .close-button:hover {
-    color: var(--color-error);
-    background-color: rgba(var(--color-error-rgb), 0.1);
-    transform: rotate(90deg) scale(1.1);
+    color: var(--color-error); background-color: rgba(var(--color-error-rgb), 0.1);
+    transform: rotate(90deg);
 }
 
+/* Modal: Item Details */
 .item-details-modal-content .modal-item-image {
-    width: 100%;
-    height: auto;
-    max-height: 35vh;
-    object-fit: cover;
-    border-radius: var(--border-radius-md);
-    margin-bottom: var(--spacing-lg);
-    border: 1px solid var(--color-border);
+    width: 100%; height: auto; max-height: 35vh;
+    object-fit: cover; border-radius: var(--border-radius-md);
+    margin-bottom: var(--spacing-md); border: 1px solid var(--color-border);
 }
 .item-details-modal-content .modal-item-name {
-    font-size: clamp(1.5rem, 4vw, 2rem);
-    margin-bottom: var(--spacing-sm);
-    color: var(--color-primary);
+    font-size: clamp(1.4rem, 4vw, 1.8rem);
+    margin-bottom: var(--spacing-xs); color: var(--color-primary);
 }
 .item-details-modal-content .modal-item-description {
-    font-size: 0.95rem;
-    line-height: 1.8;
-    margin-bottom: var(--spacing-lg);
-    color: var(--color-text-muted);
-    max-height: 25vh;
-    overflow-y: auto;
-    padding-right: var(--spacing-sm);
+    font-size: clamp(0.85rem, 2.2vw, 0.95rem); line-height: 1.6;
+    margin-bottom: var(--spacing-md); color: var(--color-text-muted);
+    max-height: 22vh; overflow-y: auto; padding-left: var(--spacing-sm); /* Space for scrollbar */
 }
 .item-details-modal-content .modal-item-price {
-    font-family: var(--font-display);
-    font-size: clamp(1.6rem, 5vw, 2.2rem);
-    font-weight: 700;
-    color: var(--color-accent);
-    text-align: center;
-    margin-top: var(--spacing-sm);
+    font-family: var(--font-display); font-size: clamp(1.6rem, 5vw, 2.2rem);
+    font-weight: 700; color: var(--color-accent);
+    text-align: center; margin: var(--spacing-sm) 0 var(--spacing-md) 0;
 }
-body.dark-mode .item-details-modal-content .modal-item-price {
-    color: var(--color-primary);
-}
+body.dark-mode .item-details-modal-content .modal-item-price { color: var(--color-primary); }
 
-/* --- 9. Modal إنهاء الطلب والفاتورة --- */
-.checkout-modal-content, .receipt-modal-content {
-    max-width: 650px;
-}
+
+/* --- 9. Modal: Checkout & Receipt --- */
+.checkout-modal-content, .receipt-modal-content { max-width: 600px; }
 .checkout-modal-content h2, .receipt-modal-content h2:not(.receipt-header h2) {
-    text-align: center;
-    margin-bottom: var(--spacing-lg);
-    font-size: clamp(1.6rem, 4.5vw, 2.2rem);
+    text-align: center; margin-bottom: var(--spacing-lg);
+    font-size: clamp(1.6rem, 4.5vw, 2rem);
     color: var(--color-secondary);
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: var(--spacing-sm);
 }
-body.dark-mode .checkout-modal-content h2, body.dark-mode .receipt-modal-content h2:not(.receipt-header h2) {
+body.dark-mode .checkout-modal-content h2,
+body.dark-mode .receipt-modal-content h2:not(.receipt-header h2) {
     color: var(--color-primary);
 }
-
 
 #checkout-summary-items {
-    margin-bottom: var(--spacing-lg);
-    padding-bottom: var(--spacing-md);
+    margin-bottom: var(--spacing-md); padding-bottom: var(--spacing-sm);
+    max-height: 35vh; overflow-y: auto;
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-sm);
+    padding: var(--spacing-sm);
 }
-#checkout-summary-items ul { list-style: none; }
+#checkout-summary-items ul { list-style: none; padding: 0; }
 #checkout-summary-items li {
-    padding: var(--spacing-sm) 0;
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.95rem;
-    border-bottom: 1px dashed var(--color-border);
+    padding: var(--spacing-xs) 0; display: flex; justify-content: space-between;
+    font-size: 0.9rem; border-bottom: 1px dashed var(--color-border);
 }
 #checkout-summary-items li:last-child { border-bottom: none; }
 #checkout-summary-items li span {
-    font-weight: 500;
-    color: var(--color-primary);
+    font-weight: 500; color: var(--color-primary);
+    white-space: nowrap; margin-left: var(--spacing-md);
 }
 
-.checkout-total, .receipt-grand-total {
-    font-family: var(--font-display);
-    font-size: clamp(1.4rem, 4vw, 1.8rem);
+.checkout-total { /* For checkout modal's total */
+    font-family: var(--font-body); font-size: clamp(1.3rem, 4vw, 1.6rem);
+    font-weight: 600; margin-top: var(--spacing-md);
+    text-align: right; /* Total on the right for a more formal feel */
+    color: var(--color-secondary);
+    padding: var(--spacing-sm) 0; /* Remove side padding, align with items */
+}
+.checkout-total span { /* The actual number */
     font-weight: 700;
-    margin-top: var(--spacing-lg);
-    text-align: center;
-    color: var(--color-accent);
-    padding: var(--spacing-sm) var(--spacing-md);
-    background-color: rgba(var(--color-accent-rgb), 0.05);
-    border-radius: var(--border-radius-sm);
-}
-body.dark-mode .checkout-total, body.dark-mode .receipt-grand-total {
     color: var(--color-primary);
-    background-color: rgba(var(--color-primary-rgb), 0.1);
 }
+body.dark-mode .checkout-total { color: var(--color-secondary-dm); }
+body.dark-mode .checkout-total span { color: var(--color-primary-dm); }
+
 
 .room-input-group { margin: var(--spacing-lg) 0; }
 .room-input-group label {
-    display: block;
-    margin-bottom: var(--spacing-sm);
-    font-weight: 500;
-    font-size: 1rem;
+    display: block; margin-bottom: var(--spacing-xs);
+    font-weight: 500; font-size: 0.95rem;
 }
 .room-input-group input[type="text"] {
-    width: 100%;
-    padding: var(--spacing-md);
-    border: 1px solid var(--color-border);
-    border-radius: var(--border-radius-md);
-    font-size: 1rem;
-    font-family: var(--font-body);
+    width: 100%; padding: var(--spacing-sm);
+    border: 1px solid var(--color-border); border-radius: var(--border-radius-sm); /* Smaller radius */
+    font-size: 0.95rem; font-family: var(--font-body);
     transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+    background-color: var(--color-surface); color: var(--color-text);
 }
 .room-input-group input[type="text"]:focus {
-    outline: none;
-    border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.2);
-}
-body.dark-mode .room-input-group input[type="text"] {
-    background-color: var(--color-secondary-light);
-    color: var(--color-text);
-    border-color: var(--color-border);
-}
-body.dark-mode .room-input-group input[type="text"]:focus {
-    border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.25);
+    outline: none; border-color: var(--color-primary);
+    box-shadow: 0 0 0 2px rgba(var(--color-primary-rgb), 0.2);
 }
 
-/* --- 10. أنماط الفاتورة (للعرض والطباعة بمقاس الكاشير) --- */
+
+/* --- 10. Receipt Styling (More Formal On-Screen) --- */
 #printable-receipt-area {
-    font-family: 'Courier New', Courier, monospace;
-    color: #000;
-    background-color: #fff;
-    padding: 15px;
-    margin: 0 auto var(--spacing-lg) auto;
-    max-width: 320px; /* يتناسب مع معظم طابعات الإيصالات الحرارية (حوالي 80 مم) */
-    border: 1px dashed #888;
+    font-family: var(--font-receipt-onscreen); /* Use specific font for on-screen receipt */
+    color: var(--color-text);
+    background-color: var(--color-surface);
+    padding: var(--spacing-lg);
+    margin: 0 auto var(--spacing-md);
+    max-width: 420px; /* Wider for better on-screen readability */
+    border: 1px solid #B0B0B0; /* A neutral grey border */
     box-shadow: var(--shadow-md);
-    line-height: 1.4;
-    font-size: 10pt; /* حجم خط أساسي لإيصال الكاشير */
+    line-height: 1.5;
+    font-size: 14px; /* Base for on-screen: 10.5pt approx */
+    border-radius: var(--border-radius-sm); /* Minimal radius */
 }
-.receipt-header { text-align: center; margin-bottom: 10px; }
-.receipt-logo {
-    max-width: 80px;
-    margin-bottom: 5px;
-    filter: grayscale(100%); /* يمكن إزالته إذا كان الشعار يجب أن يكون ملونًا */
-}
-.receipt-header h2 { /* عنوان الفاتورة مثل "فاتورة طلب" */
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 12pt;
-    font-weight: bold;
-    margin: 0 0 5px 0;
-    text-transform: uppercase;
-    color: #000 !important; /* ضمان اللون الأسود للطباعة والصورة */
-}
-#receipt-restaurant-name { /* اسم المطعم/الفندق */
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 11pt;
-    font-weight: bold;
-    margin: 5px 0;
-    text-transform: uppercase;
-    color: #000 !important;
-}
-.receipt-hotel-name, .receipt-address, .receipt-phone, .receipt-order-id, .receipt-cashier-name {
-    font-size: 9pt;
-    margin: 2px 0;
-    text-align: center;
-}
-.receipt-info { /* معلومات الطلب: التاريخ، الوقت، الغرفة، إلخ */
-    border-top: 1px dashed #555;
-    border-bottom: 1px dashed #555;
-    padding: 5px 0;
-    margin-bottom: 10px;
-    text-align: right; /* أو center حسب التصميم المفضل */
-}
-.receipt-info p { margin: 3px 0; font-size: 9pt; }
-.receipt-info p strong { font-weight: normal; } /* لإزالة التغميق من كلمات مثل "رقم الغرفة:" */
 
-.receipt-table { width: 100%; border-collapse: collapse; margin-bottom: 10px; }
+.receipt-header {
+    text-align: center; margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 1px solid var(--color-secondary-light); /* Solid line */
+}
+.receipt-logo {
+    max-width: 70px; margin-bottom: var(--spacing-sm);
+    filter: grayscale(0.3); /* Slight desaturation for formality */
+}
+.receipt-header h2 { /* "فاتورة طلب طعام" */
+    font-family: var(--font-display); font-size: 1.3rem; /* Formal size */
+    color: var(--color-secondary) !important;
+    margin: 0 0 var(--spacing-xs) 0;
+    font-weight: 600;
+}
+
+.receipt-info {
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+    padding: var(--spacing-sm) 0; margin-bottom: var(--spacing-md);
+    text-align: right; font-size: 0.85rem; /* 13px */
+}
+.receipt-info p { margin: 2px 0; }
+.receipt-info p strong { font-weight: 500; color: var(--color-secondary-light); }
+
+.receipt-table {
+    width: 100%; border-collapse: collapse; margin-bottom: var(--spacing-md);
+    font-size: 0.85rem; /* 13px */
+}
 .receipt-table th, .receipt-table td {
-    padding: 3px 2px;
-    text-align: right;
-    vertical-align: top;
-    font-size: 9.5pt;
+    padding: 6px 4px; /* Adjusted padding */
+    text-align: right; vertical-align: middle; /* Center vertically */
+    border-bottom: 1px solid var(--color-border);
 }
-.receipt-table th {
-    border-bottom: 1px solid #555;
-    font-weight: bold;
-    text-align: center; /* توسيط عناوين الأعمدة */
+.receipt-table thead th {
+    font-weight: 600;
+    background-color: rgba(var(--color-secondary-rgb), 0.05); /* Very light grey header */
+    color: var(--color-secondary);
+    text-align: center;
+    border-bottom-width: 1.5px; /* Thicker line under header */
+    border-bottom-color: var(--color-secondary-light);
 }
-.receipt-table .item-name-col { text-align: right; width: 50%; }
-.receipt-table .qty-col, .receipt-table .price-col { text-align: center; width: 15%;}
-.receipt-table .subtotal-col { text-align: left; width: 20%; } /* الإجمالي الفرعي لليسار */
+body.dark-mode .receipt-table thead th {
+    background-color: rgba(var(--color-secondary-rgb), 0.15);
+}
+.receipt-table .item-name-col { text-align: right; width: 48%; }
+.receipt-table .qty-col { text-align: center; width: 12%; }
+.receipt-table .price-col { text-align: center; width: 20%; }
+.receipt-table .subtotal-col { text-align: left; width: 20%; font-weight: 500; }
 
 .receipt-table tfoot td {
-    border-top: 1px dashed #555;
-    padding-top: 5px;
-    font-weight: bold;
-}
-.receipt-table tfoot .label { text-align: right; }
-.receipt-table tfoot .value { text-align: left; } /* قيمة الإجماليات لليسار */
-
-.receipt-payment-details {
-    font-size: 9pt;
-    text-align: right; /* أو center */
-    margin-top: 5px;
-    padding-top: 5px;
-    border-top: 1px dashed #555;
-}
-
-.receipt-barcode-container { /* إذا كنت ستضيف باركود */
-    text-align: center;
-    margin: 10px 0;
-}
-.receipt-barcode-container img { max-width: 150px; }
-
-.receipt-thankyou, .receipt-footer-notes {
-    text-align: center;
-    font-size: 8.5pt;
-    margin-top: 10px;
-}
-.receipt-actions-toolbar { /* أزرار الطباعة والحفظ */
-    display: flex;
-    gap: var(--spacing-md);
-    justify-content: center;
-    margin-top: var(--spacing-md);
-}
-.receipt-actions-toolbar .action-button,
-.receipt-actions-toolbar .secondary-action {
-    width: auto;
-    padding: var(--spacing-sm) var(--spacing-lg);
-    font-size: 0.9rem;
-}
-.receipt-actions-toolbar i {
-    margin-left: var(--spacing-xs); /* أيقونات داخل الأزرار */
-}
-
-
-/* --- 11. أنماط الإشعارات (Toast) --- */
-.toast-notification {
-    position: fixed;
-    bottom: var(--spacing-lg);
-    left: 50%;
-    transform: translateX(-50%) translateY(150%);
-    background-color: var(--color-secondary);
-    color: white;
-    padding: var(--spacing-md) var(--spacing-lg);
-    border-radius: var(--border-radius-md);
-    box-shadow: var(--shadow-lg);
-    z-index: 2000;
-    font-size: 0.95rem;
+    border-top: 1.5px solid var(--color-secondary-light); /* Thicker line for footer */
+    padding-top: var(--spacing-sm);
     font-weight: 500;
-    opacity: 0;
-    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease-out, background-color var(--transition-normal);
 }
-.toast-notification.show {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-}
-body.dark-mode .toast-notification {
-    background-color: var(--color-primary);
-    color: var(--color-secondary);
-}
-.toast-notification.success { background-color: var(--color-success); color: white; }
-.toast-notification.error { background-color: var(--color-error); color: white; }
-body.dark-mode .toast-notification.success { background-color: var(--color-success); color: var(--color-secondary) }
-body.dark-mode .toast-notification.error { background-color: var(--color-error); color:white }
+.receipt-table tfoot .text-right { text-align: right; color: var(--color-secondary-light); }
+.receipt-table tfoot .text-left { text-align: left; font-weight: 600; color: var(--color-secondary); }
+body.dark-mode .receipt-table tfoot .text-left { color: var(--color-primary); }
 
 
-/* --- 12. تحسينات خاصة بالهواتف (Mobile Optimizations) --- */
-@media (max-width: 767px) {
-    .hotspot-container {
-        padding: var(--spacing-sm);
-    }
-
-    .hotspot-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: var(--spacing-xs);
-        padding-bottom: var(--spacing-md);
-        margin-bottom: var(--spacing-md);
-    }
-    .header-main-content {
-        width: 100%;
-    }
-    .header-main-content #hotel-title {
-        font-size: clamp(1.5rem, 5.5vw, 1.9rem);
-    }
-    .welcome-message {
-        font-size: clamp(0.85rem, 2.8vw, 0.95rem);
-        margin-top: var(--spacing-xs);
-    }
-    .header-controls {
-        width: 100%;
-        justify-content: flex-end;
-        gap: var(--spacing-xs);
-        padding-top: var(--spacing-xs);
-    }
-    .cart-icon-container button, .theme-switcher {
-        font-size: 1.4rem;
-        padding: var(--spacing-xs);
-    }
-    #cart-item-count {
-        top: -3px;
-        right: -3px;
-        padding: 1px 3px;
-        font-size: 0.55rem;
-        min-width: 12px;
-    }
-
-    .category-tabs {
-        margin-bottom: var(--spacing-lg);
-        gap: 2px;
-        padding-left: var(--spacing-xs);
-        padding-right: var(--spacing-xs);
-    }
-    .tab-button {
-        padding: 6px var(--spacing-sm);
-        font-size: 0.8rem;
-        border-radius: var(--border-radius-sm);
-    }
-
-    #menu-items-grid {
-        gap: var(--spacing-sm);
-    }
-
-    /* تعديلات خاصة للبطاقات عندما تكون الشاشة صغيرة جداً (أقل من 550px حيث تصبح عمود واحد وأفقي) */
-    @media (max-width: 549px) {
-        #menu-items-grid {
-            grid-template-columns: 1fr; /* تأكيد عمود واحد */
-        }
-        .menu-item-card {
-            flex-direction: row; /* الصورة بجانب النص */
-            align-items: center;
-            gap: var(--spacing-sm);
-            padding: var(--spacing-sm);
-        }
-        .menu-item-card img {
-            width: 200px;  /* عرض معقول للصورة في هذا التخطيط */
-            height: 100px; /* ارتفاع متناسق */
-            border-radius: var(--border-radius-sm);
-            flex-shrink: 0; /* منع الصورة من التقلص */
-        }
-        .menu-item-card .item-info {
-            padding: 0;
-            flex-grow: 1;
-        }
-         .item-info .description {
-            -webkit-line-clamp: 2; /* سطرين للوصف */
-            min-height: calc(0.8rem * 1.5 * 2); /* ارتفاع أدنى للوصف */
-            font-size: 0.75rem; /* تصغير خط الوصف قليلاً */
-        }
-        .item-info h3 {
-            font-size: 0.9rem; /* تصغير اسم الصنف */
-        }
-        .item-info .price {
-            font-size: 0.95rem; /* تصغير السعر */
-        }
-        .add-to-cart-button {
-            padding: 4px var(--spacing-xs); /* تصغير زر الإضافة */
-            font-size: 0.65rem;
-        }
-    }
-
-
-    .menu-item-card {
-        border-radius: var(--border-radius-sm);
-        box-shadow: var(--shadow-sm);
-    }
-    .menu-item-card:hover {
-        transform: translateY(-3px) scale(1.01);
-        box-shadow: var(--shadow-md);
-    }
-
-    /* للبطاقات عندما تكون في وضع العمودين على الهواتف (550px - 767px) */
-    /* أو عندما تكون عمود واحد وعمودية إذا لم تتجاوزها القاعدة أعلاه */
-    .menu-item-card img {
-        height: 180px; /* ارتفاع الصورة للبطاقات العمودية على الهواتف */
-    }
-    /* إذا كانت @media (max-width: 549px) نشطة، ستقوم بتجاوز ارتفاع الصورة هذا */
-
-    .item-info {
-        padding: calc(var(--spacing-sm) + 2px);
-    }
-    .item-info h3 {
-        font-size: 1rem;
-        letter-spacing: 0.2px;
-        margin-bottom: 2px;
-    }
-    .item-info .description {
-        font-size: 0.75rem;
-        line-height: 1.5;
-        margin-bottom: var(--spacing-xs);
-    }
-    .item-info > div:last-child {
-        margin-top: var(--spacing-xs);
-    }
-    .item-info .price {
-        font-size: 1rem;
-    }
-    .add-to-cart-button {
-        padding: 5px var(--spacing-sm);
-        font-size: 0.7rem;
-        border-radius: var(--border-radius-sm);
-    }
-
-    .cart-sidebar {
-        max-width: 300px;
-    }
-    .cart-header {
-        padding: var(--spacing-sm) var(--spacing-md);
-    }
-    .cart-header h2 {
-        font-size: 1.1rem;
-    }
-    .close-button-cart {
-        font-size: 1.5rem;
-    }
-    .cart-items {
-        padding: var(--spacing-md);
-    }
-    .cart-item-entry {
-        margin-bottom: var(--spacing-md);
-        padding-bottom: var(--spacing-md);
-        gap: var(--spacing-sm);
-    }
-    .cart-item-entry img {
-        width: 50px;
-        height: 50px;
-    }
-    .cart-item-details span:first-child {
-        font-size: 0.85rem;
-    }
-    .cart-item-details .item-quantity-controls {
-        gap: 1px;
-    }
-    .cart-item-details .quantity-change-btn {
-        width: 22px;
-        height: 22px;
-        font-size: 0.9rem;
-    }
-    .cart-item-details .quantity-display {
-        min-width: 16px;
-        font-size: 0.85rem;
-    }
-    .cart-item-details .item-subtotal-price {
-        font-size: 0.8rem;
-    }
-    .cart-item-actions .remove-from-cart-btn {
-        font-size: 1rem;
-    }
-    .cart-summary {
-        padding: var(--spacing-sm) var(--spacing-md);
-    }
-    .cart-summary p {
-        font-size: 1.15rem;
-        margin-bottom: var(--spacing-xs);
-    }
-
-    .action-button {
-        padding: var(--spacing-sm) var(--spacing-md);
-        font-size: 0.85rem;
-        border-radius: var(--border-radius-md);
-    }
-    .secondary-action {
-        border-width: 1px;
-    }
-
-    .modal {
-        padding: var(--spacing-xs);
-    }
-    .modal-content {
-        padding: var(--spacing-sm);
-        max-width: 96%;
-        border-radius: var(--border-radius-md);
-    }
-    .item-details-modal-content .modal-item-image {
-        max-height: 28vh;
-        margin-bottom: var(--spacing-sm);
-    }
-    .item-details-modal-content .modal-item-name {
-        font-size: clamp(1.1rem, 4vw, 1.5rem);
-    }
-    .item-details-modal-content .modal-item-description {
-        font-size: 0.85rem;
-        max-height: 18vh;
-        margin-bottom: var(--spacing-sm);
-    }
-    .item-details-modal-content .modal-item-price {
-        font-size: clamp(1.2rem, 4.5vw, 1.7rem);
-    }
-    .close-button {
-        font-size: 1.6rem;
-        width: 28px;
-        height: 28px;
-        top: 2px;
-        left: 2px;
-    }
-
-    .checkout-modal-content, .receipt-modal-content {
-        max-width: 96%;
-    }
-    .checkout-modal-content h2, .receipt-modal-content h2:not(.receipt-header h2) {
-        font-size: clamp(1.2rem, 4.5vw, 1.7rem);
-        margin-bottom: var(--spacing-sm);
-    }
-    #checkout-summary-items li {
-        font-size: 0.85rem;
-        padding: 2px 0;
-    }
-    .checkout-total, .receipt-grand-total {
-        font-size: clamp(1.1rem, 4vw, 1.5rem);
-        margin-top: var(--spacing-sm);
-    }
-    .room-input-group label {
-        font-size: 0.9rem;
-        margin-bottom: 2px;
-    }
-    .room-input-group input[type="text"] {
-        padding: calc(var(--spacing-sm) - 2px);
-        font-size: 0.9rem;
-    }
-
-    #printable-receipt-area {
-        padding: 8px;
-        font-size: 8.5pt;
-        max-width: 94%; /* للحفاظ على شكل مقروء على الهاتف */
-    }
-    .receipt-header h2, #receipt-restaurant-name {
-        font-size: 9.5pt;
-    }
-    .receipt-hotel-name, .receipt-address, .receipt-phone, .receipt-order-id, .receipt-cashier-name, .receipt-info p {
-        font-size: 7.5pt;
-    }
-    .receipt-table th, .receipt-table td {
-        font-size: 8pt;
-        padding: 1px;
-    }
-    .receipt-actions-toolbar {
-        flex-direction: column;
-        gap: var(--spacing-xs);
-    }
-    .receipt-actions-toolbar .action-button,
-    .receipt-actions-toolbar .secondary-action {
-        width: 100%;
-        font-size: 0.8rem;
-        padding: 6px var(--spacing-sm);
-    }
-
-    .toast-notification {
-        bottom: var(--spacing-sm);
-        padding: 6px var(--spacing-sm);
-        font-size: 0.85rem;
-        max-width: 92%;
-        border-radius: var(--border-radius-sm);
-    }
+.receipt-thankyou {
+    text-align: center; font-size: 0.8rem; /* Slightly smaller */
+    margin-top: var(--spacing-md); padding-top: var(--spacing-sm);
+    border-top: 1px solid var(--color-border);
+    color: var(--color-text-muted);
 }
 
-
-/* --- 13. أنماط الطباعة (مهمة للفاتورة) --- */
-@media print {
-    body {
-        background-color: #fff !important;
-        color: #000 !important;
-        font-family: 'Courier New', Courier, monospace !important;
-        font-size: 10pt !important; /* حجم خط أساسي للطباعة */
-        margin: 0 !important;
-        padding: 0 !important;
-        width: auto !important;
-        -webkit-print-color-adjust: exact !important;
-        print-color-adjust: exact !important;
-    }
-    /* إخفاء العناصر غير المرغوب فيها في الطباعة */
-    .hotspot-container, .hotspot-header, .category-tabs, #menu-items-grid, /*.hotspot-footer,*/ /* قد ترغب في إبقاء الفوتر إذا كان يحتوي على معلومات مهمة */
-    .modal:not(#receipt-modal), .cart-sidebar, .theme-switcher, .cart-icon-container,
-    .toast-notification, .receipt-actions-toolbar, .close-button,
-    #new-order-button,
-    #print-receipt-button, /* يتم التحكم به من خلال دالة الطباعة في JS */
-    #save-receipt-image-button,
-    .receipt-modal-close, /* زر الإغلاق الخاص بنافذة الفاتورة */
-    .no-print { /* فئة مساعدة لإخفاء أي عنصر إضافي */
-        display: none !important;
-    }
-
-    #receipt-modal { /* عرض نافذة الفاتورة فقط */
-        position: static !important;
-        display: block !important;
-        width: 100% !important;
-        height: auto !important;
-        overflow: visible !important;
-        background-color: transparent !important;
-        padding: 0 !important;
-        margin: 0 !important;
-        box-shadow: none !important;
-    }
-    #receipt-modal .receipt-modal-content {
-        max-width: 100% !important;
-        width: 80mm !important; /* عرض ورقة الكاشير القياسي */
-        margin: 5mm auto !important; /* هوامش الصفحة للطباعة */
-        padding: 0 !important;
-        background-color: #fff !important;
-        border-radius: 0 !important;
-        box-shadow: none !important;
-        border: none !important; /* لا حاجة لحدود عند الطباعة الفعلية */
-    }
-    #printable-receipt-area {
-        max-width: 100% !important; /* يجب أن يملأ عرض .receipt-modal-content */
-        padding: 5mm 3mm !important; /* هوامش داخلية للمحتوى */
-        margin: 0 !important;
-        border: none !important;
-        box-shadow: none !important;
-        font-size: 9.5pt !important; /* حجم خط ثابت للطباعة */
-    }
-    #printable-receipt-area * { /* ضمان أن كل النصوص داخل الفاتورة سوداء وعلى خلفية بيضاء بالخط المحدد */
-        color: #000 !important;
-        background: transparent !important;
-        font-family: 'Courier New', Courier, monospace !important;
-    }
-    #printable-receipt-area .receipt-header h2,
-    #printable-receipt-area #receipt-restaurant-name {
-        font-size: 11pt !important; /* تكبير طفيف للعناوين الرئيسية في الفاتورة المطبوعة */
-    }
-    /* منع كسر الصفحة داخل هذه العناصر قدر الإمكان */
-    .receipt-table, .receipt-info, .receipt-header, .receipt-payment-details, .receipt-thankyou {
-        page-break-inside: avoid;
-    }
-}
-
-/* --- 14. كلاس لتحضير الفاتورة لالتقاط الصورة (يستخدم مع html2canvas) --- */
-.prepare-for-image-capture,
-.prepare-for-image-capture * { /* تطبيق النمط على كل العناصر الداخلية أيضًا */
-    font-family: 'Courier New', Courier, monospace !important;
-    font-size: 9.5pt !important; /* حجم خط مشابه للطباعة */
-    line-height: 1.35 !important;
-    color: #000 !important; /* نص أسود */
-    background-color: #fff !important; /* خلفية بيضاء */
-    -webkit-print-color-adjust: exact !important; /* لمتصفحات WebKit */
-    print-color-adjust: exact !important; /* لمتصفحات أخرى */
-}
-#printable-receipt-area.prepare-for-image-capture {
-    border: none !important; /* إزالة أي حدود مرئية عند التقاط الصورة */
-    box-shadow: none !important; /* إزالة أي ظلال */
-    padding: 3mm !important; /* هوامش صغيرة حول المحتوى في الصورة */
-    margin: 0 auto !important; /* للتوسيط إذا لزم الأمر عند التقاط الصورة */
-    max-width: 76mm !important; /* عرض ثابت يشبه ورقة الكاشير */
-    width: 76mm !important;     /* تأكيد العرض */
-    background-color: #fff !important; /* ضمان خلفية بيضاء للمنطقة بأكملها */
-}
-
-
-/* --- فئات مساعدة --- */
-.text-center { text-align: center; }
-.sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border-width: 0;
-}
-.no-print {
-    display: none !important; /* لإخفاء العناصر عند الطباعة */
-}
-/* أنماط أزرار الفاتورة */
 .receipt-actions-toolbar {
-    display: flex;
-    gap: 12px;
-    justify-content: center;
-    margin-top: 20px;
+    display: flex; gap: var(--spacing-sm);
+    justify-content: center; margin-top: var(--spacing-lg);
     flex-wrap: wrap;
 }
-
 .receipt-actions-toolbar .action-button,
 .receipt-actions-toolbar .secondary-action {
-    flex: 1;
-    min-width: 120px;
-    padding: 10px 15px;
-    font-size: 0.9rem;
+    flex: 1 1 140px; min-width: 140px;
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: 0.85rem;
+}
+.receipt-actions-toolbar i { margin-right: var(--spacing-xs); }
+
+
+/* --- 11. Toast Notifications --- */
+.toast-notification {
+    position: fixed; bottom: var(--spacing-lg); left: 50%;
+    transform: translateX(-50%) translateY(150%);
+    background-color: var(--color-secondary); color: white;
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border-radius: var(--border-radius-md); box-shadow: var(--shadow-lg);
+    z-index: 2000; font-size: 0.95rem; font-weight: 500;
+    opacity: 0; transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.3, 1.2), opacity 0.3s ease-out;
+    text-align: center; min-width: 240px; max-width: 90%;
+}
+.toast-notification.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+.toast-notification.success { background-color: var(--color-success); color: white; }
+.toast-notification.error { background-color: var(--color-error); color: white; }
+
+body.dark-mode .toast-notification {
+    background-color: var(--color-surface-dm);
+    color: var(--color-text-dm);
+    border: 1px solid var(--color-border-dm);
+}
+body.dark-mode .toast-notification.success {
+    background-color: var(--color-success); color: white; border: none;
+}
+body.dark-mode .toast-notification.error {
+    background-color: var(--color-error); color: white; border: none;
 }
 
-.receipt-actions-toolbar i {
-    margin-left: 5px;
+
+/* --- 12. Mobile Optimizations (Consolidated) --- */
+@media (max-width: 767px) {
+    .hotspot-container { padding: var(--spacing-sm); }
+    .hotspot-header { flex-direction: column; align-items: flex-start; gap: var(--spacing-sm); }
+    .logo-container, .header-controls { width: 100%; }
+    .header-controls { justify-content: flex-end; gap: var(--spacing-sm); }
+    #hotel-title { font-size: clamp(1.5rem, 6vw, 2rem); }
+    .welcome-message { font-size: clamp(0.8rem, 2.8vw, 0.95rem); }
+    .cart-icon-container button, .theme-switcher { font-size: 1.5rem; width: 36px; height: 36px; }
+    #cart-item-count { padding: 1px 4px; font-size: 0.6rem; min-width: 14px; }
+
+    .category-tabs { margin-bottom: var(--spacing-lg); gap: 3px; } /* Slightly more gap for touch */
+    .tab-button { padding: 5px var(--spacing-sm); font-size: clamp(0.75rem, 2.5vw, 0.85rem); }
+
+    .cart-sidebar { max-width: 300px; }
+    .cart-header { padding: var(--spacing-sm) var(--spacing-md); }
+    .cart-header h2 { font-size: clamp(1rem, 2.8vw, 1.2rem); }
+    .cart-items { padding: var(--spacing-sm); }
+    .cart-item-entry { gap: var(--spacing-xs); padding-bottom: var(--spacing-sm); margin-bottom: var(--spacing-sm); }
+    .cart-item-entry img { width: 55px; height: 55px; }
+    .cart-item-details span:first-child { font-size: 0.85rem; }
+    .cart-item-details .quantity-change-btn { width: 24px; height: 24px; font-size: 1rem; }
+    .cart-item-details .quantity-display { font-size: 0.85rem; }
+    .cart-item-actions .remove-from-cart-btn { font-size: 1.2rem; padding: var(--spacing-xs); }
+    .cart-summary { padding: var(--spacing-sm); }
+    .cart-summary p { font-size: clamp(1.1rem, 3vw, 1.3rem); }
+
+    .action-button { padding: var(--spacing-sm) var(--spacing-md); font-size: clamp(0.8rem, 2.5vw, 0.95rem); }
+
+    .modal-content { padding: var(--spacing-md); max-width: 95%; }
+    .close-button { top: 5px; left: 5px; font-size: 1.8rem; width: 30px; height: 30px; }
+    .item-details-modal-content .modal-item-image { max-height: 28vh; }
+    .item-details-modal-content .modal-item-name { font-size: clamp(1.2rem, 4.5vw, 1.6rem); }
+    .item-details-modal-content .modal-item-description { font-size: clamp(0.8rem, 2.5vw, 0.9rem); max-height: 20vh;}
+    .item-details-modal-content .modal-item-price { font-size: clamp(1.4rem, 5vw, 1.8rem); }
+
+    .checkout-modal-content h2, .receipt-modal-content h2:not(.receipt-header h2) {
+        font-size: clamp(1.4rem, 4.5vw, 1.8rem);
+    }
+    #checkout-summary-items { padding: var(--spacing-xs); }
+    #checkout-summary-items li { font-size: 0.85rem; }
+    .checkout-total { font-size: clamp(1.2rem, 4vw, 1.5rem); }
+    .room-input-group label { font-size: 0.9rem; }
+    .room-input-group input[type="text"] { padding: calc(var(--spacing-sm) - 2px); font-size: 0.9rem;}
+
+    #printable-receipt-area { /* On-screen receipt on mobile */
+        padding: var(--spacing-sm); font-size: 12px; /* ~9pt */ max-width: 96%;
+    }
+    .receipt-header h2 { font-size: 1.1rem; }
+    .receipt-info { font-size: 0.75rem; } /* ~11px */
+    .receipt-table { font-size: 0.75rem; }
+    .receipt-table th, .receipt-table td { padding: 4px 2px; }
+
+    .receipt-actions-toolbar { flex-direction: column; gap: var(--spacing-xs); }
+    .receipt-actions-toolbar .action-button,
+    .receipt-actions-toolbar .secondary-action { width: 100%; font-size: 0.8rem; }
+
+    .toast-notification { bottom: var(--spacing-sm); padding: var(--spacing-xs) var(--spacing-sm); font-size: 0.85rem; }
 }
 
-/* تحسينات للطباعة */
+
+/* --- 13. Print-Specific Styles for Receipt --- */
 @media print {
-    .receipt-actions-toolbar {
+    body {
+        background-color: #fff !important; color: #000 !important;
+        font-family: var(--font-receipt-print) !important;
+        font-size: 9pt !important;
+        margin: 0 !important; padding: 0 !important; width: auto !important;
+        -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important;
+    }
+    .hotspot-container > *:not(#receipt-modal),
+    .modal:not(#receipt-modal), .cart-sidebar,
+    .toast-notification, .no-print {
         display: none !important;
     }
+    #receipt-modal {
+        position: static !important; display: block !important;
+        width: 100% !important; height: auto !important; overflow: visible !important;
+        background-color: transparent !important; padding: 0 !important; margin: 0 !important;
+        box-shadow: none !important; backdrop-filter: none !important;
+    }
+    #receipt-modal .modal-content.receipt-modal-content {
+        max-width: 100% !important; width: 76mm !important; /* Receipt width */
+        margin: 0 auto !important; padding: 0 !important;
+        background-color: #fff !important; border-radius: 0 !important;
+        box-shadow: none !important; border: none !important; color: #000 !important;
+    }
+    #receipt-modal .close-button, .receipt-actions-toolbar { display: none !important; }
+
+    #printable-receipt-area {
+        max-width: 100% !important; width: 100% !important;
+        padding: 3mm 2mm !important; /* Print padding */
+        margin: 0 !important; border: none !important; box-shadow: none !important;
+        font-family: var(--font-receipt-print) !important;
+        font-size: 8.5pt !important; line-height: 1.25 !important;
+        color: #000 !important; background-color: #fff !important;
+    }
+    #printable-receipt-area * {
+        color: #000 !important; background: transparent !important;
+        font-family: var(--font-receipt-print) !important;
+        box-shadow: none !important; border-color: #333 !important; /* Darker borders for print */
+    }
+    .receipt-logo { max-width: 50mm !important; filter: grayscale(100%) contrast(180%) !important; }
+    .receipt-header h2 { font-size: 10pt !important; font-weight: bold !important; color: #000 !important; border-bottom-color: #000 !important; }
+    .receipt-info { font-size: 7.5pt !important; }
+    .receipt-table { font-size: 8pt !important; }
+    .receipt-table thead th { font-size: 8.5pt !important; font-weight: bold !important; background-color: #f0f0f0 !important; }
+    .receipt-table th, .receipt-table td { padding: 1.5mm 1mm !important; }
+    .receipt-table tfoot td { font-weight: bold !important; border-top-color: #000 !important;}
+    .receipt-thankyou { font-size: 7pt !important; }
+    .receipt-table, .receipt-info, .receipt-header, .receipt-thankyou { page-break-inside: avoid; }
 }
 
-/* تحسينات للهواتف */
-@media (max-width: 768px) {
-    .receipt-actions-toolbar {
-        flex-direction: column;
-    }
-    
-    .receipt-actions-toolbar .action-button,
-    .receipt-actions-toolbar .secondary-action {
-        width: 100%;
-    }
-}
+/* --- 14. Helper Classes --- */
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0; }
+.text-center { text-align: center; }
+.no-print { display: initial; }
