@@ -1294,3 +1294,42 @@ body.dark-mode .toast-notification.error { background-color: var(--color-error);
 .no-print {
     display: none !important; /* لإخفاء العناصر عند الطباعة */
 }
+/* أنماط أزرار الفاتورة */
+.receipt-actions-toolbar {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.receipt-actions-toolbar .action-button,
+.receipt-actions-toolbar .secondary-action {
+    flex: 1;
+    min-width: 120px;
+    padding: 10px 15px;
+    font-size: 0.9rem;
+}
+
+.receipt-actions-toolbar i {
+    margin-left: 5px;
+}
+
+/* تحسينات للطباعة */
+@media print {
+    .receipt-actions-toolbar {
+        display: none !important;
+    }
+}
+
+/* تحسينات للهواتف */
+@media (max-width: 768px) {
+    .receipt-actions-toolbar {
+        flex-direction: column;
+    }
+    
+    .receipt-actions-toolbar .action-button,
+    .receipt-actions-toolbar .secondary-action {
+        width: 100%;
+    }
+}
