@@ -724,20 +724,6 @@ document.addEventListener('DOMContentLoaded', () => {
 // إضافة كلاس CSS مؤقت لتغيير الخط قبل التقاط الصورة
 // هذا الكلاس سيتم تطبيقه بواسطة JavaScript قبل html2canvas وإزالته بعد ذلك
 
-.prepare-for-image-capture,
-.prepare-for-image-capture * {
-    font-family: 'Courier New', Courier, monospace !important;
-    font-size: 9pt !important; // أو الحجم المناسب لشكل إيصال الكاشير
-    line-height: 1.3 !important;
-    color: #000 !important; // ضمان نص أسود للصورة
-    background-color: #fff !important; // ضمان خلفية بيضاء للصورة
-}
-#printable-receipt-area.prepare-for-image-capture {
-    border: none !important; // إزالة أي حدود عند التقاط الصورة
-    box-shadow: none !important;
-    padding: 3mm !important; // هوامش صغيرة للصورة
-    max-width: 76mm !important; // عرض ورقة الكاشير للصورة
-}
 
 // ملاحظة: تم نقل منطق تغيير الخط إلى خيار onclone في html2canvas لضمان تطبيقه على النسخة المستنسخة.
 // لا يزال بإمكانك استخدام الكلاس .prepare-for-image-capture لتطبيق أنماط أخرى إذا لزم الأمر.
