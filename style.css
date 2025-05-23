@@ -1,63 +1,58 @@
-/* --- style.css - Refined Professional Hotel Menu System --- */
+/* --- style.css - Refined Professional Hotel Menu System (Mobile Fixes Applied) --- */
+
+/* ... (كل الكود السابق من :root حتى بداية @media (max-width: 767px)) ... */
+/* يتم الاحتفاظ بكل الأنماط العامة وأنماط سطح المكتب كما هي */
 
 /* --- 1. Core Variables & Global Resets --- */
 @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=Marhey:wght@400;600;700&display=swap');
 
 :root {
     --font-body: 'Tajawal', sans-serif;
-    --font-display: 'Marhey', sans-serif; /* For headings, potentially more formal option if needed */
-    --font-receipt-onscreen: 'Tajawal', sans-serif; /* For on-screen receipt view */
-    --font-receipt-print: 'Courier New', Courier, monospace; /* For printed receipt */
+    --font-display: 'Marhey', sans-serif;
+    --font-receipt-onscreen: 'Tajawal', sans-serif;
+    --font-receipt-print: 'Courier New', Courier, monospace;
 
     /* Light Mode Palette - More Formal & Professional */
-    --color-primary-lm: #8A6F47; /* A richer, muted gold - can be replaced with a deep blue/burgundy */
-    /* --color-primary-lm: #2A3B4D; */ /* Example: Deep Navy Blue */
+    --color-primary-lm: #8A6F47;
     --color-primary-dark-lm: #6B5535;
-    /* --color-primary-dark-lm: #1E2A38; */ /* Darker Navy */
     --color-primary-rgb-lm: 138, 111, 71;
-    /* --color-primary-rgb-lm: 42, 59, 77; */
 
-    --color-secondary-lm: #333333; /* Dark grey for primary text */
+    --color-secondary-lm: #333333;
     --color-secondary-light-lm: #555555;
     --color-secondary-rgb-lm: 51, 51, 51;
 
-    --color-accent-lm: #A0845E; /* Lighter, complementary to primary */
-    /* --color-accent-lm: #5C7A99; */ /* Accent for Navy */
+    --color-accent-lm: #A0845E;
     --color-accent-rgb-lm: 160, 132, 94;
 
     --color-text-lm: #212529;
     --color-text-muted-lm: #6c757d;
-    --color-background-lm: #F4F6F8; /* Very light grey background */
+    --color-background-lm: #F4F6F8;
     --color-surface-lm: #FFFFFF;
-    --color-border-lm: #D1D5DB; /* Softer border color */
-    --color-success-lm: #10B981; /* Emerald green for success */
-    --color-error-lm: #EF4444; /* Clear red for errors */
+    --color-border-lm: #D1D5DB;
+    --color-success-lm: #10B981;
+    --color-error-lm: #EF4444;
 
     /* Dark Mode Palette */
-    --color-primary-dm: #C0A57A; /* Gold for dark mode, adjusted */
-    /* --color-primary-dm: #70A1D7; */ /* Lighter Blue for Dark Mode */
+    --color-primary-dm: #C0A57A;
     --color-primary-dark-dm: #A0845E;
-    /* --color-primary-dark-dm: #4F7CAC; */
     --color-primary-rgb-dm: 192, 165, 122;
 
-    --color-secondary-dm: #E5E7EB; /* Light grey for text in dark mode */
+    --color-secondary-dm: #E5E7EB;
     --color-secondary-light-dm: #D1D5DB;
     --color-secondary-rgb-dm: 229, 231, 235;
 
     --color-accent-dm: #D4B996;
-    /* --color-accent-dm: #8FB8DE; */
     --color-accent-rgb-dm: 212, 185, 150;
 
     --color-text-dm: #F3F4F6;
     --color-text-muted-dm: #9CA3AF;
-    --color-background-dm: #111827; /* Dark blue-grey */
-    --color-surface-dm: #1F2937;   /* Slightly lighter surface */
+    --color-background-dm: #111827;
+    --color-surface-dm: #1F2937;
     --color-border-dm: #374151;
     --color-success-dm: #34D399;
     --color-error-dm: #F87171;
 
-
-    /* Dynamic Variables (initially light mode) */
+    /* Dynamic Variables */
     --color-primary: var(--color-primary-lm);
     --color-primary-dark: var(--color-primary-dark-lm);
     --color-primary-rgb: var(--color-primary-rgb-lm);
@@ -82,11 +77,11 @@
     --border-radius-md: 8px;
     --border-radius-lg: 10px;
 
-    --spacing-xs: 0.25rem;  /* 4px */
-    --spacing-sm: 0.5rem;   /* 8px */
-    --spacing-md: 1rem;     /* 16px */
-    --spacing-lg: 1.5rem;   /* 24px */
-    --spacing-xl: 2rem;     /* 32px */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
 
     --transition-fast: 0.15s ease-out;
     --transition-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
@@ -136,7 +131,7 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
-    font-weight: 700; /* Bolder headings */
+    font-weight: 700;
     line-height: 1.3;
     color: var(--color-secondary);
     margin-bottom: var(--spacing-md);
@@ -164,7 +159,7 @@ h3 { font-size: clamp(1.15rem, 3vw, 1.4rem); }
 #hotel-title {
     font-size: clamp(1.7rem, 5.5vw, 2.4rem);
     color: var(--color-primary);
-    margin-bottom: 0; /* Reduced margin */
+    margin-bottom: 0;
     line-height: 1.2;
 }
 .welcome-message {
@@ -183,8 +178,8 @@ h3 { font-size: clamp(1.15rem, 3vw, 1.4rem); }
 .cart-icon-container button, .theme-switcher {
     background: transparent;
     border: none;
-    color: var(--color-secondary-light); /* Slightly lighter icon color */
-    font-size: 1.6rem; /* Adjusted icon size */
+    color: var(--color-secondary-light);
+    font-size: 1.6rem;
     cursor: pointer;
     padding: var(--spacing-sm);
     border-radius: 50%;
@@ -207,7 +202,7 @@ body.dark-mode .cart-icon-container button, body.dark-mode .theme-switcher {
     position: absolute;
     top: -3px;
     right: -3px;
-    background-color: var(--color-error); /* Use error color for count */
+    background-color: var(--color-error);
     color: white;
     border-radius: 50%;
     padding: 2px 5px;
@@ -238,11 +233,11 @@ body.dark-mode .category-tabs::-webkit-scrollbar-track { background: rgba(var(--
 
 
 .tab-button {
-    padding: calc(var(--spacing-sm) - 2px) var(--spacing-md); /* Slightly smaller padding */
+    padding: calc(var(--spacing-sm) - 2px) var(--spacing-md);
     border: 1px solid var(--color-border);
     background-color: var(--color-surface);
     color: var(--color-text-muted);
-    border-radius: var(--border-radius-md); /* Consistent border radius */
+    border-radius: var(--border-radius-md);
     cursor: pointer;
     font-weight: 500;
     font-size: clamp(0.85rem, 2.2vw, 0.95rem);
@@ -257,16 +252,15 @@ body.dark-mode .category-tabs::-webkit-scrollbar-track { background: rgba(var(--
 }
 .tab-button.active {
     background-color: var(--color-primary);
-    color: white; /* Text on primary button */
+    color: white;
     border-color: var(--color-primary);
-    font-weight: 600; /* Slightly less bold */
+    font-weight: 600;
     box-shadow: var(--shadow-md);
-    transform: translateY(0); /* No lift for active tab, just color change */
+    transform: translateY(0);
 }
 body.dark-mode .tab-button.active {
-    color: var(--color-background); /* Dark text on primary for dark mode */
+    color: var(--color-background);
 }
-
 
 /* --- 4. Menu Items Grid --- */
 #menu-items-grid {
@@ -274,15 +268,9 @@ body.dark-mode .tab-button.active {
     grid-template-columns: 1fr;
     gap: var(--spacing-lg);
 }
-@media (min-width: 550px) {
-    #menu-items-grid { grid-template-columns: repeat(2, 1fr); }
-}
-@media (min-width: 992px) {
-    #menu-items-grid { grid-template-columns: repeat(3, 1fr); }
-}
-@media (min-width: 1200px) {
-    #menu-items-grid { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
-}
+@media (min-width: 550px) { #menu-items-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 992px) { #menu-items-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 1200px) { #menu-items-grid { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); } }
 
 .menu-item-card {
     background-color: var(--color-surface);
@@ -293,7 +281,7 @@ body.dark-mode .tab-button.active {
     flex-direction: column;
     transition: transform var(--transition-normal), box-shadow var(--transition-normal);
     cursor: pointer;
-    border: 1px solid var(--color-border); /* Subtle border */
+    border: 1px solid var(--color-border);
 }
 .menu-item-card:hover {
     transform: translateY(-4px);
@@ -302,7 +290,7 @@ body.dark-mode .tab-button.active {
 
 .menu-item-card img {
     width: 100%;
-    height: 180px; /* Slightly reduced height */
+    height: 180px;
     object-fit: cover;
     display: block;
     transition: transform 0.3s ease-out;
@@ -320,7 +308,7 @@ body.dark-mode .tab-button.active {
     font-size: clamp(1.05rem, 2.8vw, 1.25rem);
     margin-bottom: var(--spacing-xs);
     color: var(--color-secondary);
-    font-weight: 600; /* Bolder item name */
+    font-weight: 600;
 }
 body.dark-mode .item-info h3 { color: var(--color-primary); }
 
@@ -331,7 +319,7 @@ body.dark-mode .item-info h3 { color: var(--color-primary); }
     flex-grow: 1;
     line-height: 1.5;
     display: -webkit-box;
-    -webkit-line-clamp: 2; /* Max 2 lines for description */
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -355,7 +343,7 @@ body.dark-mode .item-info h3 { color: var(--color-primary); }
     #menu-items-grid { gap: var(--spacing-md); }
     .menu-item-card { flex-direction: row; align-items: center; min-height: 110px; }
     .menu-item-card img {
-        width: 100px; height: 100px; /* Square image for horizontal */
+        width: 100px; height: 100px;
         border-left: 1px solid var(--color-border); border-bottom: none;
         flex-shrink: 0;
     }
@@ -379,15 +367,13 @@ body.dark-mode .item-info h3 { color: var(--color-primary); }
     font-size: clamp(0.75rem, 2vw, 0.85rem);
     cursor: pointer;
     transition: all var(--transition-normal);
-    display: inline-flex; /* Changed to inline-flex */
+    display: inline-flex;
     align-items: center;
     gap: var(--spacing-xs);
     box-shadow: var(--shadow-sm);
-    line-height: 1.2; /* Ensure text vertical alignment */
+    line-height: 1.2;
 }
-.add-to-cart-button i {
-    font-size: 0.9em; /* Icon size relative to button text */
-}
+.add-to-cart-button i { font-size: 0.9em; }
 .add-to-cart-button:hover {
     background-color: var(--color-primary-dark);
     transform: scale(1.03);
@@ -401,7 +387,7 @@ body.dark-mode .add-to-cart-button { color: var(--color-background); }
     top: 0;
     left: -100%;
     width: 100%;
-    max-width: 380px; /* Slightly narrower */
+    max-width: 380px;
     height: 100%;
     background-color: var(--color-surface);
     box-shadow: var(--shadow-lg);
@@ -423,10 +409,7 @@ html[dir="ltr"] .cart-sidebar.visible { right: 0; }
     color: white;
     border-bottom: 2px solid var(--color-primary);
 }
-.cart-header h2 {
-    font-size: clamp(1.1rem, 3vw, 1.4rem);
-    color: inherit; margin: 0;
-}
+.cart-header h2 { font-size: clamp(1.1rem, 3vw, 1.4rem); color: inherit; margin: 0; }
 .close-button-cart {
     background: none; border: none; color: inherit;
     font-size: 1.8rem; cursor: pointer; padding: var(--spacing-xs);
@@ -438,7 +421,7 @@ html[dir="ltr"] .cart-sidebar.visible { right: 0; }
 .empty-cart-message { text-align: center; padding: var(--spacing-xl) var(--spacing-md); color: var(--color-text-muted); font-size: 1.05rem; }
 
 .cart-item-entry {
-    display: flex; align-items: flex-start; /* Align image top with text block */
+    display: flex; align-items: flex-start;
     margin-bottom: var(--spacing-md); padding-bottom: var(--spacing-md);
     border-bottom: 1px solid var(--color-border); gap: var(--spacing-sm);
 }
@@ -449,7 +432,7 @@ html[dir="ltr"] .cart-sidebar.visible { right: 0; }
     flex-shrink: 0;
 }
 .cart-item-details { flex-grow: 1; }
-.cart-item-details span:first-child { /* Name */
+.cart-item-details span:first-child {
     font-weight: 600; font-size: 0.95rem; display: block;
     margin-bottom: var(--spacing-xs); color: var(--color-secondary);
 }
@@ -478,7 +461,7 @@ body.dark-mode .cart-item-details .quantity-change-btn:hover { color: var(--colo
     display: block; margin-top: var(--spacing-xs);
 }
 
-.cart-item-actions { margin-left: auto; /* Pushes button to the right in LTR */ }
+.cart-item-actions { margin-left: auto; }
 .cart-item-actions .remove-from-cart-btn {
     background: none; border: none; color: var(--color-error);
     font-size: 1.3rem; cursor: pointer; padding: var(--spacing-sm);
@@ -486,7 +469,7 @@ body.dark-mode .cart-item-details .quantity-change-btn:hover { color: var(--colo
     border-radius: 50%;
 }
 .cart-item-actions .remove-from-cart-btn:hover {
-    color: var(--color-primary-dark); /* Using primary dark for a less harsh error hover */
+    color: var(--color-primary-dark);
     transform: scale(1.1); background-color: rgba(var(--color-error-rgb), 0.05);
 }
 
@@ -495,7 +478,7 @@ body.dark-mode .cart-item-details .quantity-change-btn:hover { color: var(--colo
     background-color: var(--color-background); text-align: center;
 }
 .cart-summary p {
-    font-family: var(--font-body); /* Using body font for total */
+    font-family: var(--font-body);
     font-size: clamp(1.2rem, 3.5vw, 1.5rem);
     font-weight: 600; margin-bottom: var(--spacing-sm);
     color: var(--color-secondary);
@@ -554,7 +537,7 @@ body.dark-mode .secondary-action {
 .modal {
     display: none; position: fixed; z-index: 1000;
     left: 0; top: 0; width: 100%; height: 100%;
-    overflow-y: auto; background-color: rgba(17, 24, 39, 0.6); /* Darker, slightly blue overlay */
+    overflow-y: auto; background-color: rgba(17, 24, 39, 0.6);
     backdrop-filter: blur(4px);
     align-items: center; justify-content: center;
     opacity: 0; padding: var(--spacing-md);
@@ -567,7 +550,7 @@ body.dark-mode .secondary-action {
     margin: auto; padding: var(--spacing-lg);
     border-radius: var(--border-radius-lg);
     box-shadow: var(--shadow-lg);
-    width: 100%; max-width: 500px; /* Default max-width */
+    width: 100%; max-width: 500px;
     position: relative;
     transform: scale(0.95) translateY(15px); opacity: 0;
     transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.25s ease-out;
@@ -577,7 +560,7 @@ body.dark-mode .secondary-action {
 
 .close-button {
     color: var(--color-text-muted); position: absolute;
-    top: var(--spacing-sm); left: var(--spacing-sm); /* Adjusted position */
+    top: var(--spacing-sm); left: var(--spacing-sm);
     font-size: 2rem; font-weight: 300; line-height: 1;
     cursor: pointer; padding: var(--spacing-xs); border-radius: 50%;
     width: 36px; height: 36px;
@@ -602,7 +585,7 @@ body.dark-mode .secondary-action {
 .item-details-modal-content .modal-item-description {
     font-size: clamp(0.85rem, 2.2vw, 0.95rem); line-height: 1.6;
     margin-bottom: var(--spacing-md); color: var(--color-text-muted);
-    max-height: 22vh; overflow-y: auto; padding-left: var(--spacing-sm); /* Space for scrollbar */
+    max-height: 22vh; overflow-y: auto; padding-left: var(--spacing-sm);
 }
 .item-details-modal-content .modal-item-price {
     font-family: var(--font-display); font-size: clamp(1.6rem, 5vw, 2.2rem);
@@ -613,7 +596,13 @@ body.dark-mode .item-details-modal-content .modal-item-price { color: var(--colo
 
 
 /* --- 9. Modal: Checkout & Receipt --- */
-.checkout-modal-content, .receipt-modal-content { max-width: 600px; }
+.checkout-modal-content {
+    max-width: 600px;
+}
+.receipt-modal-content {
+    max-width: 500px; /* Consistent with previous update */
+}
+
 .checkout-modal-content h2, .receipt-modal-content h2:not(.receipt-header h2) {
     text-align: center; margin-bottom: var(--spacing-lg);
     font-size: clamp(1.6rem, 4.5vw, 2rem);
@@ -644,14 +633,14 @@ body.dark-mode .receipt-modal-content h2:not(.receipt-header h2) {
     white-space: nowrap; margin-left: var(--spacing-md);
 }
 
-.checkout-total { /* For checkout modal's total */
+.checkout-total {
     font-family: var(--font-body); font-size: clamp(1.3rem, 4vw, 1.6rem);
     font-weight: 600; margin-top: var(--spacing-md);
-    text-align: right; /* Total on the right for a more formal feel */
+    text-align: right;
     color: var(--color-secondary);
-    padding: var(--spacing-sm) 0; /* Remove side padding, align with items */
+    padding: var(--spacing-sm) 0;
 }
-.checkout-total span { /* The actual number */
+.checkout-total span {
     font-weight: 700;
     color: var(--color-primary);
 }
@@ -666,7 +655,7 @@ body.dark-mode .checkout-total span { color: var(--color-primary-dm); }
 }
 .room-input-group input[type="text"] {
     width: 100%; padding: var(--spacing-sm);
-    border: 1px solid var(--color-border); border-radius: var(--border-radius-sm); /* Smaller radius */
+    border: 1px solid var(--color-border); border-radius: var(--border-radius-sm);
     font-size: 0.95rem; font-family: var(--font-body);
     transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
     background-color: var(--color-surface); color: var(--color-text);
@@ -679,30 +668,30 @@ body.dark-mode .checkout-total span { color: var(--color-primary-dm); }
 
 /* --- 10. Receipt Styling (More Formal On-Screen) --- */
 #printable-receipt-area {
-    font-family: var(--font-receipt-onscreen); /* Use specific font for on-screen receipt */
+    font-family: var(--font-receipt-onscreen);
     color: var(--color-text);
     background-color: var(--color-surface);
     padding: var(--spacing-lg);
     margin: 0 auto var(--spacing-md);
-    max-width: 420px; /* Wider for better on-screen readability */
-    border: 1px solid #B0B0B0; /* A neutral grey border */
+    max-width: 100%;
+    border: 1px solid #B0B0B0;
     box-shadow: var(--shadow-md);
     line-height: 1.5;
-    font-size: 14px; /* Base for on-screen: 10.5pt approx */
-    border-radius: var(--border-radius-sm); /* Minimal radius */
+    font-size: 13px;
+    border-radius: var(--border-radius-sm);
 }
 
 .receipt-header {
     text-align: center; margin-bottom: var(--spacing-md);
     padding-bottom: var(--spacing-sm);
-    border-bottom: 1px solid var(--color-secondary-light); /* Solid line */
+    border-bottom: 1px solid var(--color-secondary-light);
 }
 .receipt-logo {
-    max-width: 70px; margin-bottom: var(--spacing-sm);
-    filter: grayscale(0.3); /* Slight desaturation for formality */
+    max-width: 60px; margin-bottom: var(--spacing-sm);
+    filter: grayscale(0.3);
 }
-.receipt-header h2 { /* "فاتورة طلب طعام" */
-    font-family: var(--font-display); font-size: 1.3rem; /* Formal size */
+.receipt-header h2 {
+    font-family: var(--font-display); font-size: 1.2rem;
     color: var(--color-secondary) !important;
     margin: 0 0 var(--spacing-xs) 0;
     font-weight: 600;
@@ -712,26 +701,26 @@ body.dark-mode .checkout-total span { color: var(--color-primary-dm); }
     border-top: 1px solid var(--color-border);
     border-bottom: 1px solid var(--color-border);
     padding: var(--spacing-sm) 0; margin-bottom: var(--spacing-md);
-    text-align: right; font-size: 0.85rem; /* 13px */
+    text-align: right; font-size: 0.8rem;
 }
 .receipt-info p { margin: 2px 0; }
 .receipt-info p strong { font-weight: 500; color: var(--color-secondary-light); }
 
 .receipt-table {
     width: 100%; border-collapse: collapse; margin-bottom: var(--spacing-md);
-    font-size: 0.85rem; /* 13px */
+    font-size: 0.8rem;
 }
 .receipt-table th, .receipt-table td {
-    padding: 6px 4px; /* Adjusted padding */
-    text-align: right; vertical-align: middle; /* Center vertically */
+    padding: 5px 3px;
+    text-align: right; vertical-align: middle;
     border-bottom: 1px solid var(--color-border);
 }
 .receipt-table thead th {
     font-weight: 600;
-    background-color: rgba(var(--color-secondary-rgb), 0.05); /* Very light grey header */
+    background-color: rgba(var(--color-secondary-rgb), 0.05);
     color: var(--color-secondary);
     text-align: center;
-    border-bottom-width: 1.5px; /* Thicker line under header */
+    border-bottom-width: 1.5px;
     border-bottom-color: var(--color-secondary-light);
 }
 body.dark-mode .receipt-table thead th {
@@ -743,7 +732,7 @@ body.dark-mode .receipt-table thead th {
 .receipt-table .subtotal-col { text-align: left; width: 20%; font-weight: 500; }
 
 .receipt-table tfoot td {
-    border-top: 1.5px solid var(--color-secondary-light); /* Thicker line for footer */
+    border-top: 1.5px solid var(--color-secondary-light);
     padding-top: var(--spacing-sm);
     font-weight: 500;
 }
@@ -753,7 +742,7 @@ body.dark-mode .receipt-table tfoot .text-left { color: var(--color-primary); }
 
 
 .receipt-thankyou {
-    text-align: center; font-size: 0.8rem; /* Slightly smaller */
+    text-align: center; font-size: 0.75rem;
     margin-top: var(--spacing-md); padding-top: var(--spacing-sm);
     border-top: 1px solid var(--color-border);
     color: var(--color-text-muted);
@@ -801,8 +790,7 @@ body.dark-mode .toast-notification.error {
     background-color: var(--color-error); color: white; border: none;
 }
 
-
-/* --- 12. Mobile Optimizations (Consolidated) --- */
+/* --- 12. Mobile Optimizations (Consolidated & UPDATED) --- */
 @media (max-width: 767px) {
     .hotspot-container { padding: var(--spacing-sm); }
     .hotspot-header { flex-direction: column; align-items: flex-start; gap: var(--spacing-sm); }
@@ -813,7 +801,7 @@ body.dark-mode .toast-notification.error {
     .cart-icon-container button, .theme-switcher { font-size: 1.5rem; width: 36px; height: 36px; }
     #cart-item-count { padding: 1px 4px; font-size: 0.6rem; min-width: 14px; }
 
-    .category-tabs { margin-bottom: var(--spacing-lg); gap: 3px; } /* Slightly more gap for touch */
+    .category-tabs { margin-bottom: var(--spacing-lg); gap: 3px; }
     .tab-button { padding: 5px var(--spacing-sm); font-size: clamp(0.75rem, 2.5vw, 0.85rem); }
 
     .cart-sidebar { max-width: 300px; }
@@ -831,7 +819,17 @@ body.dark-mode .toast-notification.error {
 
     .action-button { padding: var(--spacing-sm) var(--spacing-md); font-size: clamp(0.8rem, 2.5vw, 0.95rem); }
 
-    .modal-content { padding: var(--spacing-md); max-width: 95%; }
+    .modal-content {
+        padding: var(--spacing-md) var(--spacing-sm); /* Reduced horizontal padding for very narrow screens */
+        max-width: 96%; /* Ensures it fits, slightly more than 95% */
+        max-height: 90vh; /* Prevent modal from being taller than viewport */
+        overflow-y: auto; /* Allow content scrolling within modal if needed */
+    }
+    /* Specific for receipt modal on mobile, can be same as general or slightly different if needed */
+    .receipt-modal-content {
+        max-width: 96%;
+    }
+
     .close-button { top: 5px; left: 5px; font-size: 1.8rem; width: 30px; height: 30px; }
     .item-details-modal-content .modal-item-image { max-height: 28vh; }
     .item-details-modal-content .modal-item-name { font-size: clamp(1.2rem, 4.5vw, 1.6rem); }
@@ -839,25 +837,53 @@ body.dark-mode .toast-notification.error {
     .item-details-modal-content .modal-item-price { font-size: clamp(1.4rem, 5vw, 1.8rem); }
 
     .checkout-modal-content h2, .receipt-modal-content h2:not(.receipt-header h2) {
-        font-size: clamp(1.4rem, 4.5vw, 1.8rem);
+        font-size: clamp(1.2rem, 4vw, 1.6rem); /* Slightly smaller H2 in modals on mobile */
+        margin-bottom: var(--spacing-sm);
+        padding-bottom: var(--spacing-xs);
     }
     #checkout-summary-items { padding: var(--spacing-xs); }
-    #checkout-summary-items li { font-size: 0.85rem; }
-    .checkout-total { font-size: clamp(1.2rem, 4vw, 1.5rem); }
-    .room-input-group label { font-size: 0.9rem; }
-    .room-input-group input[type="text"] { padding: calc(var(--spacing-sm) - 2px); font-size: 0.9rem;}
+    #checkout-summary-items li { font-size: 0.8rem; } /* Smaller checkout summary items */
+    .checkout-total { font-size: clamp(1.1rem, 3.5vw, 1.4rem); } /* Smaller checkout total */
+    .room-input-group label { font-size: 0.85rem; }
+    .room-input-group input[type="text"] { padding: calc(var(--spacing-sm) - 3px); font-size: 0.85rem;}
 
-    #printable-receipt-area { /* On-screen receipt on mobile */
-        padding: var(--spacing-sm); font-size: 12px; /* ~9pt */ max-width: 96%;
+    #printable-receipt-area {
+        padding: var(--spacing-sm);
+        font-size: 10px; /* UPDATED: Smaller base font for receipt on mobile */
     }
-    .receipt-header h2 { font-size: 1.1rem; }
-    .receipt-info { font-size: 0.75rem; } /* ~11px */
-    .receipt-table { font-size: 0.75rem; }
-    .receipt-table th, .receipt-table td { padding: 4px 2px; }
-
-    .receipt-actions-toolbar { flex-direction: column; gap: var(--spacing-xs); }
+    .receipt-header h2 {
+        font-size: 0.9rem; /* UPDATED: Smaller receipt title */
+    }
+    .receipt-logo { max-width: 50px; } /* Smaller logo on mobile receipt */
+    .receipt-info {
+        font-size: 0.65rem; /* UPDATED: Smaller receipt info */
+        padding: var(--spacing-xs) 0;
+        margin-bottom: var(--spacing-sm);
+    }
+    .receipt-table {
+        font-size: 0.65rem; /* UPDATED: Smaller receipt table text */
+        margin-bottom: var(--spacing-sm);
+    }
+    .receipt-table th, .receipt-table td {
+        padding: 2px 1px; /* UPDATED: Tighter padding in table cells */
+    }
+    .receipt-thankyou {
+        font-size: 0.6rem; /* UPDATED: Smaller thank you message */
+        margin-top: var(--spacing-sm);
+        padding-top: var(--spacing-xs);
+    }
+    /* UPDATED: Receipt actions toolbar for mobile */
+    .receipt-actions-toolbar {
+        flex-direction: column;
+        gap: var(--spacing-xs); /* Tighter gap for buttons */
+        margin-top: var(--spacing-md);
+    }
     .receipt-actions-toolbar .action-button,
-    .receipt-actions-toolbar .secondary-action { width: 100%; font-size: 0.8rem; }
+    .receipt-actions-toolbar .secondary-action {
+        width: 100%;
+        font-size: 0.75rem; /* Smaller font for buttons */
+        padding: 6px var(--spacing-sm); /* Smaller padding for buttons */
+    }
 
     .toast-notification { bottom: var(--spacing-sm); padding: var(--spacing-xs) var(--spacing-sm); font-size: 0.85rem; }
 }
@@ -884,7 +910,7 @@ body.dark-mode .toast-notification.error {
         box-shadow: none !important; backdrop-filter: none !important;
     }
     #receipt-modal .modal-content.receipt-modal-content {
-        max-width: 100% !important; width: 76mm !important; /* Receipt width */
+        max-width: 100% !important; width: 76mm !important;
         margin: 0 auto !important; padding: 0 !important;
         background-color: #fff !important; border-radius: 0 !important;
         box-shadow: none !important; border: none !important; color: #000 !important;
@@ -893,7 +919,7 @@ body.dark-mode .toast-notification.error {
 
     #printable-receipt-area {
         max-width: 100% !important; width: 100% !important;
-        padding: 3mm 2mm !important; /* Print padding */
+        padding: 3mm 2mm !important;
         margin: 0 !important; border: none !important; box-shadow: none !important;
         font-family: var(--font-receipt-print) !important;
         font-size: 8.5pt !important; line-height: 1.25 !important;
@@ -902,16 +928,17 @@ body.dark-mode .toast-notification.error {
     #printable-receipt-area * {
         color: #000 !important; background: transparent !important;
         font-family: var(--font-receipt-print) !important;
-        box-shadow: none !important; border-color: #333 !important; /* Darker borders for print */
+        box-shadow: none !important; border-color: #333 !important;
     }
-    .receipt-logo { max-width: 50mm !important; filter: grayscale(100%) contrast(180%) !important; }
-    .receipt-header h2 { font-size: 10pt !important; font-weight: bold !important; color: #000 !important; border-bottom-color: #000 !important; }
-    .receipt-info { font-size: 7.5pt !important; }
-    .receipt-table { font-size: 8pt !important; }
-    .receipt-table thead th { font-size: 8.5pt !important; font-weight: bold !important; background-color: #f0f0f0 !important; }
-    .receipt-table th, .receipt-table td { padding: 1.5mm 1mm !important; }
-    .receipt-table tfoot td { font-weight: bold !important; border-top-color: #000 !important;}
-    .receipt-thankyou { font-size: 7pt !important; }
+    .receipt-logo { max-width: 50px !important; filter: grayscale(100%) contrast(180%) !important; margin-bottom:1mm !important;} /* Corrected logo size for print */
+    .receipt-header h2 { font-size: 10pt !important; font-weight: bold !important; color: #000 !important; border-bottom-color: #000 !important; margin-bottom: 1mm !important;}
+    .receipt-info { font-size: 7.5pt !important; padding: 1mm 0 !important; margin-bottom: 2mm !important;}
+    .receipt-table { font-size: 8pt !important; margin-bottom: 2mm !important;}
+    .receipt-table thead th { font-size: 8.5pt !important; font-weight: bold !important; background-color: #f0f0f0 !important; padding: 1mm !important;}
+    .receipt-table th, .receipt-table td { padding: 1mm !important; }
+    .receipt-table tbody tr td { line-height: 1.2 !important;}
+    .receipt-table tfoot td { font-weight: bold !important; border-top-color: #000 !important; padding-top: 1mm !important;}
+    .receipt-thankyou { font-size: 7pt !important; margin-top: 2mm !important; padding-top:1mm !important;}
     .receipt-table, .receipt-info, .receipt-header, .receipt-thankyou { page-break-inside: avoid; }
 }
 
